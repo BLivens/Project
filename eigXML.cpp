@@ -38,4 +38,3 @@ int inlezen(FILE *input) {
     doc.Clear();
     return 0;
 }
-

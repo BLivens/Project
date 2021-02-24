@@ -9,4 +9,3 @@ public:
     int transport;
     std::vector<std::string> centra; // Misschien moeten we hier i.p.v. de namen effectief de centra (van klasse centrum) inzetten.
 };
-

@@ -3,4 +3,4 @@ project(Project)
 
 set(CMAKE_CXX_STANDARD 98)
 
-add_executable(Project main.cpp eigXML.cpp eigXML.h HUB.cpp HUB.h)
+add_executable(Project main.cpp eigXML.cpp eigXML.h HUB.cpp HUB.h Centrum.cpp Centrum.h)

@@ -1,0 +1,5 @@
+
+#ifndef PROJECT_CENTRUM_H
+#define PROJECT_CENTRUM_H
+
+#endif //PROJECT_CENTRUM_H
