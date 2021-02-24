@@ -27,7 +27,7 @@ int inlezen(FILE *input) {
         std::string elemName = elem->Value();
 
         if (elemName == "HUB") {
-             int levering = std::atol(elem->Attribute("levering")); // Zodra mogelijk schrijven naar een HUB klasse
+             int levering = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
              int interval = std::atol(elem->Attribute("interval"));
              int transport = std::atol(elem->Attribute("transport"));
              std::vector<std::string> centra;
