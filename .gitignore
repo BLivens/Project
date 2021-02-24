@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# CLion
+cmake-build-debug/*
+
 # Executables
 *.exe
 *.out
