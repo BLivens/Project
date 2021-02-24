@@ -29,6 +29,7 @@
 # CLion
 cmake-build-debug/
 .idea/
+tests/
 
 # Executables
 *.exe
