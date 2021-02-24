@@ -10,4 +10,8 @@
 #ifndef PROJECT_eigXML_H
 #define PROJECT_eigXML_H
 
+Hub inlezen(FILE *input);
+int schrijven(std::string file, Hub outHub);
+
+
 #endif //PROJECT_eigXML_H
