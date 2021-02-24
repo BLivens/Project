@@ -4,6 +4,7 @@
 #include <vector>
 #include "HUB.h"
 #include "Centrum.h"
+#include <algorithm>
 
 
 #ifndef PROJECT_eigXML_H
