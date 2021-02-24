@@ -4,10 +4,6 @@ zowel lezen als schrijven. Gebruikt hiervoor tinyxml.
 ---------------------------------------------------- */
 
 #include "eigXML.h"
-#include <iostream>
-#include "tinyxml/tinyxml.h"
-#include <string>
-#include <vector>
 
 
 int inlezen(FILE *input) {
@@ -27,11 +23,18 @@ int inlezen(FILE *input) {
         std::string elemName = elem->Value();
 
         if (elemName == "HUB") {
-             int levering = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
-             int interval = std::atol(elem->Attribute("interval"));
-             int transport = std::atol(elem->Attribute("transport"));
-             std::vector<std::string> centra;
-             // itereren over de centra om ze aan de lijst toe te voegen.
+            Hub outhub;
+            outhub.levering = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
+            outhub.interval = std::atol(elem->Attribute("interval"));
+            outhub.transport = std::atol(elem->Attribute("transport"));
+
+            std::vector<std::string> centra; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
+            for (TiXmlElement* centrumNaam = elem->FirstChildElement(); centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
+                centra.push_back(centrumNaam->Attribute("centrum"));
+            }
+        }
+        if (elemName == "VACCINATIECENTRUM") {
+
         }
     }
 
