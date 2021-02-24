@@ -6,7 +6,7 @@ zowel lezen als schrijven. Gebruikt hiervoor tinyxml.
 #include "eigXML.h"
 
 
-int inlezen(FILE *input) {
+Hub inlezen(FILE *input) {
     TiXmlDocument doc;
     if (!doc.LoadFile(input)) {
         std::cerr << doc.ErrorDesc() << std::endl;
@@ -19,7 +19,6 @@ int inlezen(FILE *input) {
         return 1;
     }
 
-    std::vector<Centrum> vacCentra;
     Centrum tempCentrum;
     Hub outHub;
     std::vector<std::string> centra1; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
@@ -30,7 +29,7 @@ int inlezen(FILE *input) {
 
 
         if (elemName == "HUB") {
-            outHub.levering = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
+            outHub.vaccins = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
             outHub.interval = std::atol(elem->Attribute("interval"));
             outHub.transport = std::atol(elem->Attribute("transport"));
 
@@ -43,7 +42,7 @@ int inlezen(FILE *input) {
             tempCentrum.inwoners = std::atol(elem->Attribute("inwoners"));
             tempCentrum.capaciteit = std::atol(elem->Attribute("capaciteit"));
 
-            vacCentra.push_back(tempCentrum);
+            outHub.centra.push_back(tempCentrum);
             centra2.push_back(tempCentrum.naam);
         }
     }
@@ -51,9 +50,37 @@ int inlezen(FILE *input) {
     std::sort(centra1.begin(), centra1.end());
 
     if (centra1 != centra2) {
-        std::cerr << "Input File not consistent. probleem: Vaccinatiecentra" << std::endl;
+        std::cerr << "Input File not consistent. problem: Vaccinatiecentra" << std::endl;
+    }
+    doc.Clear();
+    return outHub;
+}
+
+int schrijven(std::string file, Hub outHub) {
+    std::ofstream outfile;
+    outfile.open(file); // stomme error, komt er op neer, files worden niet als string meegegeven.
+
+    outfile << "Hub: (" << outHub.vaccins << " vaccins)\n";
+    if (!outfile.is_open()) {
+        std::cerr << "Umable open file" << file << std::endl;
+        return 1;
     }
 
-    doc.Clear();
+    for (int i = 0; i < outHub.centra.size(); i++){
+        outfile << "  -> " << outHub.centra.at(i).naam << " (" << outHub.centra.at(i).vaccins << " vaccins)\n";
+    }
+
+    outfile << std::endl;
+
+    for (int i = 0; i < outHub.centra.size(); i++){
+        outfile << outHub.centra.at(i).naam << ": " << outHub.centra.at(i).gevacineerden << " gevacineerden, nog "
+            << outHub.centra.at(i).inwoners - outHub.centra.at(i).gevacineerden << " inwoners niet gevaccineerd";
+    }
+
+    outfile.close();
     return 0;
+
 }
+
+
+

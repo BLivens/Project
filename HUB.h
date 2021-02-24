@@ -8,7 +8,7 @@
 
 class Hub {
 public:
-    int levering;
+    int vaccins;
     int interval;
     int transport;
     std::vector<Centrum> centra;

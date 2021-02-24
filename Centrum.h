@@ -10,6 +10,8 @@ public:
     std::string adres;
     int inwoners;
     int capaciteit;
+    int vaccins;
+    int gevacineerden;
 };
 
 #endif //PROJECT_CENTRUM_H
