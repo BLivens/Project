@@ -7,22 +7,22 @@ zowel lezen als schrijven. Gebruikt hiervoor tinyxml.
 
 
 Hub inlezen(FILE *input) {
+    Centrum tempCentrum;
+    Hub outHub;
+    std::vector<std::string> centra1; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
+    std::vector<std::string> centra2;
+
     TiXmlDocument doc;
     if (!doc.LoadFile(input)) {
         std::cerr << doc.ErrorDesc() << std::endl;
-        return 1;
+        return outHub;
     }
     TiXmlElement* root = doc.FirstChildElement();
     if (root == NULL) {
         std::cerr << "Failed to load File: no root element." << std::endl;
         doc.Clear();
-        return 1;
+        return outHub;
     }
-
-    Centrum tempCentrum;
-    Hub outHub;
-    std::vector<std::string> centra1; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
-    std::vector<std::string> centra2;
 
     for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
         std::string elemName = elem->Value();
@@ -58,7 +58,7 @@ Hub inlezen(FILE *input) {
 
 int schrijven(std::string file, Hub outHub) {
     std::ofstream outfile;
-    outfile.open(file); // stomme error, komt er op neer, files worden niet als string meegegeven.
+    outfile.open("file"); // stomme error, komt er op neer, files worden niet als string meegegeven.
 
     outfile << "Hub: (" << outHub.vaccins << " vaccins)\n";
     if (!outfile.is_open()) {
