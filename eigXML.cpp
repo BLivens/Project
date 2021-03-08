@@ -29,9 +29,9 @@ Hub inlezen(FILE *input) {
 
 
         if (elemName == "HUB") {
-            outHub.vaccins = std::atol(elem->Attribute("levering")); // Zodra die bestaat schrijven naar een HUB klasse
-            outHub.interval = std::atol(elem->Attribute("interval"));
-            outHub.transport = std::atol(elem->Attribute("transport"));
+            outHub.setVaccins(std::atol(elem->Attribute("levering"))); // Zodra die bestaat schrijven naar een HUB klasse
+            outHub.setInterval(std::atol(elem->Attribute("interval")));
+            outHub.setTransport(std::atol(elem->Attribute("transport")));
 
             for (TiXmlElement* centrumNaam = elem->FirstChildElement(); centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
                 centra1.push_back(centrumNaam->Attribute("centrum"));
@@ -60,19 +60,19 @@ int schrijven(std::string file, Hub outHub) {
     std::ofstream outfile;
     outfile.open("file"); // stomme error, komt er op neer, files worden niet als string meegegeven.
 
-    outfile << "Hub: (" << outHub.vaccins << " vaccins)\n";
+    outfile << "Hub: (" << outHub.getVaccins()<< " vaccins)\n";
     if (!outfile.is_open()) {
         std::cerr << "Umable open file" << file << std::endl;
         return 1;
     }
 
-    for (int i = 0; i < outHub.centra.size(); i++){
+    for (unsigned int i = 0; i < outHub.centra.size(); i++){
         outfile << "  -> " << outHub.centra.at(i).naam << " (" << outHub.centra.at(i).vaccins << " vaccins)\n";
     }
 
     outfile << std::endl;
 
-    for (int i = 0; i < outHub.centra.size(); i++){
+    for (unsigned int i = 0; i < outHub.centra.size(); i++){
         outfile << outHub.centra.at(i).naam << ": " << outHub.centra.at(i).gevacineerden << " gevacineerden, nog "
             << outHub.centra.at(i).inwoners - outHub.centra.at(i).gevacineerden << " inwoners niet gevaccineerd";
     }
