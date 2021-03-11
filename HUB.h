@@ -11,21 +11,23 @@
 class Hub {
 public:
     Hub();
+    bool properlyInitialized() const;
     int getVaccins() const;
+    void setVaccins(int aantal_vaccins);
     int getInterval() const;
+    void setInterval(int aantal_dagen);
     int getTransport() const;
+    void setTransport(int aantal_vaccins);
     int getLevering() const;
     void setLevering(int aantal_vaccins);
-    void lowerVaccins(int aantal_vaccins);
-    void raiseVaccins(int aantal_vaccins);
-    void setVaccins(int aantal_vaccins);
-    void setInterval(int aantal_dagen);
-    void setTransport(int aantal_vaccins);
-    void simulateTransport(std::ostream& onStream, Centrum& centrum);
+    void verlaagVaccins(int aantal_vaccins);
+    void verhoogVaccins(int aantal_vaccins);
     int berekenLadingen(const Centrum& centrum) const;
+    void simuleerTransport(std::ostream& onStream, Centrum& centrum);
     std::vector<Centrum> centra;
 
 private:
+    Hub* _initCheck;
     int levering;
     int vaccins;
     int interval;
