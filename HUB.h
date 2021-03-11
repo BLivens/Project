@@ -12,7 +12,7 @@ class Hub {
 public:
     Hub();
     int getVaccins() const;
-    int getInterval();
+    int getInterval() const;
     int getTransport() const;
     int getLevering() const;
     void setLevering(int aantal_vaccins);

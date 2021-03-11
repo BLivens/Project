@@ -7,7 +7,7 @@ int Hub::getVaccins() const{
     return vaccins;
 }
 
-int Hub::getInterval() {
+int Hub::getInterval() const{
     return interval;
 }
 int Hub::getTransport() const{
