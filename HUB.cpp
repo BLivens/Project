@@ -3,20 +3,20 @@
 Hub::Hub(){
 }
 
-int Hub::getVaccins() {
+int Hub::getVaccins() const{
     return vaccins;
 }
 
 int Hub::getInterval() {
     return interval;
 }
-int Hub::getTransport(){
+int Hub::getTransport() const{
     return transport;
 }
 void Hub::lowerVaccins(int aantal_vaccins) {
     vaccins = getVaccins() - aantal_vaccins;
 }
-int Hub::getLevering() {
+int Hub::getLevering() const{
     return levering;
 }
 
@@ -24,33 +24,6 @@ void Hub::raiseVaccins(int aantal_vaccins) {
     vaccins = getVaccins() + aantal_vaccins;
 }
 
-void Hub::simulateTransport(std::ostream& onStream) {
-    // Bereken aantal ladingen
-    int aantal_beschikbare_ladingen = getVaccins()/getTransport();
-    int totaal_aantal_verzonden_ladingen = 0;
-
-    for (unsigned int i = 0; i<centra.size() ; i++){
-        int nodige_ladingen = (centra[i].capaciteit - centra[i].vaccins)/getTransport()+1;
-        int max_aantal_ladingen = (centra[i].capaciteit*2 - centra[i].vaccins)/getTransport();
-        int verzonden_ladingen = 0;
-        while (aantal_beschikbare_ladingen > 0 and nodige_ladingen>0 and verzonden_ladingen<max_aantal_ladingen){
-            verzonden_ladingen = verzonden_ladingen + 1;
-            nodige_ladingen = nodige_ladingen - 1;
-            aantal_beschikbare_ladingen = aantal_beschikbare_ladingen - 1;
-
-        }
-        totaal_aantal_verzonden_ladingen = totaal_aantal_verzonden_ladingen +verzonden_ladingen;
-        int verzonden_vaccins = verzonden_ladingen * transport;
-        centra[i].vaccins = centra[i].vaccins + verzonden_vaccins;
-        onStream << "Er werden " << verzonden_ladingen << " ladingen ("<< verzonden_vaccins <<" vaccins) getransporteerd naar " << centra[i].naam<< "." <<std::endl;
-    }
-
-    // Verlaag het aantal vaccins in de HUB
-    int totaal_aantal_verzonden_vaccins = totaal_aantal_verzonden_ladingen *getTransport();
-    std::cout << getTransport() << " " << totaal_aantal_verzonden_ladingen <<std::endl;
-    lowerVaccins(totaal_aantal_verzonden_vaccins);
-
-}
 
 void Hub::setVaccins(int aantal_vaccins) {
     vaccins = aantal_vaccins;
@@ -68,6 +41,54 @@ void Hub::setLevering(int aantal_vaccins) {
     levering = aantal_vaccins;
 }
 
+void Hub::simulateTransport(std::ostream &onStream, Centrum& centrum) {
+    // bereken aantal ladingen
+    int aantal_ladingen = berekenLadingen(centrum);
+    // bereken aantal vaccins
+    int aantal_vaccins = aantal_ladingen * getTransport();
+    // verlaag het aantal vaccins in de Hub met de correcte hoeveelheid
+    lowerVaccins(aantal_vaccins);
+    // verhoog het aantal vaccins in het centrum met de correcte hoeveelheid
+    centrum.vaccins = centrum.vaccins + aantal_vaccins;
+    // schrijf overzicht uit
+    onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum.naam<< "." <<std::endl;
+}
+
+int Hub::berekenLadingen(const Centrum &centrum) const {
+    // declareer ladingen
+    int ladingen;
+    // indien er meer vaccins in het centrum aanwezig zijn dan de capaciteit van het centrum worden er geen ladingen geleverd
+    if (centrum.capaciteit < centrum.vaccins){
+        ladingen = 0;
+    }
+    // indien er wel ladingen nodig zijn
+    else{
+        // bereken benodigde ladingen
+        int nodige_ladingen = (centrum.capaciteit - centrum.vaccins)/getTransport();
+        if ((centrum.capaciteit - centrum.vaccins)%getTransport() != 0){
+            nodige_ladingen = nodige_ladingen + 1;
+        }
+        // bereken het maximaal aantal ladingen dat het centrum kan ontvangen
+        int max_ladingen = (centrum.capaciteit*2 - centrum.vaccins)/getTransport();
+        // bereken het aantal beschikbare ladingen in de Hub
+        int beschikbare_ladingen = getVaccins()/getTransport();
+        // Indien er minder ladingen beschikbaar zijn dan geleverd moeten worden
+        if (beschikbare_ladingen<nodige_ladingen){
+            // lever alle ladingen die in de Hub aanwezig zijn
+            ladingen = beschikbare_ladingen;
+        }
+        // anders als de ladingen zo groot zijn dat het max aantal ladingen overschreden worden
+        else if (nodige_ladingen>max_ladingen){
+            // er wordt niets geleverd
+            ladingen = 0;
+        }
+        // anders is het aantal ladingen gelijk aan de benodigde ladingen
+        else {
+            ladingen = nodige_ladingen;
+        }
+    }
+    return ladingen;
+}
 
 
 

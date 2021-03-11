@@ -10,8 +10,9 @@ void simuleren(int dagen, Hub simHub) {
             simHub.raiseVaccins(simHub.getTransport());
         }
 
-        // simHub.simulateTransport();
-
+        for (unsigned int i = 0; i<simHub.centra.size(); i++){
+            simHub.simulateTransport(std::cout, simHub.centra[i]);
+        }
 
         for (unsigned int i = 0; i < simHub.centra.size(); i++) {
           simHub.centra.at(i).vaccineren();
@@ -23,6 +24,7 @@ void simuleren(int dagen, Hub simHub) {
 
 int main() {
     /*
+
     Centrum a;
     Centrum b;
     Centrum c;
@@ -59,10 +61,13 @@ int main() {
     H.centra.push_back(d);
     H.setTransport(2000);
     H.setInterval(6);
+    //93
     H.setVaccins(93000);
     H.setLevering(93000);
-
-    H.simulateTransport(std::cout);
+    for (unsigned int i = 0; i<H.centra.size(); i++){
+        H.simulateTransport(std::cout, H.centra[i]);
+    }
     */
+
     return 0;
 }
