@@ -1,4 +1,5 @@
 #include <iostream>
+#include "eigXML.h"
 #include "HUB.h"
 
 
@@ -67,8 +68,6 @@ int main(int argc, char **argv) {
     for (unsigned int i = 0; i<H.centra.size(); i++){
         H.simuleerTransport(std::cout, H.centra[i]);
     }
-
-
 
     return 0;
 }

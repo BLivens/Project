@@ -7,7 +7,7 @@ void Centrum::vaccineren() {
 
     vaccins = vaccins - teVaccineren;
     gevacineerden = gevacineerden + teVaccineren;
-    std::cout << "Er werden " << teVaccineren << " inwoners gevaccineerd in " << naam << ".\n";
-    // mogelijks enkel printen als er niet 0 mensen gevaccineerd worden, we zullen wel zien.
+    if (teVaccineren != 0) { // enkel printen als we minstens een mens vaccineren
+        std::cout << "Er werden " << teVaccineren << " inwoners gevaccineerd in " << naam << ".\n";
+    }
 }
-
