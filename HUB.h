@@ -25,6 +25,7 @@ public:
     int berekenLadingen(const Centrum& centrum) const;
     void simuleerTransport(std::ostream& onStream, Centrum& centrum);
     std::vector<Centrum> centra;
+    bool centrumVerbonden(const Centrum& centrum) const;
 
 private:
     Hub* _initCheck;

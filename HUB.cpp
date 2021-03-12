@@ -5,7 +5,7 @@ Hub::Hub(){
     levering = 0;
     vaccins = 0;
     interval = 0;
-    transport = 0;
+    transport = 1;
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
 }
@@ -104,6 +104,8 @@ void Hub::verhoogVaccins(int aantal_vaccins) {
 
 int Hub::berekenLadingen(const Centrum &centrum) const {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
+    // HIER MOET NOG EEN PROP INIT VOOR CENTRUM TOEGEVOEGD WORDEN
+    REQUIRE(centrumVerbonden(centrum), "berekenLadingen requires centrum to be linked with Hub.");
     // declareer result
     int result;
     // indien er meer vaccins in het centrum aanwezig zijn dan de capaciteit van het centrum worden er geen result geleverd
@@ -144,6 +146,8 @@ int Hub::berekenLadingen(const Centrum &centrum) const {
 
 void Hub::simuleerTransport(std::ostream &onStream, Centrum& centrum) {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
+    // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
+    REQUIRE(centrumVerbonden(centrum), "simuleerTransport requires centrum to be linked with Hub.");
     // bereken aantal ladingen
     int aantal_ladingen = berekenLadingen(centrum);
     // bereken aantal vaccins
@@ -154,6 +158,17 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum& centrum) {
     centrum.vaccins = centrum.vaccins + aantal_vaccins;
     // schrijf overzicht uit
     onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum.naam<< "." <<std::endl;
+}
+
+bool Hub::centrumVerbonden(const Centrum &centrum) const{
+    // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
+    bool isVerbonden = false;
+    for (unsigned int i = 0; i<centra.size(); i++){
+        if(centrum.naam == centra[i].naam and centrum.adres == centra[i].adres){
+            isVerbonden = true;
+        }
+    }
+    return isVerbonden;
 }
 
 

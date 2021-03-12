@@ -22,7 +22,7 @@ void simuleren(int dagen, Hub simHub) {
 }
 
 
-int main() {
+int main(int argc, char **argv) {
 
 
     Centrum a;
