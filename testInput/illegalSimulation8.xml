@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
+<!-- Simulatie contains a wrong tag. -->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>
+		<interval>6</interval>
 		<transport>2000</transport>
 		<CENTRA>
 			<centrum>Park Spoor Oost</centrum>
@@ -16,6 +18,7 @@
 		<inwoners>540173</inwoners>
 		<capaciteit>7500</capaciteit>
 	</VACCINATIECENTRUM>
+	<wrongtag>99</wrongtag>
 	<VACCINATIECENTRUM>
 		<naam>AED Studios</naam>
 		<adres>Fabriekstraat 38, Lint</adres>

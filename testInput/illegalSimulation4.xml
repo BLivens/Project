@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- The simulation contains more than one HUB-->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>
@@ -7,9 +8,16 @@
 		<CENTRA>
 			<centrum>Park Spoor Oost</centrum>
 			<centrum>AED Studios</centrum>
+			
+		</CENTRA>
+	</HUB>
+	<HUB>
+		<levering>93000</levering>
+		<interval>6</interval>
+		<transport>2000</transport>
+		<CENTRA>
 			<centrum>De Zoerla</centrum>
 			<centrum>Flanders Expo</centrum>
-			<wrongtag>99</wrongtag>
 		</CENTRA>
 	</HUB>
 	<VACCINATIECENTRUM>

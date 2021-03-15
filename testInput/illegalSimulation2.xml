@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- VACCINATIECENTRUM has no element adres, adres will be default adres of constructor Centrum -->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>
@@ -8,11 +9,11 @@
 			<centrum>Park Spoor Oost</centrum>
 			<centrum>AED Studios</centrum>
 			<centrum>De Zoerla</centrum>
+			<centrum>Flanders Expo</centrum>
 		</CENTRA>
 	</HUB>
 	<VACCINATIECENTRUM>
 		<naam>Park Spoor Oost</naam>
-		<adres>Noordersingel 40, Antwerpen</adres>
 		<inwoners>540173</inwoners>
 		<capaciteit>7500</capaciteit>
 	</VACCINATIECENTRUM>

@@ -1,4 +1,5 @@
-?xml version="1.0"?>
+<?xml version="1.0"?>
+<!--The simulation must have atleast one Centrum. -->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>

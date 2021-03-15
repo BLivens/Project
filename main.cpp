@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     // Inlezen
     Hub testhub;
     ProjectImporter p;
-    p.importProject("../testInput/ErrorMissingAttrCentrum.xml", std::cout , testhub);
+    p.importProject("../testInput/illegalSimulation2.xml", std::cout , testhub);
     std::cout << testhub.getTransport() << std::endl;
 
 

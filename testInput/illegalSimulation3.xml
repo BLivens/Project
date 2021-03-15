@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
+<!-- The centrums in CENTRA don't correspond with the VACCINATIECENTRUM's. -->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>
 		<interval>6</interval>
 		<transport>2000</transport>
-		<wrongtag>99</wrongtag>
 		<CENTRA>
 			<centrum>Park Spoor Oost</centrum>
 			<centrum>AED Studios</centrum>
 			<centrum>De Zoerla</centrum>
-			<centrum>Flanders Expo</centrum>
 		</CENTRA>
 	</HUB>
 	<VACCINATIECENTRUM>

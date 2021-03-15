@@ -1,0 +1,1 @@
+XML PARTIAL IMPORT: VACCINATIECENTRUM has missing or duplicate attributes.

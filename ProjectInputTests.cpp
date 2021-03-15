@@ -115,28 +115,26 @@ TEST_F(ProjectInputTest, InputXMLSyntaxErrors) {
     };
     EXPECT_TRUE(fileCounter == 5);
 }
-/*
-TEST_F(TicTactToeInputTest, InputIllegalGames) {
-    ASSERT_TRUE(DirectoryExists("testInput"));
+
+TEST_F(ProjectInputTest, InputIllegalGames) {
+    ASSERT_TRUE(DirectoryExists("../testInput"));
 
     ofstream myfile;
     SuccessEnum importResult;
     int fileCounter = 1;
-    string fileName = "testInput/illegalGame" + ToString(fileCounter) + ".xml";
+    string fileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".xml";
     string errorfileName;
 
     while (FileExists (fileName)) {
-        myfile.open("testInput/zzzError.txt");
-        importResult = TicTacToeImporter::importTicTacToeGame(fileName.c_str(), myfile, ttt_);
+        myfile.open("../testInput/zzzError.txt");
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, hub_);
         myfile.close();
         EXPECT_TRUE(importResult == PartialImport);
-        errorfileName = "testInput/illegalError" + ToString(fileCounter) + ".txt";
-        EXPECT_TRUE(FileCompare("testInput/zzzError.txt", errorfileName));
+        errorfileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".txt";
+        EXPECT_TRUE(FileCompare("../testInput/zzzError.txt", errorfileName));
 
         fileCounter = fileCounter + 1;
-        fileName = "testInput/illegalGame" + ToString(fileCounter) + ".xml";
+        fileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".xml";
     };
-
-    EXPECT_TRUE(fileCounter == 6);
+    EXPECT_TRUE(fileCounter == 10);
 }
- */

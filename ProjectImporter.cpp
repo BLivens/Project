@@ -90,19 +90,19 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                                 std::string naam = fetch_text(centrumNaam, errStream);
                                 centra1.push_back(naam);
                             } else {
-                                errStream << "XML PARTIAL IMPORT: Unexpected tag  in CENTRA" << std::endl;
+                                errStream << "XML PARTIAL IMPORT: Unexpected tag in CENTRA." << std::endl;
                                 endResult = PartialImport;
                             }
                         }
                     }
                     else{
-                        errStream << "XML PARTIAL IMPORT: Unexpected tag in HUB" << std::endl;
+                        errStream << "XML PARTIAL IMPORT: Unexpected tag in HUB." << std::endl;
                         endResult = PartialImport;
                     }
 
                 }
                 if (levering_counter != 1 or interval_counter != 1 or transport_counter != 1 or centra_counter != 1){
-                    errStream << "XML PARTIAL IMPORT: HUB has missing or duplicate attributes" << std::endl;
+                    errStream << "XML PARTIAL IMPORT: HUB has missing or duplicate attributes." << std::endl;
                     endResult = PartialImport;
                 }
             } else if (elemName == "VACCINATIECENTRUM") {
@@ -151,19 +151,19 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                         }
                     }
                     else{
-                        errStream << "XML PARTIAL IMPORT: Unexpected tag in CENTRUM" << std::endl;
+                        errStream << "XML PARTIAL IMPORT: Unexpected tag in VACCINATIECENTRUM." << std::endl;
                         endResult = PartialImport;
                     }
                 }
                 if (naam_counter != 1 or adres_counter !=1 or inwoners_counter != 1 or capaciteit_counter !=1){
-                    errStream << "XML PARTIAL IMPORT: VACCINATIECENTRUM has missing or duplicate attributes" << std::endl;
+                    errStream << "XML PARTIAL IMPORT: VACCINATIECENTRUM has missing or duplicate attributes." << std::endl;
                     endResult = PartialImport;
                 }
                 simulatie.centra.push_back(tempCentrum);
                 centra2.push_back(tempCentrum.naam);
             }
             else{
-                errStream << "XML PARTIAL IMPORT: Unexpected tag in Simulatie" << std::endl;
+                errStream << "XML PARTIAL IMPORT: Unexpected tag in Simulatie." << std::endl;
                 endResult = PartialImport;
             }
         }
@@ -171,7 +171,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
         std::sort(centra1.begin(), centra1.end());
 
         if (centra1 != centra2) {
-            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra" << std::endl;
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra." << std::endl;
             endResult = PartialImport;
         }
         if (hub_counter != 1){
@@ -179,7 +179,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
             endResult = PartialImport;
         }
         if (centrum_counter <1){
-            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must atleast contain 1 centrum" << std::endl;
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 centrum." << std::endl;
             endResult = PartialImport;
         }
     }
