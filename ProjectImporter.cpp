@@ -40,10 +40,12 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                 TiXmlNode *elem_levering;
                 TiXmlNode *elem_interval;
                 TiXmlNode *elem_transport;
+                TiXmlNode *elem_centra;
                 elem_levering = elem->FirstChild("levering");
                 elem_interval = elem->FirstChild("interval");
                 elem_transport = elem->FirstChild("transport");
-                int levering;
+                elem_centra = elem->FirstChild("CENTRA");
+                int levering; int interval; int transport;
                 if (elem_levering == NULL) {
                     errStream << "XML PARTIAL IMPORT: Expected <levering> ... </levering>. in HUB" << std::endl;
                     endResult = PartialImport;
@@ -52,16 +54,30 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                 else{
                     levering = std::atol(fetch_text(elem_levering, errStream).c_str());
                 }
+                if (elem_interval == NULL) {
+                    errStream << "XML PARTIAL IMPORT: Expected <interval> ... </interval>. in HUB" << std::endl;
+                    endResult = PartialImport;
+                    interval = 1;
+                }
+                else{
+                    interval = std::atol(fetch_text(elem_interval, errStream).c_str());
+                }
+                if (elem_transport == NULL) {
+                    errStream << "XML PARTIAL IMPORT: Expected <transport> ... </transport>. in HUB" << std::endl;
+                    endResult = PartialImport;
+                    transport = 1;
+                }
+                else{
+                    transport= std::atol(fetch_text(elem_transport, errStream).c_str());
+                }
 
 
                 simulatie.setLevering(levering); // Zodra die bestaat schrijven naar een HUB klasse
                 simulatie.setVaccins(simulatie.getLevering());
-                simulatie.setInterval(std::atol(fetch_text(elem_interval, errStream).c_str()));
-                simulatie.setTransport(std::atol(fetch_text(elem_transport, errStream).c_str()));
+                simulatie.setInterval(interval);
+                simulatie.setTransport(transport);
 
-                TiXmlNode *Centra;
-                Centra = elem->FirstChild("CENTRA");
-                for (TiXmlElement* centrumNaam = Centra->FirstChildElement(); centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
+                for (TiXmlElement* centrumNaam = elem_centra->FirstChildElement(); centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
                     std::string naam = fetch_text(centrumNaam, errStream);
                     centra1.push_back(naam);
                 }
