@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tinyxml/tinyxml.h"
+#include "tinyxml.h"
 #include <string>
 #include <vector>
 #include "HUB.h"

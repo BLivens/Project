@@ -8,16 +8,15 @@ set(CMAKE_EXE_LINKER_FLAGS -pthread)
 
 # Set include dir
 include_directories(gtest/include)
-include_directories(tinyxml)
 
 # Set Library dir
 link_directories(gtest/lib)
 
 # Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES Centrum.cpp Centrum.h HUB.cpp HUB.h main.cpp)
+set(RELEASE_SOURCE_FILES tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp Centrum.cpp Centrum.h HUB.cpp HUB.h main.cpp ProjectImporter.cpp ProjectImporter.h)
 
 # Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES Centrum.cpp Centrum.h HUB.cpp HUB.h ProjectDomainTests.cpp ProjectTests.cpp eigXML.h eigXML.cpp)
+set(DEBUG_SOURCE_FILES tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp Centrum.cpp Centrum.h HUB.cpp HUB.h ProjectDomainTests.cpp ProjectTests.cpp eigXML.h eigXML.cpp)
 
 # Create RELEASE target
 add_executable(Project ${RELEASE_SOURCE_FILES})

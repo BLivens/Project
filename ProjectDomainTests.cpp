@@ -55,3 +55,55 @@ TEST_F(ProjectDomainTest, testcentrumVerbonden) {
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_TRUE(hub_.centrumVerbonden(centrum2));
 }
+
+TEST_F(ProjectDomainTest, testberekenLadingen){
+    EXPECT_TRUE(hub_.properlyInitialized());
+    EXPECT_TRUE(hub_.centra.empty());
+    hub_.setTransport(2000);
+    hub_.setInterval(6);
+    hub_.setVaccins(93000);
+    hub_.setLevering(93000);
+    Centrum a;
+    a.naam = "Park Spoor Oost";
+    a.adres = "Noordersingel 40, Antwerpen";
+    a.inwoners = 540173;
+    a.capaciteit = 7500;
+    a.vaccins = 0;
+    hub_.centra.push_back(a);
+    EXPECT_EQ(4,hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 7500;
+    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 5500;
+    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 0;
+    hub_.centra[0].capaciteit = 1000;
+    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].capaciteit = 500;
+    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
+}
+
+TEST_F(ProjectDomainTest, testsimuleerTransport){
+    EXPECT_TRUE(hub_.properlyInitialized());
+    EXPECT_TRUE(hub_.centra.empty());
+    hub_.setTransport(2000);
+    hub_.setInterval(6);
+    hub_.setVaccins(93000);
+    hub_.setLevering(93000);
+    Centrum a;
+    a.naam = "Park Spoor Oost";
+    a.adres = "Noordersingel 40, Antwerpen";
+    a.inwoners = 540173;
+    a.capaciteit = 7500;
+    a.vaccins = 0;
+    hub_.centra.push_back(a);
+    EXPECT_EQ(4,hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 7500;
+    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 5500;
+    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].vaccins = 0;
+    hub_.centra[0].capaciteit = 1000;
+    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
+    hub_.centra[0].capaciteit = 500;
+    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
+}
