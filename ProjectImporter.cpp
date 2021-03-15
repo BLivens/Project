@@ -31,81 +31,121 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
         endResult = PartialImport;
     }
     else {
-
+        int hub_counter = 0;
+        int centrum_counter = 0;
         for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
             std::string elemName = elem->Value();
             // herken element
-
+            int levering_counter = 0;
+            int interval_counter = 0;
+            int transport_counter = 0;
+            int centra_counter = 0;
+            int centrumhub_counter = 0;
+            int levering;
+            int transport;
+            int interval;
             if (elemName == "HUB") {
-                TiXmlNode *elem_levering;
-                TiXmlNode *elem_interval;
-                TiXmlNode *elem_transport;
-                TiXmlNode *elem_centra;
-                elem_levering = elem->FirstChild("levering");
-                elem_interval = elem->FirstChild("interval");
-                elem_transport = elem->FirstChild("transport");
-                elem_centra = elem->FirstChild("CENTRA");
-                int levering; int interval; int transport;
-                if (elem_levering == NULL) {
-                    errStream << "XML PARTIAL IMPORT: Expected <levering> ... </levering>. in HUB" << std::endl;
-                    endResult = PartialImport;
-                    levering = 1;
-                }
-                else{
-                    levering = std::atol(fetch_text(elem_levering, errStream).c_str());
-                }
-                if (elem_interval == NULL) {
-                    errStream << "XML PARTIAL IMPORT: Expected <interval> ... </interval>. in HUB" << std::endl;
-                    endResult = PartialImport;
-                    interval = 1;
-                }
-                else{
-                    interval = std::atol(fetch_text(elem_interval, errStream).c_str());
-                }
-                if (elem_transport == NULL) {
-                    errStream << "XML PARTIAL IMPORT: Expected <transport> ... </transport>. in HUB" << std::endl;
-                    endResult = PartialImport;
-                    transport = 1;
-                }
-                else{
-                    transport= std::atol(fetch_text(elem_transport, errStream).c_str());
-                }
+                std::string tag;
+                hub_counter = hub_counter + 1;
+                for (TiXmlElement* elem_hub = elem->FirstChildElement(); elem_hub != NULL; elem_hub = elem_hub->NextSiblingElement()){
+                    tag = elem_hub->Value();
+                    if (tag == "levering") {
+                        levering_counter = levering_counter + 1;
+                        levering = std::atol(fetch_text(elem_hub, errStream).c_str());
+                        simulatie.setLevering(levering);
+                        simulatie.setVaccins(simulatie.getLevering());
+                    }
+                    else if(tag == "interval"){
+                        interval_counter = interval_counter + 1;
+                        interval = std::atol(fetch_text(elem_hub, errStream).c_str());
+                        simulatie.setInterval(interval);
+                    }
+                    else if (tag == "transport"){
+                        transport_counter = transport_counter +1;
+                        transport= std::atol(fetch_text(elem_hub, errStream).c_str());
+                        simulatie.setTransport(transport);
+                    }
+                    else if (tag == "CENTRA") {
+                        centra_counter = centra_counter + 1;
+                        for (TiXmlElement *centrumNaam = elem_hub->FirstChildElement();
+                            centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
+                            std::string tagNaam = centrumNaam->Value();
+                            if (tagNaam == "centrum") {
+                                centrumhub_counter = centrumhub_counter + 1;
+                                std::string naam = fetch_text(centrumNaam, errStream);
+                                centra1.push_back(naam);
+                            } else {
+                                errStream << "XML PARTIAL IMPORT: Unexpected tag  in CENTRA" << std::endl;
+                                endResult = PartialImport;
+                            }
+                        }
+                    }
+                    else{
+                        errStream << "XML PARTIAL IMPORT: Unexpected tag in HUB" << std::endl;
+                        endResult = PartialImport;
+                    }
 
-
-                simulatie.setLevering(levering); // Zodra die bestaat schrijven naar een HUB klasse
-                simulatie.setVaccins(simulatie.getLevering());
-                simulatie.setInterval(interval);
-                simulatie.setTransport(transport);
-
-                for (TiXmlElement* centrumNaam = elem_centra->FirstChildElement(); centrumNaam != NULL; centrumNaam = centrumNaam->NextSiblingElement()) {
-                    std::string naam = fetch_text(centrumNaam, errStream);
-                    centra1.push_back(naam);
+                }
+                if (levering_counter != 1 or interval_counter != 1 or transport_counter != 1 or centra_counter != 1){
+                    errStream << "XML PARTIAL IMPORT: HUB has missing or duplicate attributes" << std::endl;
+                    endResult = PartialImport;
                 }
             } else if (elemName == "VACCINATIECENTRUM") {
-                TiXmlNode *Naam;
-                TiXmlNode *Adres;
-                TiXmlNode *Inwoners;
-                TiXmlNode *Capaciteit;
-                Naam = elem->FirstChild("naam");
-                Adres = elem->FirstChild("adres");
-                Inwoners = elem->FirstChild("inwoners");
-                Capaciteit = elem->FirstChild("capaciteit");
-
-
-                tempCentrum.naam = fetch_text(Naam, errStream);
-                tempCentrum.adres = fetch_text(Adres, errStream);
-                tempCentrum.inwoners = std::atol(fetch_text(Inwoners, errStream).c_str());
-                tempCentrum.capaciteit = std::atol(fetch_text(Capaciteit, errStream).c_str());
-
+                centrum_counter = centrum_counter +1;
+                int naam_counter = 0;
+                int adres_counter = 0;
+                int inwoners_counter = 0;
+                int capaciteit_counter = 0;
+                std::string tag_centrum;
+                for (TiXmlElement* elem_centrum = elem->FirstChildElement(); elem_centrum != NULL; elem_centrum = elem_centrum->NextSiblingElement()){
+                    tag_centrum = elem_centrum->Value();
+                    if (tag_centrum == "naam"){
+                        naam_counter = naam_counter + 1;
+                        tempCentrum.naam = fetch_text(elem_centrum, errStream);
+                    }
+                    else if (tag_centrum == "adres"){
+                        adres_counter = adres_counter +1;
+                        tempCentrum.adres = fetch_text(elem_centrum, errStream);
+                    }
+                    else if (tag_centrum == "inwoners"){
+                        inwoners_counter = inwoners_counter +1;
+                        tempCentrum.inwoners = std::atol(fetch_text(elem_centrum, errStream).c_str());
+                    }
+                    else if (tag_centrum == "capaciteit"){
+                        capaciteit_counter = capaciteit_counter +1;
+                        tempCentrum.capaciteit = std::atol(fetch_text(elem_centrum, errStream).c_str());
+                    }
+                    else{
+                        errStream << "XML PARTIAL IMPORT: Unexpected tag in CENTRUM" << std::endl;
+                        endResult = PartialImport;
+                    }
+                }
+                if (naam_counter != 1 or adres_counter !=1 or inwoners_counter != 1 or capaciteit_counter !=1){
+                    errStream << "XML PARTIAL IMPORT: VACCINATIECENTRUM has missing or duplicate attributes" << std::endl;
+                    endResult = PartialImport;
+                }
                 simulatie.centra.push_back(tempCentrum);
                 centra2.push_back(tempCentrum.naam);
+            }
+            else{
+                errStream << "XML PARTIAL IMPORT: Unexpected tag in Simulatie" << std::endl;
+                endResult = PartialImport;
             }
         }
         std::sort(centra2.begin(), centra2.end());
         std::sort(centra1.begin(), centra1.end());
 
         if (centra1 != centra2) {
-            std::cerr << "Input File not consistent. problem: Vaccinatiecentra" << std::endl;
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra" << std::endl;
+            endResult = PartialImport;
+        }
+        if (hub_counter != 1){
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file doesn't contain exactly 1 HUB." <<std::endl;
+            endResult = PartialImport;
+        }
+        if (centrum_counter <1){
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must atleast contain 1 centrum" << std::endl;
+            endResult = PartialImport;
         }
     }
     doc.Clear();
