@@ -21,7 +21,7 @@ enum SuccessEnum {ImportAborted, PartialImport, Success};
 
 class ProjectImporter {
 public:
-    SuccessEnum importProject(const char * inputfilename, std::ostream& errStream, Hub& simulatie);
+    static SuccessEnum importProject(const char * inputfilename, std::ostream& errStream, Hub& simulatie);
 };
 
 

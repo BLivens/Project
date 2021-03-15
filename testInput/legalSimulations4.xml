@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Simulatie>
+	<HUB>
+		<levering>99000</levering>
+		<interval>10</interval>
+		<transport>2000</transport>
+		<CENTRA>
+			<centrum>Park Spoor Oost</centrum>
+		</CENTRA>
+	</HUB>
+	<VACCINATIECENTRUM>
+		<naam>Park Spoor Oost</naam>
+		<adres>Noordersingel 21, Antwerpen</adres>
+		<inwoners>8000</inwoners>
+		<capaciteit>5000</capaciteit>
+	</VACCINATIECENTRUM>
+</Simulatie>
