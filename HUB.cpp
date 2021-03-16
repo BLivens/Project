@@ -161,6 +161,8 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
 }
 
 bool Hub::centrumVerbonden(const Centrum* centrum) const{
+    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
+    REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling centrumVerbonden");
     // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
     bool isVerbonden = false;
     for (unsigned int i = 0; i<centra.size(); i++){
@@ -169,4 +171,23 @@ bool Hub::centrumVerbonden(const Centrum* centrum) const{
         }
     }
     return isVerbonden;
+}
+
+void Hub::simuleren(int dagen, std::ostream &onStream) {
+    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleren");
+    REQUIRE(dagen>=0, "Dagen must be an integer greater or equal to 0.");
+    int dag = 0;
+    while (dag < dagen) {
+        if (dag % getInterval() == 0) {
+            verhoogVaccins(getTransport());
+        }
+        for (unsigned int i = 0; i<centra.size(); i++){
+            simuleerTransport(onStream,centra[i]);
+        }
+
+        for (unsigned int i = 0; i < centra.size(); i++) {
+            centra.at(i)->vaccineren(onStream);
+        }
+        dag++;
+    }
 }

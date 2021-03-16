@@ -5,23 +5,7 @@
 
 
 
-void simuleren(int dagen, Hub simHub, std::ostream &onStream) {
-    int dag = 0;
-    while (dag < dagen) {
-        if (dag % simHub.getInterval() == 0) {
-            simHub.verhoogVaccins(simHub.getTransport());
-        }
 
-        for (unsigned int i = 0; i<simHub.centra.size(); i++){
-            simHub.simuleerTransport(onStream, simHub.centra[i]);
-        }
-
-        for (unsigned int i = 0; i < simHub.centra.size(); i++) {
-          simHub.centra.at(i)->vaccineren(onStream);
-        }
-        dag++;
-    }
-}
 
 int main(int argc, char **argv) {
 
@@ -32,6 +16,11 @@ int main(int argc, char **argv) {
     for (unsigned int i = 0; i<testhub.centra.size(); i++){
         std::cout << testhub.centra[i]->getNaam() << std::endl;
     }
+
+    // Testsimulatie
+    Hub thub;
+    ProjectImporter::importProject("../testInput/input.xml", std::cout , thub);
+    thub.simuleren(7, std::cout);
     /*
 
     Hub testhub2;

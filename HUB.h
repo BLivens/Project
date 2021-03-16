@@ -24,6 +24,7 @@ public:
     void verhoogVaccins(int aantal_vaccins);
     int berekenLadingen(const Centrum* centrum) const;
     void simuleerTransport(std::ostream& onStream, Centrum* centrum);
+    void simuleren(int dagen, std::ostream &onStream);
     std::vector<Centrum*> centra;
     bool centrumVerbonden(const Centrum* centrum) const;
 
