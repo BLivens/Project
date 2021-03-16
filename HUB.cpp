@@ -4,7 +4,7 @@ Hub::Hub(){
     _initCheck = this;
     levering = 0;
     vaccins = 0;
-    interval = 0;
+    interval = 1;
     transport = 1;
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
@@ -37,15 +37,15 @@ int Hub::getInterval() const{
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling getInterval");
     result = interval;
-    ENSURE((result>=0),"getInterval must return a positive integer");
+    ENSURE((result>0),"getInterval must return a strictly positive integer");
     return result;
 }
 
 void Hub::setInterval(int aantal_dagen) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setInterval");
-    REQUIRE((aantal_dagen>=0),
-            "aantal_dagen must be a positive integer");
+    REQUIRE((aantal_dagen>0),
+            "aantal_dagen must be a strictly positive integer");
     interval = aantal_dagen;
     ENSURE((getInterval() == aantal_dagen), "setInterval postcondition failure");
 }
@@ -55,14 +55,14 @@ int Hub::getTransport() const{
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling getTransport");
     result = transport;
-    ENSURE((result>0),"getTransport must return a positive integer");
+    ENSURE((result>0),"getTransport must return a strictly positive integer");
     return result;
 }
 void Hub::setTransport(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setTransport");
     REQUIRE((aantal_vaccins>0),
-            "aantal_vaccins must be a positive integer");
+            "aantal_vaccins must be a strictly positive integer");
     transport = aantal_vaccins;
     ENSURE((getTransport() == aantal_vaccins), "setTransport postcondition failure");
 }
@@ -146,7 +146,7 @@ int Hub::berekenLadingen(const Centrum* centrum) const {
 
 void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
-    // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
+    REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling simuleerTransport");
     REQUIRE(centrumVerbonden(centrum), "simuleerTransport requires centrum to be linked with Hub.");
     // bereken aantal ladingen
     int aantal_ladingen = berekenLadingen(centrum);
@@ -163,7 +163,6 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
 bool Hub::centrumVerbonden(const Centrum* centrum) const{
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling centrumVerbonden");
-    // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
     bool isVerbonden = false;
     for (unsigned int i = 0; i<centra.size(); i++){
         if(centrum->getNaam() == centra[i]->getNaam() and centrum->getAdres() == centra[i]->getAdres()){
@@ -184,7 +183,6 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
         for (unsigned int i = 0; i<centra.size(); i++){
             simuleerTransport(onStream,centra[i]);
         }
-        std::cout << getVaccins() << std::endl;
 
         for (unsigned int i = 0; i < centra.size(); i++) {
             centra.at(i)->vaccineren(onStream);

@@ -19,7 +19,8 @@ int main(int argc, char **argv) {
     // Testsimulatie
     Hub thub;
     ProjectImporter::importProject("../testInput/input.xml", std::cout , thub);
-    thub.simuleren(7, std::cout);
+    thub.simuleren(3, std::cout);
+
 
     // schrijven naar bestand
     ProjectExporter::exportProject("output.txt", std::cout, thub);

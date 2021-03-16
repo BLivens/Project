@@ -10,7 +10,7 @@ SuccessEnum2 ProjectExporter::exportProject(const char *outputfilename, std::ost
     std::ofstream outfile(outputfilename);
     SuccessEnum2 endResult = ExportSuccess;
     if (!outfile.is_open()) {
-        std::cerr << "Can't open " << outputfilename << std::endl;
+        errStream << "Can't open " << outputfilename << std::endl;
         endResult = ExportAborted;
         return endResult;
     }

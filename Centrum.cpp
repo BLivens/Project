@@ -2,8 +2,8 @@
 
 Centrum::Centrum() {
     _initCheck = this;
-    naam = "";
-    adres = "";
+    naam = "a";
+    adres = "a";
     inwoners = 0;
     capaciteit = 0;
     vaccins = 0;
@@ -94,17 +94,17 @@ int Centrum::getVaccins() const{
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling getVaccins");
     result = vaccins;
-    ENSURE((result>=0),"getVaccins must return a positive integer");
+    ENSURE((result>=0) && (result<= getCapaciteit()*2),"getVaccins must return a positive integer lower or equal to capaciteit*2");
     return result;
 }
 
 void Centrum::setVaccins(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling setVaccins");
-    REQUIRE((aantal_vaccins>=0),
-            "aantal_vaccins must be a positive integer");
+    REQUIRE((aantal_vaccins>=0 && aantal_vaccins <= getCapaciteit()*2),
+            "aantal_vaccins must be a positive integer lower or equal to capaciteit*2");
     vaccins = aantal_vaccins;
-    ENSURE((getVaccins() == aantal_vaccins), "setCapaciteit postcondition failure");
+    ENSURE((getVaccins() == aantal_vaccins), "setVaccins postcondition failure");
 }
 
 int Centrum::getGevacineerden() const{
