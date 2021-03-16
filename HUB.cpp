@@ -179,11 +179,12 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
     int dag = 0;
     while (dag < dagen) {
         if (dag % getInterval() == 0) {
-            verhoogVaccins(getTransport());
+            verhoogVaccins(getLevering());
         }
         for (unsigned int i = 0; i<centra.size(); i++){
             simuleerTransport(onStream,centra[i]);
         }
+        std::cout << getVaccins() << std::endl;
 
         for (unsigned int i = 0; i < centra.size(); i++) {
             centra.at(i)->vaccineren(onStream);
