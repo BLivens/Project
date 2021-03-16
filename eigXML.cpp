@@ -36,13 +36,13 @@ Hub inlezen(const char* file) {
                 centra1.push_back(centrumNaam->Attribute("centrum"));
             }
         } else if (elemName == "VACCINATIECENTRUM") {
-            tempCentrum.naam = elem->Attribute("naam");
-            tempCentrum.adres = elem->Attribute("adres");
-            tempCentrum.inwoners = std::atol(elem->Attribute("inwoners"));
-            tempCentrum.capaciteit = std::atol(elem->Attribute("capaciteit"));
+            tempCentrum.setNaam(elem->Attribute("naam"));
+            tempCentrum.setAdres(elem->Attribute("adres"));
+            tempCentrum.setInwoners(std::atol(elem->Attribute("inwoners")));
+            tempCentrum.setCapaciteit(std::atol(elem->Attribute("capaciteit")));
 
             outHub.centra.push_back(tempCentrum);
-            centra2.push_back(tempCentrum.naam);
+            centra2.push_back(tempCentrum.getNaam());
         }
     }
     std::sort(centra2.begin(), centra2.end());
@@ -66,14 +66,14 @@ int schrijven(std::string file, Hub outHub) {
     }
 
     for (unsigned int i = 0; i < outHub.centra.size(); i++){
-        outfile << "  -> " << outHub.centra.at(i).naam << " (" << outHub.centra.at(i).vaccins << " vaccins)\n";
+        outfile << "  -> " << outHub.centra.at(i).getNaam() << " (" << outHub.centra.at(i).getVaccins() << " vaccins)\n";
     }
 
     outfile << std::endl;
 
     for (unsigned int i = 0; i < outHub.centra.size(); i++){
-        outfile << outHub.centra.at(i).naam << ": " << outHub.centra.at(i).gevacineerden << " gevacineerden, nog "
-            << outHub.centra.at(i).inwoners - outHub.centra.at(i).gevacineerden << " inwoners niet gevaccineerd";
+        outfile << outHub.centra.at(i).getNaam() << ": " << outHub.centra.at(i).getGevacineerden() << " gevacineerden, nog "
+            << outHub.centra.at(i).getInwoners() - outHub.centra.at(i).getGevacineerden() << " inwoners niet gevaccineerd";
     }
 
     outfile.close();
