@@ -14,8 +14,15 @@ SuccessEnum2 ProjectExporter::exportProject(const char *outputfilename, std::ost
         endResult = ExportAborted;
         return endResult;
     }
+
+    outfile << "Hub (" << simulatie.getVaccins() << " vaccins)" << std::endl;
     for(unsigned int i = 0; i < simulatie.centra.size(); i++) {
-        outfile << simulatie.centra[i]->getNaam() << ": " << simulatie.centra.at(i)->getGevacineerden() << " gevaccineerd, nog "
+        outfile << "  -> " << simulatie.centra.at(i)->getNaam() << " (" <<  simulatie.centra[i]->getVaccins() << " vaccins)" << std::endl;
+    }
+    outfile << std::endl;
+
+    for(unsigned int i = 0; i < simulatie.centra.size(); i++) {
+        outfile << simulatie.centra[i]->getNaam() << ": " << simulatie.centra[i]->getGevacineerden() << " gevaccineerd, nog "
             << simulatie.centra[i]->getInwoners() - simulatie.centra[i]->getGevacineerden() << " inwoners niet gevaccineerd" << std::endl;
     }
 

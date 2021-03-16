@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     thub.simuleren(7, std::cout);
 
     // schrijven naar bestand
-    ProjectExporter::exportProject("output.txt", std::cout, testhub);
+    ProjectExporter::exportProject("output.txt", std::cout, thub);
 
 
     /*
