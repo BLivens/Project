@@ -124,11 +124,11 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Centrum " << naam << " already exists."<< std::endl;
                             endResult = PartialImport;
                         }
-                        tempCentrum.naam = fetch_text(elem_centrum, errStream);
+                        tempCentrum.setNaam(fetch_text(elem_centrum, errStream));
                     }
                     else if (tag_centrum == "adres"){
                         adres_counter = adres_counter +1;
-                        tempCentrum.adres = fetch_text(elem_centrum, errStream);
+                        tempCentrum.setAdres(fetch_text(elem_centrum, errStream));
                     }
                     else if (tag_centrum == "inwoners"){
                         inwoners_counter = inwoners_counter +1;
@@ -137,7 +137,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Illegal inwoners " << inwoner_aantal << "."<< std::endl;
                             endResult = PartialImport;
                         } else {
-                            tempCentrum.inwoners = inwoner_aantal;
+                            tempCentrum.setInwoners(inwoner_aantal);
                         }
                     }
                     else if (tag_centrum == "capaciteit"){
@@ -147,7 +147,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Illegal capaciteit " << capaciteit << "."<< std::endl;
                             endResult = PartialImport;
                         } else {
-                            tempCentrum.capaciteit = capaciteit;
+                            tempCentrum.setCapaciteit(capaciteit);
                         }
                     }
                     else{
@@ -160,7 +160,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     endResult = PartialImport;
                 }
                 simulatie.centra.push_back(tempCentrum);
-                centra2.push_back(tempCentrum.naam);
+                centra2.push_back(tempCentrum.getNaam());
             }
             else{
                 errStream << "XML PARTIAL IMPORT: Unexpected tag in Simulatie." << std::endl;

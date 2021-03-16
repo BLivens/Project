@@ -109,18 +109,18 @@ int Hub::berekenLadingen(const Centrum &centrum) const {
     // declareer result
     int result;
     // indien er meer vaccins in het centrum aanwezig zijn dan de capaciteit van het centrum worden er geen result geleverd
-    if (centrum.capaciteit < centrum.vaccins){
+    if (centrum.getCapaciteit() < centrum.getVaccins()){
         result = 0;
     }
         // indien er wel result nodig zijn
     else{
         // bereken benodigde result
-        int nodige_ladingen = (centrum.capaciteit - centrum.vaccins)/getTransport();
-        if ((centrum.capaciteit - centrum.vaccins)%getTransport() != 0){
+        int nodige_ladingen = (centrum.getCapaciteit() - centrum.getVaccins())/getTransport();
+        if ((centrum.getCapaciteit() - centrum.getVaccins())%getTransport() != 0){
             nodige_ladingen = nodige_ladingen + 1;
         }
         // bereken het maximaal aantal result dat het centrum kan ontvangen
-        int max_ladingen = (centrum.capaciteit*2 - centrum.vaccins)/getTransport();
+        int max_ladingen = (centrum.getCapaciteit()*2 - centrum.getVaccins())/getTransport();
         // bereken het aantal beschikbare result in de Hub
         int beschikbare_ladingen = getVaccins()/getTransport();
         // Indien er minder result beschikbaar zijn dan geleverd moeten worden
@@ -155,23 +155,18 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum& centrum) {
     // verlaag het aantal vaccins in de Hub met de correcte hoeveelheid
     verlaagVaccins(aantal_vaccins);
     // verhoog het aantal vaccins in het centrum met de correcte hoeveelheid
-    centrum.vaccins = centrum.vaccins + aantal_vaccins;
+    centrum.setVaccins(centrum.getVaccins() + aantal_vaccins);
     // schrijf overzicht uit
-    onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum.naam<< "." <<std::endl;
+    onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum.getNaam()<< "." <<std::endl;
 }
 
 bool Hub::centrumVerbonden(const Centrum &centrum) const{
     // HIER MOET NOG EEN PROP INIT VOOR CENTRUM WORDEN TOEGEVOEGD
     bool isVerbonden = false;
     for (unsigned int i = 0; i<centra.size(); i++){
-        if(centrum.naam == centra[i].naam and centrum.adres == centra[i].adres){
+        if(centrum.getNaam() == centra[i].getNaam() and centrum.getAdres() == centra[i].getAdres()){
             isVerbonden = true;
         }
     }
     return isVerbonden;
 }
-
-
-
-
-

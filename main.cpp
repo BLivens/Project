@@ -23,17 +23,16 @@ void simuleren(int dagen, Hub simHub) {
     }
 }
 
-
 int main(int argc, char **argv) {
 
     // Inlezen
     Hub testhub;
     ProjectImporter p;
-    p.importProject("../testInput/illegalSimulation2.xml", std::cout , testhub);
+    p.importProject("../testInput/input.xml", std::cout , testhub);
     std::cout << testhub.getTransport() << std::endl;
 
 
-
+/*
     // handmatig
     Centrum a;
     Centrum b;
@@ -73,9 +72,10 @@ int main(int argc, char **argv) {
     H.setInterval(6);
     H.setVaccins(93000);
     H.setLevering(93000);
+    */
 
-    for (unsigned int i = 0; i<H.centra.size(); i++){
-        H.simuleerTransport(std::cout, H.centra[i]);
+    for (unsigned int i = 0; i<testhub.centra.size(); i++){
+        testhub.simuleerTransport(std::cout, testhub.centra[i]);
     }
 
     return 0;

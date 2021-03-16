@@ -6,14 +6,14 @@ zowel lezen als schrijven. Gebruikt hiervoor tinyxml.
 #include "eigXML.h"
 
 
-Hub inlezen(FILE *input) {
+Hub inlezen(const char* file) {
     Centrum tempCentrum;
     Hub outHub;
     std::vector<std::string> centra1; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
     std::vector<std::string> centra2;
 
-    TiXmlDocument doc;
-    if (!doc.LoadFile(input)) {
+    TiXmlDocument doc(file);
+    if (!doc.LoadFile()) {
         std::cerr << doc.ErrorDesc() << std::endl;
         return outHub;
     }
@@ -26,7 +26,6 @@ Hub inlezen(FILE *input) {
 
     for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
         std::string elemName = elem->Value();
-
 
         if (elemName == "HUB") {
             outHub.setVaccins(std::atol(elem->Attribute("levering"))); // Zodra die bestaat schrijven naar een HUB klasse
@@ -58,11 +57,11 @@ Hub inlezen(FILE *input) {
 
 int schrijven(std::string file, Hub outHub) {
     std::ofstream outfile;
-    outfile.open("file"); // stomme error, komt er op neer, files worden niet als string meegegeven.
+    outfile.open(file.c_str());
 
     outfile << "Hub: (" << outHub.getVaccins()<< " vaccins)\n";
     if (!outfile.is_open()) {
-        std::cerr << "Umable open file" << file << std::endl;
+        std::cerr << "Unable open file" << file << std::endl;
         return 1;
     }
 
@@ -81,6 +80,3 @@ int schrijven(std::string file, Hub outHub) {
     return 0;
 
 }
-
-
-
