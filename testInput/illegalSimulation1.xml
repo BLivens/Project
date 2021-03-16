@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- HUB has no element interval, interval will be default interval of constructor HUB -->
 <Simulatie>
 	<HUB>
 		<levering>93000</levering>
