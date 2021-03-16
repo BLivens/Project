@@ -103,7 +103,7 @@ void Centrum::setVaccins(int aantal_vaccins) {
             "Centrum wasn't initialized when calling setVaccins");
     REQUIRE((aantal_vaccins>=0),
             "aantal_vaccins must be a positive integer");
-    capaciteit = aantal_vaccins;
+    vaccins = aantal_vaccins;
     ENSURE((getVaccins() == aantal_vaccins), "setCapaciteit postcondition failure");
 }
 

@@ -15,7 +15,7 @@ const std::string fetch_text(TiXmlNode *pElement, std::ostream& errStream) {
 }
 
 SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostream &errStream, Hub &simulatie) {
-    Centrum tempCentrum;
+
     std::vector<std::string> centra1; // een lijstje met de namen van de centra om na te kijken of de XML wel consistent is
     std::vector<std::string> centra2;
 
@@ -106,6 +106,9 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     endResult = PartialImport;
                 }
             } else if (elemName == "VACCINATIECENTRUM") {
+                Centrum* tempCentrum;
+                Centrum c;
+                tempCentrum = &c;
                 centrum_counter = centrum_counter +1;
                 int naam_counter = 0;
                 int adres_counter = 0;
@@ -124,11 +127,11 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Centrum " << naam << " already exists."<< std::endl;
                             endResult = PartialImport;
                         }
-                        tempCentrum.setNaam(fetch_text(elem_centrum, errStream));
+                        tempCentrum->setNaam(fetch_text(elem_centrum, errStream));
                     }
                     else if (tag_centrum == "adres"){
                         adres_counter = adres_counter +1;
-                        tempCentrum.setAdres(fetch_text(elem_centrum, errStream));
+                        tempCentrum->setAdres(fetch_text(elem_centrum, errStream));
                     }
                     else if (tag_centrum == "inwoners"){
                         inwoners_counter = inwoners_counter +1;
@@ -137,7 +140,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Illegal inwoners " << inwoner_aantal << "."<< std::endl;
                             endResult = PartialImport;
                         } else {
-                            tempCentrum.setInwoners(inwoner_aantal);
+                            tempCentrum->setInwoners(inwoner_aantal);
                         }
                     }
                     else if (tag_centrum == "capaciteit"){
@@ -147,7 +150,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: Illegal capaciteit " << capaciteit << "."<< std::endl;
                             endResult = PartialImport;
                         } else {
-                            tempCentrum.setCapaciteit(capaciteit);
+                            tempCentrum->setCapaciteit(capaciteit);
                         }
                     }
                     else{
@@ -160,7 +163,8 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     endResult = PartialImport;
                 }
                 simulatie.centra.push_back(tempCentrum);
-                centra2.push_back(tempCentrum.getNaam());
+                std::cout << simulatie.centra[0]->getNaam() << std::endl;
+                centra2.push_back(tempCentrum->getNaam());
             }
             else{
                 errStream << "XML PARTIAL IMPORT: Unexpected tag in Simulatie." << std::endl;

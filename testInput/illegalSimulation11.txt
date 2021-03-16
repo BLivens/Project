@@ -1,0 +1,2 @@
+XML PARTIAL IMPORT: Illegal inwoners -1.
+XML PARTIAL IMPORT: Illegal capaciteit -1.

@@ -17,7 +17,7 @@ void simuleren(int dagen, Hub simHub) {
         }
 
         for (unsigned int i = 0; i < simHub.centra.size(); i++) {
-          simHub.centra.at(i).vaccineren();
+          simHub.centra.at(i)->vaccineren();
         }
         dag++;
     }
@@ -27,10 +27,27 @@ int main(int argc, char **argv) {
 
     // Inlezen
     Hub testhub;
-    ProjectImporter p;
-    p.importProject("../testInput/input.xml", std::cout , testhub);
+    ProjectImporter::importProject("../testInput/input.xml", std::cout , testhub);
     std::cout << testhub.getTransport() << std::endl;
+    std::cout << testhub.centra[0]->getNaam() << std::endl;
+    /*
 
+    Hub testhub2;
+    Centrum* a;
+    Centrum p;
+    a = &p;
+    Centrum* b;
+    Centrum q;
+    b = &q;
+    a->setNaam("a");
+    b->setNaam("b");
+    testhub2.centra.push_back(a);
+    testhub2.centra.push_back(b);
+    std::cout << testhub2.centra[0]->getNaam()<< std::endl;
+    std::cout << testhub2.centra[1]->getNaam() << std::endl;
+    testhub2.centra[0]->setNaam("c");
+    std::cout << p.getNaam()<< std::endl;
+*/
 
 /*
     // handmatig
@@ -73,10 +90,10 @@ int main(int argc, char **argv) {
     H.setVaccins(93000);
     H.setLevering(93000);
     */
-
+    /*
     for (unsigned int i = 0; i<testhub.centra.size(); i++){
         testhub.simuleerTransport(std::cout, testhub.centra[i]);
     }
-
+    */
     return 0;
 }

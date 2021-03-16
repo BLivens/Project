@@ -22,10 +22,10 @@ public:
     void setLevering(int aantal_vaccins);
     void verlaagVaccins(int aantal_vaccins);
     void verhoogVaccins(int aantal_vaccins);
-    int berekenLadingen(const Centrum& centrum) const;
-    void simuleerTransport(std::ostream& onStream, Centrum& centrum);
-    std::vector<Centrum> centra;
-    bool centrumVerbonden(const Centrum& centrum) const;
+    int berekenLadingen(const Centrum* centrum) const;
+    void simuleerTransport(std::ostream& onStream, Centrum* centrum);
+    std::vector<Centrum*> centra;
+    bool centrumVerbonden(const Centrum* centrum) const;
 
 private:
     Hub* _initCheck;

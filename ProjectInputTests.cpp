@@ -136,5 +136,5 @@ TEST_F(ProjectInputTest, InputIllegalGames) {
         fileCounter = fileCounter + 1;
         fileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".xml";
     };
-    EXPECT_TRUE(fileCounter == 10);
+    EXPECT_TRUE(fileCounter == 13);
 }
