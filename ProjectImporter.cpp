@@ -57,7 +57,6 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             endResult = PartialImport;
                         } else {
                             simulatie.setLevering(levering);
-                            simulatie.setVaccins(simulatie.getLevering());
                         }
                     }
                     else if(tag == "interval"){
