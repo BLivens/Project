@@ -106,9 +106,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     endResult = PartialImport;
                 }
             } else if (elemName == "VACCINATIECENTRUM") {
-                Centrum* tempCentrum;
-                Centrum c;
-                tempCentrum = &c;
+                Centrum* tempCentrum = new Centrum;
                 centrum_counter = centrum_counter +1;
                 int naam_counter = 0;
                 int adres_counter = 0;
@@ -163,7 +161,6 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     endResult = PartialImport;
                 }
                 simulatie.centra.push_back(tempCentrum);
-                std::cout << simulatie.centra[0]->getNaam() << std::endl;
                 centra2.push_back(tempCentrum->getNaam());
             }
             else{

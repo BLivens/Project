@@ -29,7 +29,9 @@ int main(int argc, char **argv) {
     Hub testhub;
     ProjectImporter::importProject("../testInput/input.xml", std::cout , testhub);
     std::cout << testhub.getTransport() << std::endl;
-    std::cout << testhub.centra[0]->getNaam() << std::endl;
+    for (unsigned int i = 0; i<testhub.centra.size(); i++){
+        std::cout << testhub.centra[i]->getNaam() << std::endl;
+    }
     /*
 
     Hub testhub2;

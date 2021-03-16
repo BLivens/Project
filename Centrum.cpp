@@ -121,7 +121,7 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
             "Centrum wasn't initialized when calling setGevacineerden");
     REQUIRE((aantal_gevacineerden>=0),
             "aantal_gevacineerden must be a positive integer");
-    capaciteit = aantal_gevacineerden;
+    gevacineerden = aantal_gevacineerden;
     ENSURE((getGevacineerden() == aantal_gevacineerden), "setGevacineerden postcondition failure");
 }
 
