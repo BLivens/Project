@@ -9,7 +9,7 @@ class Centrum {
 public:
     Centrum();
     bool properlyInitialized() const;
-    void vaccineren();
+    void vaccineren(std::ostream &onStream);
 
     std::string getNaam() const;
     void setNaam(std::string nieuwe_naam);

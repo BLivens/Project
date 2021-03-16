@@ -127,14 +127,15 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 
 
 
-void Centrum::vaccineren() {
-    int ongevaccineerden = getInwoners() - gevacineerden;
-    int teVaccineren = std::min(vaccins, capaciteit);
+void Centrum::vaccineren(std::ostream &onStream) {
+    REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setGevacineerden");
+    int ongevaccineerden = getInwoners() - getGevacineerden();
+    int teVaccineren = std::min(getVaccins(), getCapaciteit());
     teVaccineren = std::min(ongevaccineerden, teVaccineren);
 
-    vaccins = vaccins - teVaccineren;
-    gevacineerden = gevacineerden + teVaccineren;
+    setVaccins(getVaccins()-teVaccineren);
+    setGevacineerden(getGevacineerden()+teVaccineren);
     if (teVaccineren != 0) { // enkel printen als we minstens een mens vaccineren
-        std::cout << "Er werden " << teVaccineren << " inwoners gevaccineerd in " << getNaam() << ".\n";
+        onStream << "Er werden " << teVaccineren << " inwoners gevaccineerd in " << getNaam() << ".\n";
     }
 }

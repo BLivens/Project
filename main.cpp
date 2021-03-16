@@ -5,7 +5,7 @@
 
 
 
-void simuleren(int dagen, Hub simHub) {
+void simuleren(int dagen, Hub simHub, std::ostream &onStream) {
     int dag = 0;
     while (dag < dagen) {
         if (dag % simHub.getInterval() == 0) {
@@ -13,11 +13,11 @@ void simuleren(int dagen, Hub simHub) {
         }
 
         for (unsigned int i = 0; i<simHub.centra.size(); i++){
-            simHub.simuleerTransport(std::cout, simHub.centra[i]);
+            simHub.simuleerTransport(onStream, simHub.centra[i]);
         }
 
         for (unsigned int i = 0; i < simHub.centra.size(); i++) {
-          simHub.centra.at(i)->vaccineren();
+          simHub.centra.at(i)->vaccineren(onStream);
         }
         dag++;
     }
