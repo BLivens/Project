@@ -26,7 +26,6 @@ SuccessEnum2 ProjectExporter::exportProject(const char *outputfilename, std::ost
             << simulatie.centra[i]->getInwoners() - simulatie.centra[i]->getGevacineerden() << " inwoners niet gevaccineerd" << std::endl;
     }
 
-
     outfile.close();
     return endResult;
 }
