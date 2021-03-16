@@ -2,8 +2,7 @@
 #include "eigXML.h"
 #include "HUB.h"
 #include "ProjectImporter.h"
-
-
+#include "ProjectExporter.h"
 
 
 
@@ -21,6 +20,11 @@ int main(int argc, char **argv) {
     Hub thub;
     ProjectImporter::importProject("../testInput/input.xml", std::cout , thub);
     thub.simuleren(7, std::cout);
+
+    // schrijven naar bestand
+    ProjectExporter::exportProject("output.txt", std::cout, testhub);
+
+
     /*
 
     Hub testhub2;
@@ -86,5 +90,6 @@ int main(int argc, char **argv) {
         testhub.simuleerTransport(std::cout, testhub.centra[i]);
     }
     */
+
     return 0;
 }
