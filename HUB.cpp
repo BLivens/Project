@@ -161,7 +161,7 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
 }
 
 bool Hub::centrumVerbonden(const Centrum* centrum) const{
-    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
+    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling centrumVerbonden");
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling centrumVerbonden");
     bool isVerbonden = false;
     for (unsigned int i = 0; i<centra.size(); i++){

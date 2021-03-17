@@ -3,15 +3,12 @@
 //
 
 #include <iostream>
-#include <fstream>
-#include <sys/stat.h>
 #include <gtest/gtest.h>
-
-using namespace std;
-
 #include "HUB.h"
 #include "ProjectUtils.h"
 #include "ProjectImporter.h"
+
+using namespace std;
 
 class ProjectInputTest: public ::testing::Test {
 protected:
@@ -28,48 +25,46 @@ protected:
 
 
 /**
-Tests InputHappyDay
+Tests input.xml (happyday scenario)
 */
-/*
-TEST_F(TicTactToeInputTest, InputHappyDay) {
-    ASSERT_TRUE(DirectoryExists("testInput"));
+TEST_F(ProjectInputTest, InputHappyDay) {
+    ASSERT_TRUE(DirectoryExists("../testInput"));
 
     ofstream myfile;
     SuccessEnum importResult;
+    string fileName = "../testInput/input.xml";
 
-    myfile.open("testInput/zzzInput.xml");
-    myfile << "<?xml version=\"1.0\" ?>" << endl
-           << "<TicTacToe>" << endl
-           << "\t<MOVES_O>a1c1b2a3c3</MOVES_O>" << endl
-           << "\t<MOVES_X>b1a2c2b3</MOVES_X>" << endl
-           << "</TicTacToe>" << endl;
-    myfile.close();
-    myfile.open("testInput/zzzError.txt");
-    importResult = TicTacToeImporter::importTicTacToeGame("testInput/zzzInput.xml", myfile, ttt_);
+    myfile.open("../testInput/zzzError.txt");
+    importResult = ProjectImporter::importProject("../testInput/input.xml", myfile, hub_);
     myfile.close();
     EXPECT_TRUE(importResult == Success);
+    // nakijken van hub
+    EXPECT_EQ(93000, hub_.getLevering());
+    EXPECT_EQ(6, hub_.getInterval());
+    EXPECT_EQ(2000, hub_.getTransport());
+    EXPECT_EQ(0, hub_.getVaccins());
 
-    while (ttt_.notDone()) {
-        ttt_.doMove();
-    };
+    //nakijken van centrums
+    EXPECT_EQ("Park Spoor Oost", hub_.centra[0]->getNaam());
+    EXPECT_EQ("Noordersingel 40, Antwerpen", hub_.centra[0]->getAdres());
+    EXPECT_EQ(540173, hub_.centra[0]->getInwoners());
+    EXPECT_EQ(7500, hub_.centra[0]->getCapaciteit());
 
-    char col, row;
-    bool markIsX = false; // start with 'O'
-    // The diagonal is recognised as a winner. Sow we stop after verifying first two rows
-    for (row = minRow; row < maxRow; row++)
-        for (col = minCol; col <= maxCol; col++) {
-            if (markIsX)
-                EXPECT_EQ('X', ttt_.getMark(col, row));
-            else
-                EXPECT_EQ('O', ttt_.getMark(col, row));
-            markIsX = not markIsX;
-        };
-    EXPECT_FALSE(ttt_.notDone());
-    EXPECT_EQ(7, ttt_.nrOfMoves());
-    EXPECT_EQ('O', ttt_.getWinner());
+    EXPECT_EQ("AED Studios", hub_.centra[1]->getNaam());
+    EXPECT_EQ("Fabriekstraat 38, Lint", hub_.centra[1]->getAdres());
+    EXPECT_EQ(76935, hub_.centra[1]->getInwoners());
+    EXPECT_EQ(2000, hub_.centra[1]->getCapaciteit());
 
+    EXPECT_EQ("De Zoerla", hub_.centra[2]->getNaam());
+    EXPECT_EQ("Gevaertlaan 1, Westerlo", hub_.centra[2]->getAdres());
+    EXPECT_EQ(49451, hub_.centra[2]->getInwoners());
+    EXPECT_EQ(1000, hub_.centra[2]->getCapaciteit());
+
+    EXPECT_EQ("Flanders Expo", hub_.centra[3]->getNaam());
+    EXPECT_EQ("Maaltekouter 1, Sint-Denijs-Westrem", hub_.centra[3]->getAdres());
+    EXPECT_EQ(257029, hub_.centra[3]->getInwoners());
+    EXPECT_EQ(3000, hub_.centra[3]->getCapaciteit());
 }
-*/
 
 TEST_F(ProjectInputTest, InputLegalSimulations) {
     ASSERT_TRUE(DirectoryExists("../testInput"));
@@ -116,7 +111,7 @@ TEST_F(ProjectInputTest, InputXMLSyntaxErrors) {
     EXPECT_TRUE(fileCounter == 5);
 }
 
-TEST_F(ProjectInputTest, InputIllegalGames) {
+TEST_F(ProjectInputTest, InputIllegalSimulations) {
     ASSERT_TRUE(DirectoryExists("../testInput"));
 
     ofstream myfile;

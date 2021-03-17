@@ -21,6 +21,16 @@ enum SuccessEnum {ImportAborted, PartialImport, Success};
 
 class ProjectImporter {
 public:
+    /**
+    // Read an XML description of a simulatie from inputfilename.
+    // If errors occur, report them on errStream.
+    // Return whether succesful in the errorcode:
+    //	- ImportAborted =  simulatie is unchanged; reason for abortion is reported on errStream
+    //  - PartialImport = Some semantic errors reported on errStream; state is partially imported and simulatie might have changed
+    //  - Succes = No importer errors; no errors reported
+    //\n REQUIRE(simulatie->properlyInitialized(), "simulatie wasn't initialized when passed to ProjectImporter::importProject");
+    //
+    */
     static SuccessEnum importProject(const char * inputfilename, std::ostream& errStream, Hub& simulatie);
 };
 

@@ -4,7 +4,8 @@
 
 #include "ProjectImporter.h"
 
-
+//Auxiliary function for internal use only
+// opmerking: fetch_text is dezelfde functie als gebruikt in TicTacToe21 door professor Demeyer
 const std::string fetch_text(TiXmlNode *pElement, std::ostream& errStream) {
     if (pElement == NULL) return "";
     TiXmlNode *elemNode = pElement->FirstChild();

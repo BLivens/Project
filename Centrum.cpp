@@ -21,7 +21,7 @@ std::string Centrum::getNaam() const{
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling getNaam");
     result = naam;
-    ENSURE((!naam.empty()),"naam can't be empty");
+    ENSURE((!result.empty()),"getNaam can't return empty string");
     return result;
 }
 
@@ -39,7 +39,7 @@ std::string Centrum::getAdres() const{
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling getAdres");
     result = adres;
-    ENSURE((!adres.empty()),"adres can't be empty");
+    ENSURE((!result.empty()),"getAdres can't return empty string");
     return result;
 }
 
@@ -128,7 +128,7 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 
 
 void Centrum::vaccineren(std::ostream &onStream) {
-    REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setGevacineerden");
+    REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
     int ongevaccineerden = getInwoners() - getGevacineerden();
     int teVaccineren = std::min(getVaccins(), getCapaciteit());
     teVaccineren = std::min(ongevaccineerden, teVaccineren);

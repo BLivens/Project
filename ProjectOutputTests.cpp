@@ -3,14 +3,12 @@
 //
 
 #include <iostream>
-#include <fstream>
 #include <gtest/gtest.h>
-
-using namespace std;
-
 #include "HUB.h"
 #include "ProjectUtils.h"
 #include "ProjectExporter.h"
+
+using namespace std;
 
 class ProjectOutputTest: public ::testing::Test {
 protected:

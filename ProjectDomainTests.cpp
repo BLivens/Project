@@ -1,14 +1,14 @@
 //
 // Created by michel on 12.03.21.
 //
+// OPMERKING: VOOR DE OPBOUW WERD ER VEELVULDIG GEKEKEN NAAR HET VOORBEELD TICTACTOE21 geschreven door professor Demeyer
 
 #include <iostream>
 #include <fstream>
 #include <gtest/gtest.h>
+#include "HUB.h"
 
 using namespace std;
-
-#include "HUB.h"
 
 class ProjectDomainTest: public ::testing::Test {
 protected:
@@ -22,7 +22,7 @@ protected:
 };
 
 /**
-Tests the default constructor.
+Tests the default constructor for Hub.
 */
 TEST_F(ProjectDomainTest, DefaultConstructorHub) {
     EXPECT_TRUE(hub_.properlyInitialized());
@@ -47,7 +47,6 @@ TEST_F(ProjectDomainTest, testcentrumVerbonden) {
     EXPECT_FALSE(hub_.centrumVerbonden(centrum1));
     EXPECT_FALSE(hub_.centrumVerbonden(centrum2));
     hub_.centra.push_back(centrum1);
-    cout << hub_.centra[0]->properlyInitialized() << endl;
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_FALSE(hub_.centrumVerbonden(centrum2));
     hub_.centra.push_back(centrum2);
@@ -108,6 +107,10 @@ TEST_F(ProjectDomainTest, testsimuleerTransport){
     EXPECT_EQ(85000, hub_.getVaccins());
     EXPECT_EQ(8000, hub_.centra[0]->getVaccins());
 }
+
+/**
+Tests the "happy day" scenario for Hub
+*/
 TEST_F(ProjectDomainTest, HappyDayHub){
     EXPECT_TRUE(hub_.properlyInitialized());
     EXPECT_TRUE(hub_.centra.empty());
@@ -149,6 +152,9 @@ TEST_F(ProjectDomainTest, HappyDayHub){
     EXPECT_EQ(6000, hub_.centra[1]->getGevacineerden());
 }
 
+/**
+Tests the default constructor for Centrum.
+*/
 TEST_F(ProjectDomainTest, DefaultConstructorCentrum){
     EXPECT_TRUE(centrum_.properlyInitialized());
     EXPECT_EQ(0, centrum_.getVaccins());
@@ -159,6 +165,9 @@ TEST_F(ProjectDomainTest, DefaultConstructorCentrum){
     EXPECT_EQ(0, centrum_.getGevacineerden());
 }
 
+/**
+Tests the "happy day" scenario for Centrum
+*/
 TEST_F(ProjectDomainTest, HappyDayCentrum){
     EXPECT_TRUE(centrum_.properlyInitialized());
     centrum_.setInwoners(1000);
@@ -176,6 +185,9 @@ TEST_F(ProjectDomainTest, HappyDayCentrum){
     EXPECT_EQ(0, centrum_.getVaccins());
 }
 
+/**
+Verify whether unsatisfied pre-conditions indeed trigger failures
+*/
 TEST_F(ProjectDomainTest, ContractViolations) {
     EXPECT_DEATH(hub_.setVaccins(-1), "Assertion.*failed"); // setVaccins needs a positive int
     EXPECT_DEATH(hub_.setTransport(0), "Assertion.*failed"); // setTransport needs a strictly positive int
