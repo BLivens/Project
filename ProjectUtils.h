@@ -11,6 +11,7 @@
 #ifndef ProjectUtils_H
 #define ProjectUtils_H
 
+// BELANGRIJKE OPMERKING: DEZE FILE IS RECHTSTREEKS OVERGENOMEN UIT TICTACTOE21
 
 #include <iostream>
 
