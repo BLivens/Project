@@ -70,18 +70,6 @@ public:
     */
     void setLevering(int aantal_vaccins);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verlaagVoorraad");
-    \n REQUIRE((aantal_vaccins<=getVoorraad()) && (voorraad >= 0),"aantal_vaccins must be a positive integer lower or equal to voorraad in Hub()");
-    \n ENSURE((getVoorraad()>=0),"verlaagVoorraad postcondition failure");
-    */
-    void verlaagVoorraad(int aantal_vaccins);
-    /**
-    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verhoogVoorraad");
-    \n REQUIRE(voorraad >= 0, "aantal_vaccins must be a positive integer");
-    \n ENSURE((getVoorraad()>=0),"verhoogVoorraad postcondition failure");
-    */
-    void verhoogVoorraad(int aantal_vaccins);
-    /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling berekenLadingen");
     \n REQUIRE(centrumVerbonden(centrum), "berekenLadingen requires centrum to be linked with Hub.");
@@ -105,13 +93,14 @@ public:
     */
     bool centrumVerbonden(const Centrum* centrum) const;
     std::vector<Centrum*> centra;
+    std::vector<Vaccin*> vaccins;
 private:
     Hub* _initCheck;
     int levering;
     int voorraad;
-    std::vector<Vaccin> vaccins;
     int interval;
     int transport;
+
 };
 
 #endif //PROJECT_HUB_H

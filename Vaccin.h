@@ -79,11 +79,23 @@ public:
     \n ENSURE((getLevering() == nieuwe_hernieuwing), "setHernieuwing postcondition failure");
     */
     void setHernieuwing(int nieuwe_hernieuwing);
+    /**
+    \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getVoorraad");
+    \n ENSURE((result>=0),"getVoorraad must return a positive integer");
+    */
+    int getVoorraad() const;
+    /**
+    \n REQUIRE(this->properlyInitialized(),"Vaccin wasn't initialized when calling setVoorraad");
+    \n REQUIRE((aantal_vaccins>=0), "aantal_vaccins must be a positive integer");
+    \n ENSURE((setVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
+    */
+    void setVoorraad(int aantal_vaccins);
 
 
 private:
     Vaccin* _initCheck;
     std::string type; // done
+    int voorraad;
     int hernieuwing;
     int temperatuur; // done
     int levering; // done

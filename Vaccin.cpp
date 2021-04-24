@@ -4,6 +4,7 @@ Vaccin::Vaccin(){
     _initCheck = this;
     type = "";
     levering = 0;
+    voorraad = 0;
     hernieuwing = 0;
     temperatuur = 0;
     interval = 1;
@@ -117,4 +118,20 @@ void Vaccin::setHernieuwing(int nieuwe_hernieuwing) {
             "Vaccin wasn't initialized when calling setHernieuwing");
     hernieuwing = nieuwe_hernieuwing;
     ENSURE((getHernieuwing() == nieuwe_hernieuwing), "setHernieuwing postcondition failure");
+}
+
+int Vaccin::getVoorraad() const{
+    int result;
+    REQUIRE(this->properlyInitialized(),
+            "Vaccin wasn't initialized when calling getVoorraad");
+    result = voorraad;
+    ENSURE((result>=0),"getVoorraad must return a positive integer");
+    return result;
+}
+
+void Vaccin::setVoorraad(int aantal_vaccins) {
+    REQUIRE(this->properlyInitialized(),
+            "Vaccin wasn't initialized when calling setVoorraad");
+    voorraad = aantal_vaccins;
+    ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
 }
