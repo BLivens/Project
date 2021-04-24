@@ -3,7 +3,7 @@
 Hub::Hub(){
     _initCheck = this;
     levering = 0;
-    vaccins = 0;
+    vaccins.empty();
     interval = 1;
     transport = 1;
     ENSURE(properlyInitialized(),
@@ -14,22 +14,34 @@ bool Hub::properlyInitialized() const{
     return _initCheck == this;
 }
 
-int Hub::getVaccins() const{
-    int result;
+std::vector<Vaccin> Hub::getVaccins() const{
+    std::vector<Vaccin> result;
     REQUIRE(this->properlyInitialized(),
            "Hub wasn't initialized when calling getVaccins");
     result = vaccins;
-    ENSURE((result>=0),"getVaccins must return a positive integer");
     return result;
 }
 
-void Hub::setVaccins(int aantal_vaccins) {
+void Hub::setVaccins(std::vector<Vaccin> nieuwe_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setVaccins");
-    REQUIRE((aantal_vaccins>=0),
-            "aantal_vaccins must be a positive integer");
-    vaccins = aantal_vaccins;
-    ENSURE((getVaccins() == aantal_vaccins), "setVaccins postcondition failure");
+    vaccins = nieuwe_vaccins;
+    // ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure"); TODO: Dit toch testen
+}
+
+int Hub::getVoorraad() const {
+    int result;
+    REQUIRE(this->properlyInitialized(),
+            "Hub wasn't initialized when calling getVoorraad");
+    result = voorraad;
+    return result;
+}
+
+void Hub::setVoorraad(int aantal_vaccins) {
+    REQUIRE(this->properlyInitialized(),
+            "Hub wasn't initialized when calling setVoorraad");
+    voorraad = aantal_vaccins;
+    ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
 }
 
 int Hub::getInterval() const{
@@ -85,21 +97,21 @@ void Hub::setLevering(int aantal_vaccins) {
     ENSURE((getLevering() == aantal_vaccins), "setLevering postcondition failure");
 }
 
-void Hub::verlaagVaccins(int aantal_vaccins) {
+void Hub::verlaagVoorraad(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling verlaagVaccins");
-    REQUIRE((aantal_vaccins<=getVaccins()) && (aantal_vaccins >= 0),
+    REQUIRE((aantal_vaccins<=getVoorraad()) && (aantal_vaccins >= 0),
             "aantal_vaccins must be a positive integer lower or equal to vaccins in Hub()");
-    vaccins = getVaccins() - aantal_vaccins;
-    ENSURE((getVaccins()>=0),"verlaagVaccins postcondition failure");
+    voorraad = getVoorraad() - aantal_vaccins;
+    ENSURE((getVoorraad()>=0),"verlaagVaccins postcondition failure");
 }
 
-void Hub::verhoogVaccins(int aantal_vaccins) {
+void Hub::verhoogVoorraad(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verhoogVaccins");
-    vaccins = getVaccins() + aantal_vaccins;
+    voorraad = getVoorraad() + aantal_vaccins;
     REQUIRE(aantal_vaccins >= 0,
             "aantal_vaccins must be a positive integer");
-    ENSURE((getVaccins()>=0),"verhoogVaccins postcondition failure");
+    ENSURE((getVoorraad()>=0),"verhoogVaccins postcondition failure");
 }
 
 int Hub::berekenLadingen(const Centrum* centrum) const {
@@ -122,7 +134,7 @@ int Hub::berekenLadingen(const Centrum* centrum) const {
         // bereken het maximaal aantal result dat het centrum kan ontvangen
         int max_ladingen = (centrum->getCapaciteit()*2 - centrum->getVaccins())/getTransport();
         // bereken het aantal beschikbare result in de Hub
-        int beschikbare_ladingen = getVaccins()/getTransport();
+        int beschikbare_ladingen = getVoorraad()/getTransport();
         // Indien er minder result beschikbaar zijn dan geleverd moeten worden
         if (beschikbare_ladingen<nodige_ladingen){
             // lever alle result die in de Hub aanwezig zijn
@@ -153,7 +165,7 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
     // bereken aantal vaccins
     int aantal_vaccins = aantal_ladingen * getTransport();
     // verlaag het aantal vaccins in de Hub met de correcte hoeveelheid
-    verlaagVaccins(aantal_vaccins);
+    verlaagVoorraad(aantal_vaccins);
     // verhoog het aantal vaccins in het centrum met de correcte hoeveelheid
     centrum->setVaccins(centrum->getVaccins() + aantal_vaccins);
     // schrijf overzicht uit
@@ -178,7 +190,7 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
     int dag = 0;
     while (dag < dagen) {
         if (dag % getInterval() == 0) {
-            verhoogVaccins(getLevering());
+            verlaagVoorraad(getLevering());
         }
         for (unsigned int i = 0; i<centra.size(); i++){
             simuleerTransport(onStream,centra[i]);

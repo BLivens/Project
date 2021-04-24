@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "Centrum.h"
+#include "Vaccin.h"
 #include "DesignByContract.h"
 
 
@@ -17,15 +18,13 @@ public:
     bool properlyInitialized() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling getVaccins");
-    \n ENSURE((result>=0),"getVaccins must return a positive integer");
     */
-    int getVaccins() const;
+    std::vector<Vaccin> getVaccins() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling setVaccins");
-    \n REQUIRE((aantal_vaccins>=0),"aantal_vaccins must be a positive integer");
-    \n ENSURE((getVaccins() == aantal_vaccins), "setVaccins postcondition failure");
+    \n ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure");
     */
-    void setVaccins(int aantal_vaccins);
+    void setVaccins(std::vector<Vaccin> vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getInterval");
     \n ENSURE((result>0),"getInterval must return a strictly positive integer");
@@ -37,6 +36,17 @@ public:
     \n ENSURE((getInterval() == aantal_dagen), "setInterval postcondition failure");
     */
     void setInterval(int aantal_dagen);
+    /**
+   \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getVoorraad");
+   \n ENSURE((result>0),"getVoorraad must return a strictly positive integer");
+   */
+    int getVoorraad() const;
+    /**
+    \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling setVoorraad");
+    \n REQUIRE((voorraad>0),"voorraad must be a strictly positive integer");
+    \n ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
+    */
+    void setVoorraad(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getTransport");
     \n ENSURE((result>0),"getTransport must return a strictly positive integer");
@@ -56,21 +66,21 @@ public:
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling setLevering");
     \n REQUIRE((aantal_vaccins>=0), "aantal_vaccins must be a positive integer");
-    \n ENSURE((getLevering() == aantal_vaccins), "setLevering postcondition failure");
+    \n ENSURE((getLevering() == voorraad), "setLevering postcondition failure");
     */
     void setLevering(int aantal_vaccins);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verlaagVaccins");
-    \n REQUIRE((aantal_vaccins<=getVaccins()) && (aantal_vaccins >= 0),"aantal_vaccins must be a positive integer lower or equal to vaccins in Hub()");
-    \n ENSURE((getVaccins()>=0),"verlaagVaccins postcondition failure");
+    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verlaagVoorraad");
+    \n REQUIRE((aantal_vaccins<=getVoorraad()) && (voorraad >= 0),"aantal_vaccins must be a positive integer lower or equal to voorraad in Hub()");
+    \n ENSURE((getVoorraad()>=0),"verlaagVoorraad postcondition failure");
     */
-    void verlaagVaccins(int aantal_vaccins);
+    void verlaagVoorraad(int aantal_vaccins);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verhoogVaccins");
-    \n REQUIRE(aantal_vaccins >= 0, "aantal_vaccins must be a positive integer");
-    \n ENSURE((getVaccins()>=0),"verhoogVaccins postcondition failure");
+    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling verhoogVoorraad");
+    \n REQUIRE(voorraad >= 0, "aantal_vaccins must be a positive integer");
+    \n ENSURE((getVoorraad()>=0),"verhoogVoorraad postcondition failure");
     */
-    void verhoogVaccins(int aantal_vaccins);
+    void verhoogVoorraad(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling berekenLadingen");
@@ -98,7 +108,8 @@ public:
 private:
     Hub* _initCheck;
     int levering;
-    int vaccins;
+    int voorraad;
+    std::vector<Vaccin> vaccins;
     int interval;
     int transport;
 };

@@ -37,49 +37,102 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
         for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
             std::string elemName = elem->Value();
             // herken element
-            int levering_counter = 0;
-            int interval_counter = 0;
-            int transport_counter = 0;
             int centra_counter = 0;
             int centrumhub_counter = 0;
-            int levering;
-            int transport;
-            int interval;
             if (elemName == "HUB") {
                 std::string tag;
                 hub_counter = hub_counter + 1;
                 for (TiXmlElement* elem_hub = elem->FirstChildElement(); elem_hub != NULL; elem_hub = elem_hub->NextSiblingElement()){
                     tag = elem_hub->Value();
-                    if (tag == "levering") {
-                        levering_counter = levering_counter + 1;
-                        levering = std::atol(fetch_text(elem_hub, errStream).c_str());
-                        if (levering<0){
-                            errStream << "XML PARTIAL IMPORT: Illegal levering " << levering << "."<< std::endl;
+
+                    if (tag == "VACCIN") {
+                        Vaccin* tempvac = new Vaccin;
+                        std::string type;
+                        std::string tag_vacc;
+                        unsigned int levering_counter = 0;
+                        unsigned int interval_counter = 0;
+                        unsigned int transport_counter = 0;
+                        int hernieuwing_counter = 0;
+                        int typecounter = 0;
+                        int temperatuur_counter = 0;
+                        int levering;
+                        int interval;
+                        int transport;
+                        int hernieuwing;
+                        int temperatuur;
+                        for (TiXmlElement* elem_vacc = elem_hub->FirstChildElement(); elem_vacc != NULL; elem_vacc = elem_vacc->NextSiblingElement()) {
+                            tag_vacc = elem_vacc->Value();
+                            if (tag_vacc == "type") {
+                                typecounter ++;
+                                type = fetch_text(elem_vacc, errStream);
+                                if (type.empty()){
+                                    errStream << "XML PARTIAL IMPORT: Illegal type " << type << "."<< std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setType(type);
+                                }
+                            } else if (tag_vacc == "interval") {
+                                interval_counter ++;
+                                interval = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                if (levering < 0){
+                                    errStream << "XML PARTIAL IMPORT: Illegal levering " << levering << "."<< std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setLevering(levering);
+                                }
+                            } else if (tag_vacc == "levering") {
+                                levering_counter++;
+                                levering = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                if (levering < 0) {
+                                    errStream << "XML PARTIAL IMPORT: Illegal levering " << levering << "."
+                                              << std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setLevering(levering);
+                                }
+                            } else if (tag_vacc == "interval") {
+                                interval_counter++;
+                                interval = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                if (interval < 0) {
+                                    errStream << "XML PARTIAL IMPORT: Illegal interval " << interval << "."
+                                              << std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setInterval(interval);
+                                }
+                            } else if (tag_vacc == "transport") {
+                                transport_counter++;
+                                transport = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                if (transport < 0) {
+                                    errStream << "XML PARTIAL IMPORT: Illegal transport " << transport << "."
+                                              << std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setTransport(transport);
+                                }
+                            } else if (tag_vacc == "hernieuwing") {
+                                hernieuwing_counter++;
+                                hernieuwing = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                if (hernieuwing < 0) {
+                                    errStream << "XML PARTIAL IMPORT: Illegal hernieuwing " << hernieuwing << "."
+                                              << std::endl;
+                                    endResult = PartialImport;
+                                } else {
+                                    tempvac->setHernieuwing(hernieuwing);
+                                }
+                            } else if (tag_vacc == "temperatuur") {
+                                temperatuur_counter++;
+                                temperatuur = std::atol(fetch_text(elem_vacc, errStream).c_str());
+                                tempvac->setTemperatuur(temperatuur);
+                            }
+
+                        }
+                        if (typecounter != 1 or hernieuwing_counter != 1 or levering_counter != 1 or interval_counter != 1 or transport_counter != 1){
+                            errStream << "XML PARTIAL IMPORT: VACCIN has missing or duplicate attributes." << std::endl;
                             endResult = PartialImport;
-                        } else {
-                            simulatie.setLevering(levering);
                         }
                     }
-                    else if(tag == "interval"){
-                        interval_counter = interval_counter + 1;
-                        interval = std::atol(fetch_text(elem_hub, errStream).c_str());
-                        if (interval<0){
-                            errStream << "XML PARTIAL IMPORT: Illegal interval " << interval << "."<< std::endl;
-                            endResult = PartialImport;
-                        } else{
-                            simulatie.setInterval(interval);
-                        }
-                    }
-                    else if (tag == "transport"){
-                        transport_counter = transport_counter +1;
-                        transport= std::atol(fetch_text(elem_hub, errStream).c_str());
-                        if (transport < 1){
-                            errStream << "XML PARTIAL IMPORT: Illegal transport " << transport << "."<< std::endl;
-                            endResult = PartialImport;
-                        } else{
-                            simulatie.setTransport(transport);
-                        }
-                    }
+
                     else if (tag == "CENTRA") {
                         centra_counter = centra_counter + 1;
                         for (TiXmlElement *centrumNaam = elem_hub->FirstChildElement();
@@ -100,10 +153,6 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                         endResult = PartialImport;
                     }
 
-                }
-                if (levering_counter != 1 or interval_counter != 1 or transport_counter != 1 or centra_counter != 1){
-                    errStream << "XML PARTIAL IMPORT: HUB has missing or duplicate attributes." << std::endl;
-                    endResult = PartialImport;
                 }
             } else if (elemName == "VACCINATIECENTRUM") {
                 Centrum* tempCentrum = new Centrum;

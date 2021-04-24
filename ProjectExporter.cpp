@@ -10,12 +10,12 @@ SuccessEnum2 ProjectExporter::exportProject(const char *outputfilename, std::ost
     std::ofstream outfile(outputfilename);
     SuccessEnum2 endResult = ExportSuccess;
     if (!outfile.is_open()) {
-        errStream << "Can't open " << outputfilename << std::endl;
+        errStream << "Unable to open file: " << outputfilename << std::endl;
         endResult = ExportAborted;
         return endResult;
     }
 
-    outfile << "Hub (" << simulatie.getVaccins() << " vaccins)" << std::endl;
+    outfile << "Hub (" << simulatie.getVoorraad() << " vaccins)" << std::endl;
     for(unsigned int i = 0; i < simulatie.centra.size(); i++) {
         outfile << "  -> " << simulatie.centra.at(i)->getNaam() << " (" <<  simulatie.centra[i]->getVaccins() << " vaccins)" << std::endl;
     }
