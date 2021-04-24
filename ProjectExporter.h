@@ -22,6 +22,7 @@ enum SuccessEnum2 {ExportAborted, PartialExport, ExportSuccess};
 class ProjectExporter {
 public:
     static SuccessEnum2 exportProject(const char * outputfilename, std::ostream& errStream, Hub& simulatie);
+    static SuccessEnum2 graphic_impression(const char * outputfilename, std::ostream& errStream, Hub& simulatie);
 };
 
 

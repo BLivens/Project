@@ -5,7 +5,9 @@
 // Copyright   : Project Software Engineering - BA1 Informatica - Serge Demeyer - University of Antwerp
 // Description : TicTactToe in C++, Ansi-style
 //============================================================================
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // BELANGRIJKE OPMERKING: DEZE FILE IS RECHTSTREEKS OVERGENOMEN UIT TICTACTOE21
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #include <fstream>
 #include <sys/stat.h>
 #include <cstdio>

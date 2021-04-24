@@ -86,8 +86,15 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     H.simuleren(3, bitBucket);
     ProjectExporter::exportProject(fileName.c_str(),myfile, H);
     myfile.close();
+    string fileName2 = "../testOutput/happyDayGraphicImpression.txt";
+    myfile.open("../testOutput/happyDayGraphicImpressionError.txt");
+    ProjectExporter::graphic_impression(fileName2.c_str(),myfile, H);
+    myfile.close();
+
     EXPECT_TRUE(
             FileCompare("../testOutput/happyDayExpectedOut.txt", "../testOutput/happyDayOut.txt"));
+    EXPECT_TRUE(
+            FileCompare("../testOutput/happyDayGraphicImpressionExpected.txt", "../testOutput/happyDayGraphicImpression.txt"));
 }
 
 TEST_F(ProjectOutputTest, OutputOneCentrum) {
@@ -118,4 +125,35 @@ TEST_F(ProjectOutputTest, OutputOneCentrum) {
     myfile.close();
     EXPECT_TRUE(
             FileCompare("../testOutput/OutputOneCentrumExpected.txt", "../testOutput/OutputOneCentrum.txt"));
+}
+
+TEST_F(ProjectOutputTest, GraphicImpression){
+    ASSERT_TRUE(DirectoryExists("../testOutput"));
+    //if directory doesn't exist then no need in proceeding with the test
+    Hub H;
+    Centrum* a;
+    Centrum aa;
+    a = &aa;
+
+    H.setTransport(2000);
+    H.setInterval(6);
+    H.setLevering(93000);
+
+    H.centra.push_back(a);
+    H.centra[0]->setNaam("Park Spoor Oost");
+    H.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    H.centra[0]->setInwoners(540173);
+    H.centra[0]->setCapaciteit(7500);
+    H.centra[0]->setVaccins(0);
+
+    string fileName = "../testOutput/OutputGraphicImpression.txt";
+    ofstream myfile;
+    myfile.open("../testOutput/OutputGraphicImpressionError.txt");
+    std::ostream bitBucket(NULL);
+    H.simuleren(6, bitBucket);
+    ProjectExporter::graphic_impression(fileName.c_str(),myfile, H);
+    myfile.close();
+    EXPECT_TRUE(
+            FileCompare("../testOutput/OutputGraphicImpressionExpected.txt", "../testOutput/OutputGraphicImpression.txt"));
+
 }
