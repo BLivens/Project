@@ -131,6 +131,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             errStream << "XML PARTIAL IMPORT: VACCIN has missing or duplicate attributes." << std::endl;
                             endResult = PartialImport;
                         }
+                        simulatie.vaccins.push_back(tempvac);
                     }
 
                     else if (tag == "CENTRA") {
