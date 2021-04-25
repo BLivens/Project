@@ -221,6 +221,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
         std::sort(centra2.begin(), centra2.end());
         std::sort(centra1.begin(), centra1.end());
 
+
         if (centra1 != centra2) {
             errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra." << std::endl;
             endResult = PartialImport;
@@ -234,6 +235,10 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
             endResult = PartialImport;
         }
     }
+    for (unsigned int i = 0; i < simulatie.centra.size(); i++) {
+        simulatie.centra[i]->setVaccins(simulatie.vaccins);
+    }
+
     doc.Clear();
     return endResult;
 }

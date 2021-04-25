@@ -1,8 +1,9 @@
 #include <string>
+#include <vector>
+#include "Vaccin.h"
 #include <iostream>
 #include <map>
 #include "DesignByContract.h"
-#include "Vaccin.h"
 
 #ifndef PROJECT_CENTRUM_H
 #define PROJECT_CENTRUM_H
@@ -62,16 +63,16 @@ public:
     */
     void setCapaciteit(int aantal_capaciteit);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getVaccins");
-    \n ENSURE((result>=0) && (result<= getCapaciteit()*2),"getVaccins must return a positive integer lower or equal to capaciteit*2");
+    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getVoorraad");
+    \n ENSURE((result>=0) && (result<= getCapaciteit()*2),"getVoorraad must return a positive integer lower or equal to capaciteit*2");
     */
-    int getVaccins() const;
+    int getVoorraad() const;
     /**
-    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setVaccins");
+    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setVoorraad");
     \n REQUIRE((aantal_vaccins>=0 && aantal_vaccins <= getCapaciteit()*2), "aantal_vaccins must be a positive integer lower or equal to capaciteit*2");
-    \n ENSURE((getVaccins() == aantal_vaccins), "setVaccins postcondition failure");
+    \n ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
     */
-    void setVaccins(int aantal_vaccins);
+    void setVoorraad(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getGevacineerden");
     \n ENSURE((result>=0),"getGevacineerden must return a positive integer");
@@ -83,9 +84,18 @@ public:
     \n ENSURE((getGevacineerden() == aantal_gevacineerden), "setGevacineerden postcondition failure");
     */
     void setGevacineerden(int aantal_gevacineerden);
-    std::vector<Vaccin*> vaccins;
-    std::map<std::pair<int, std::string>, int> log;
+    /**
+    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getVaccins");
+    */
+    std::vector<Vaccin> getVaccins() const;
+    /**
+    \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setVaccins");
+    \n ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure");
+    */
+    void setVaccins(std::vector<Vaccin*> vaccins);
 
+    std::map<std::pair<int, std::string>, int> log;
+    std::vector<Vaccin> vaccins; // TODO: pointer maken zou plezant zijn maar ambetant...
 private:
     Centrum* _initCheck;
     std::string naam;

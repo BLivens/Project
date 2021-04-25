@@ -106,18 +106,18 @@ int Hub::berekenLadingen(const Centrum* centrum) const {
     // declareer result
     int result;
     // indien er meer vaccins in het centrum aanwezig zijn dan de capaciteit van het centrum worden er geen result geleverd
-    if (centrum->getCapaciteit() < centrum->getVaccins()){
+    if (centrum->getCapaciteit() < centrum->getVoorraad()){
         result = 0;
     }
         // indien er wel result nodig zijn
     else{
         // bereken benodigde result
-        int nodige_ladingen = (centrum->getCapaciteit() - centrum->getVaccins())/getTransport();
-        if ((centrum->getCapaciteit() - centrum->getVaccins())%getTransport() != 0){
+        int nodige_ladingen = (centrum->getCapaciteit() - centrum->getVoorraad())/getTransport();
+        if ((centrum->getCapaciteit() - centrum->getVoorraad())%getTransport() != 0){
             nodige_ladingen = nodige_ladingen + 1;
         }
         // bereken het maximaal aantal result dat het centrum kan ontvangen
-        int max_ladingen = (centrum->getCapaciteit()*2 - centrum->getVaccins())/getTransport();
+        int max_ladingen = (centrum->getCapaciteit()*2 - centrum->getVoorraad())/getTransport();
         // bereken het aantal beschikbare result in de Hub
         int beschikbare_ladingen = getVoorraad()/getTransport();
         // Indien er minder result beschikbaar zijn dan geleverd moeten worden
@@ -152,7 +152,7 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
     // verlaag het aantal vaccins in de Hub met de correcte hoeveelheid
     setVoorraad(getVoorraad() - aantal_vaccins); // TODO: In verdere iteraties moeten de vaccins van het juiste type verdwijnen.
     // verhoog het aantal vaccins in het centrum met de correcte hoeveelheid
-    centrum->setVaccins(centrum->getVaccins() + aantal_vaccins);
+    centrum->setVoorraad(centrum->getVoorraad() + aantal_vaccins);
     // schrijf overzicht uit
     onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum->getNaam()<< "." <<std::endl;
 }

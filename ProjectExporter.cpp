@@ -17,7 +17,7 @@ SuccessEnum2 ProjectExporter::exportProject(const char *outputfilename, std::ost
 
     outfile << "Hub (" << simulatie.getVoorraad() << " vaccins)" << std::endl;
     for(unsigned int i = 0; i < simulatie.centra.size(); i++) {
-        outfile << "  -> " << simulatie.centra.at(i)->getNaam() << " (" <<  simulatie.centra[i]->getVaccins() << " vaccins)" << std::endl;
+        outfile << "  -> " << simulatie.centra.at(i)->getNaam() << " (" <<  simulatie.centra[i]->getVoorraad() << " vaccins)" << std::endl;
     }
     outfile << std::endl;
 
@@ -44,7 +44,7 @@ SuccessEnum2 ProjectExporter::graphic_impression(const char *outputfilename, std
         outfile << simulatie.centra[i]->getNaam() << ":" <<  std::endl;
 
         outfile << "\t" << "- vaccins" << "\t" << "[";
-        int percent_vacc = (double) simulatie.centra[i]->getVaccins()/ (double) simulatie.centra[i]->getCapaciteit()*100;
+        int percent_vacc = (double) simulatie.centra[i]->getVoorraad()/ (double) simulatie.centra[i]->getCapaciteit()*100;
 
         int bars_vacc = percent_vacc/5;
         int space_vacc = 20-bars_vacc;
