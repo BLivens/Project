@@ -29,13 +29,13 @@ public:
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getInterval");
     \n ENSURE((result>0),"getInterval must return a strictly positive integer");
     */
-    int getInterval() const;
+    //int getInterval() const;
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling setInterval");
     \n REQUIRE((aantal_dagen>0),"aantal_dagen must be a strictly positive integer");
     \n ENSURE((getInterval() == aantal_dagen), "setInterval postcondition failure");
     */
-    void setInterval(int aantal_dagen);
+    //void setInterval(int aantal_dagen);
     /**
    \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getVoorraad");
    \n ENSURE((result>0),"getVoorraad must return a strictly positive integer");
@@ -62,13 +62,13 @@ public:
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling getLevering");
     \n ENSURE((result>=0),"getLevering must return a positive integer");
     */
-    int getLevering() const;
+    //int getLevering() const;
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling setLevering");
     \n REQUIRE((aantal_vaccins>=0), "aantal_vaccins must be a positive integer");
     \n ENSURE((getLevering() == voorraad), "setLevering postcondition failure");
     */
-    void setLevering(int aantal_vaccins);
+    //void setLevering(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling berekenLadingen");
@@ -96,11 +96,8 @@ public:
     std::vector<Vaccin*> vaccins;
 private:
     Hub* _initCheck;
-    int levering;
-    int voorraad;
-    int interval;
     int transport;
-
+    int voorraad;
 };
 
 #endif //PROJECT_HUB_H

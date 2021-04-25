@@ -2,10 +2,8 @@
 
 Hub::Hub(){
     _initCheck = this;
-    levering = 0;
+    transport = 0;
     vaccins.empty();
-    interval = 1;
-    transport = 1;
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
 }
@@ -13,7 +11,7 @@ Hub::Hub(){
 bool Hub::properlyInitialized() const{
     return _initCheck == this;
 }
-/*  Niet nodig en onhandig
+/*  Onhandig
 std::vector<Vaccin> Hub::getVaccins() const{
     std::vector<Vaccin> result;
     REQUIRE(this->properlyInitialized(),
@@ -44,7 +42,7 @@ void Hub::setVoorraad(int aantal_vaccins) {
     voorraad = aantal_vaccins;
     ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
 }
-
+/* Deze zijn niet meer nodig want worden nu afgehandeld door de vaccins
 int Hub::getInterval() const{
     int result;
     REQUIRE(this->properlyInitialized(),
@@ -62,15 +60,18 @@ void Hub::setInterval(int aantal_dagen) {
     interval = aantal_dagen;
     ENSURE((getInterval() == aantal_dagen), "setInterval postcondition failure");
 }
-
+*/
 int Hub::getTransport() const{
-    int result;
+    int result = 0;
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling getTransport");
-    result = transport;
+    for (unsigned int i = 0; i < vaccins.size(); i++) {
+        result+= vaccins[i]->getTransport();
+    }
     ENSURE((result>0),"getTransport must return a strictly positive integer");
     return result;
 }
+
 void Hub::setTransport(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setTransport");
@@ -79,7 +80,7 @@ void Hub::setTransport(int aantal_vaccins) {
     transport = aantal_vaccins;
     ENSURE((getTransport() == aantal_vaccins), "setTransport postcondition failure");
 }
-
+/*
 int Hub::getLevering() const{
     int result;
     REQUIRE(this->properlyInitialized(),
@@ -97,7 +98,7 @@ void Hub::setLevering(int aantal_vaccins) {
     levering = aantal_vaccins;
     ENSURE((getLevering() == aantal_vaccins), "setLevering postcondition failure");
 }
-
+*/
 int Hub::berekenLadingen(const Centrum* centrum) const {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling berekenLadingen");
