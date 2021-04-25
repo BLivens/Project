@@ -6,7 +6,7 @@ Centrum::Centrum() {
     adres = "a";
     inwoners = 0;
     capaciteit = 0;
-    vaccins = 0;
+    voorraad = 0;
     gevacineerden = 0;
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
@@ -93,7 +93,7 @@ int Centrum::getVaccins() const{
     int result;
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling getVaccins");
-    result = vaccins;
+    result = voorraad;
     ENSURE((result>=0) && (result<= getCapaciteit()*2),"getVaccins must return a positive integer lower or equal to capaciteit*2");
     return result;
 }
@@ -103,7 +103,7 @@ void Centrum::setVaccins(int aantal_vaccins) {
             "Centrum wasn't initialized when calling setVaccins");
     REQUIRE((aantal_vaccins>=0 && aantal_vaccins <= getCapaciteit()*2),
             "aantal_vaccins must be a positive integer lower or equal to capaciteit*2");
-    vaccins = aantal_vaccins;
+    voorraad = aantal_vaccins;
     ENSURE((getVaccins() == aantal_vaccins), "setVaccins postcondition failure");
 }
 
@@ -127,15 +127,43 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 
 
 
-void Centrum::vaccineren(std::ostream &onStream) {
+void Centrum::vaccineren(std::ostream &onStream, int dag) {
     REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
     int ongevaccineerden = getInwoners() - getGevacineerden();
     int teVaccineren = std::min(getVaccins(), getCapaciteit());
     teVaccineren = std::min(ongevaccineerden, teVaccineren);
+    int aantal_mensen_gevaccineerd = 0;
 
-    setVaccins(getVaccins()-teVaccineren);
-    setGevacineerden(getGevacineerden()+teVaccineren);
-    if (teVaccineren != 0) { // enkel printen als we minstens een mens vaccineren
-        onStream << "Er werden " << teVaccineren << " inwoners gevaccineerd in " << getNaam() << ".\n";
+    // prioriteit geven aan mensen met al een eerste prikje
+    for (unsigned int i = 0; i < vaccins.size(); i++){
+        if(vaccins[i]->getVoorraad()!=0){
+            int dag_eerste_prik = dag-vaccins[i]->getHernieuwing();
+            std::string type_vacc = vaccins[i]->getType();
+            std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type_vacc);
+            if (log.count(p)!=0){
+                int aantal_vac_type = std::min(teVaccineren, log[p]);
+                vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-aantal_vac_type);
+                setGevacineerden(getGevacineerden()+aantal_vac_type);
+                teVaccineren = teVaccineren - aantal_vac_type;
+                aantal_mensen_gevaccineerd = aantal_mensen_gevaccineerd + aantal_vac_type;
+            }
+        }
+    }
+    for (unsigned int j = 0; j < vaccins.size(); j++){
+        if(vaccins[j]->getVoorraad()!=0 and teVaccineren>0){
+            int aantal_vac_type2 = std::min(teVaccineren, vaccins[j]->getVoorraad());
+            vaccins[j]->setVoorraad(vaccins[j]->getVoorraad()-aantal_vac_type2);
+            if(vaccins[j]->getHernieuwing()==0){
+                setGevacineerden(getGevacineerden()+aantal_vac_type2);
+            }
+            else{
+                log[std::make_pair(dag,vaccins[j]->getType())] = aantal_vac_type2;
+            }
+            teVaccineren = teVaccineren - aantal_vac_type2;
+            aantal_mensen_gevaccineerd = aantal_mensen_gevaccineerd + aantal_vac_type2;
+        }
+    }
+    if (aantal_mensen_gevaccineerd!= 0) { // enkel printen als we minstens een mens vaccineren
+        onStream << "Er werden " << aantal_mensen_gevaccineerd<< " inwoners gevaccineerd in " << getNaam() << ".\n";
     }
 }

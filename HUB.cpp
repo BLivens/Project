@@ -186,7 +186,7 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
         }
 
         for (unsigned int i = 0; i < centra.size(); i++) {
-            centra.at(i)->vaccineren(onStream);
+            centra.at(i)->vaccineren(onStream, dag);
         }
         dag++;
     }

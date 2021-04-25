@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
+#include <map>
 #include "DesignByContract.h"
+#include "Vaccin.h"
 
 #ifndef PROJECT_CENTRUM_H
 #define PROJECT_CENTRUM_H
@@ -15,7 +17,7 @@ public:
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
     */
-    void vaccineren(std::ostream &onStream);
+    void vaccineren(std::ostream &onStream, int dag);
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getNaam");
     \n ENSURE((!result.empty()),"getNaam can't return empty string");
@@ -81,6 +83,8 @@ public:
     \n ENSURE((getGevacineerden() == aantal_gevacineerden), "setGevacineerden postcondition failure");
     */
     void setGevacineerden(int aantal_gevacineerden);
+    std::vector<Vaccin*> vaccins;
+    std::map<std::pair<int, std::string>, int> log;
 
 private:
     Centrum* _initCheck;
@@ -88,7 +92,7 @@ private:
     std::string adres;
     int inwoners;
     int capaciteit;
-    int vaccins;
+    int voorraad;
     int gevacineerden;
 };
 
