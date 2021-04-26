@@ -71,15 +71,6 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                                 } else {
                                     tempvac->setType(type);
                                 }
-                            } else if (tag_vacc == "interval") {
-                                interval_counter ++;
-                                interval = std::atol(fetch_text(elem_vacc, errStream).c_str());
-                                if (levering < 0){
-                                    errStream << "XML PARTIAL IMPORT: Illegal levering " << levering << "."<< std::endl;
-                                    endResult = PartialImport;
-                                } else {
-                                    tempvac->setLevering(levering);
-                                }
                             } else if (tag_vacc == "levering") {
                                 levering_counter++;
                                 levering = std::atol(fetch_text(elem_vacc, errStream).c_str());

@@ -146,6 +146,22 @@ void Centrum::setVaccins(std::vector<Vaccin*> nieuwe_vaccins) {
     // ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure"); TODO: Dit toch testen
 }
 
+/* Voor later misschien
+int Centrum::tweedePrik(int dag, std::string type) {
+    REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling tweedePrik");
+    // TDO : Require dat het een bestaande naam van een vaccin is?
+    log[std::make_pair(dag, type)] = 0; // we maken de hoeveelheid van vandaag voorlopig nul, dit wordt in
+
+    Vaccin tempvac = vaccins[0];
+    int i = 1;
+    while (tempvac.getType() != type) {
+        tempvac = vaccins[i];
+        i++;
+    }
+
+    return 1;
+}
+*/
 
 void Centrum::vaccineren(std::ostream &onStream, int dag) {
     REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
@@ -163,6 +179,8 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
             if (log.count(p)!=0){
                 int aantal_vac_type = std::min(teVaccineren, log[p]);
                 vaccins[i].setVoorraad(vaccins[i].getVoorraad()-aantal_vac_type);
+                log[std::make_pair(dag+1, type_vacc)] += log[std::make_pair(dag, type_vacc)] - aantal_vac_type;
+                log[std::make_pair(dag, type_vacc)] = log[std::make_pair(dag, type_vacc)] - aantal_vac_type;
                 setGevacineerden(getGevacineerden()+aantal_vac_type);
                 teVaccineren = teVaccineren - aantal_vac_type;
                 aantal_mensen_gevaccineerd = aantal_mensen_gevaccineerd + aantal_vac_type;

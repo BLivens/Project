@@ -94,8 +94,11 @@ public:
     */
     void setVaccins(std::vector<Vaccin*> vaccins);
 
+    // int tweedePrik(int dag, std::string type); voor later misschien
+
+
     std::map<std::pair<int, std::string>, int> log;
-    std::vector<Vaccin> vaccins; // TODO: pointer maken zou plezant zijn maar ambetant...
+    std::vector<Vaccin> vaccins; //bij nader inzien, beter geen pointer
 private:
     Centrum* _initCheck;
     std::string naam;
