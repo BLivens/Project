@@ -39,8 +39,9 @@ int main(int argc, char **argv) {
     std::cout << hub.centra[0]->vaccins[0].getVoorraad();
     */
     // automatische simulatie
-    hub.simuleren(3, std::cout);
+    hub.simuleren(12, std::cout);
     // output
+
     ProjectExporter::exportProject("output.txt", std::cout, hub);
     ProjectExporter::graphic_impression("output_grafische_weergave.txt", std::cout, hub);
 
