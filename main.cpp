@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
     // input
     ProjectImporter::importProject("../testInput/input.xml", std::cout , hub);
 
+
 /* Hanmatige test Importer
     for (unsigned int i = 0; i < hub.vaccins.size(); i++){
         std::cout << hub.vaccins[i]->getType() << std::endl;
@@ -39,7 +40,9 @@ int main(int argc, char **argv) {
     std::cout << hub.centra[0]->vaccins[0].getVoorraad();
     */
     // automatische simulatie
-    hub.simuleren(12, std::cout);
+
+    hub.simuleren(52, std::cout);
+
     // output
 
     ProjectExporter::exportProject("output.txt", std::cout, hub);

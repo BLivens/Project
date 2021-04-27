@@ -19,12 +19,12 @@ public:
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling getVaccins");
     */
-    std::vector<Vaccin> getVaccins() const;
+    //std::vector<Vaccin> getVaccins() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling setVaccins");
     \n ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure");
     */
-    void setVaccins(std::vector<Vaccin> vaccins);
+    //void setVaccins(std::vector<Vaccin> vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getInterval");
     \n ENSURE((result>0),"getInterval must return a strictly positive integer");
@@ -46,18 +46,18 @@ public:
     \n REQUIRE((voorraad>0),"voorraad must be a strictly positive integer");
     \n ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
     */
-    void setVoorraad(int aantal_vaccins);
+    //void setVoorraad(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(),"Hub wasn't initialized when calling getTransport");
     \n ENSURE((result>0),"getTransport must return a strictly positive integer");
     */
-    int getTransport() const;
+    //int getTransport() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling setTransport");
     \n REQUIRE((aantal_vaccins>0), "aantal_vaccins must be a strictly positive integer");
     \n ENSURE((getTransport() == aantal_vaccins), "setTransport postcondition failure");
     */
-    void setTransport(int aantal_vaccins);
+    //void setTransport(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling getLevering");
     \n ENSURE((result>=0),"getLevering must return a positive integer");
@@ -75,7 +75,7 @@ public:
     \n REQUIRE(centrumVerbonden(centrum), "berekenLadingen requires centrum to be linked with Hub.");
     \n ENSURE(result >= 0, "berekenLadingen must return a positive integer");
     */
-    int berekenLadingen(const Centrum* centrum) const;
+    //int berekenLadingen(const Centrum* centrum) const;
     /**;
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling simuleerTransport");
@@ -96,8 +96,6 @@ public:
     std::vector<Vaccin*> vaccins;
 private:
     Hub* _initCheck;
-    int transport;
-    int voorraad;
 };
 
 #endif //PROJECT_HUB_H

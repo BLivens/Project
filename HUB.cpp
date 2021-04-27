@@ -2,8 +2,6 @@
 
 Hub::Hub(){
     _initCheck = this;
-    transport = 0;
-    vaccins.empty();
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
 }
@@ -29,19 +27,22 @@ void Hub::setVaccins(std::vector<Vaccin> nieuwe_vaccins) {
 */
 
 int Hub::getVoorraad() const {
-    int result;
+    int result = 0;
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling getVoorraad");
-    result = voorraad;
+    for (unsigned int i = 0; i < vaccins.size(); i++){
+        result = result + vaccins[i]->getVoorraad();
+    }
     return result;
 }
-
+/*
 void Hub::setVoorraad(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setVoorraad");
     voorraad = aantal_vaccins;
     ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
 }
+ */
 /* Deze zijn niet meer nodig want worden nu afgehandeld door de vaccins
 int Hub::getInterval() const{
     int result;
@@ -61,6 +62,7 @@ void Hub::setInterval(int aantal_dagen) {
     ENSURE((getInterval() == aantal_dagen), "setInterval postcondition failure");
 }
 */
+/*
 int Hub::getTransport() const{
     int result = 0;
     REQUIRE(this->properlyInitialized(),
@@ -71,7 +73,8 @@ int Hub::getTransport() const{
     ENSURE((result>0),"getTransport must return a strictly positive integer");
     return result;
 }
-
+*/
+/*
 void Hub::setTransport(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setTransport");
@@ -80,6 +83,7 @@ void Hub::setTransport(int aantal_vaccins) {
     transport = aantal_vaccins;
     ENSURE((getTransport() == aantal_vaccins), "setTransport postcondition failure");
 }
+ */
 /*
 int Hub::getLevering() const{
     int result;
@@ -99,6 +103,7 @@ void Hub::setLevering(int aantal_vaccins) {
     ENSURE((getLevering() == aantal_vaccins), "setLevering postcondition failure");
 }
 */
+/*
 int Hub::berekenLadingen(const Centrum* centrum) const {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling berekenLadingen");
@@ -138,7 +143,7 @@ int Hub::berekenLadingen(const Centrum* centrum) const {
     ENSURE(result >= 0, "berekenLadingen must return a positive integer");
     return result;
 }
-
+*/
 
 
 void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
@@ -190,7 +195,7 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
             }
         }
         vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-result*vaccins[i]->getTransport());
-        centrum->vaccins[i].setVoorraad(centrum->vaccins[i].getVoorraad()+result*vaccins[i]->getTransport());
+        centrum->vaccins[i]->setVoorraad(centrum->vaccins[i]->getVoorraad()+result*vaccins[i]->getTransport());
         aantal_ladingen = aantal_ladingen + result;
         aantal_vaccins = aantal_vaccins + result * vaccins[i]->getTransport();
     }
@@ -218,7 +223,6 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
         for (unsigned int i = 0; i < vaccins.size(); i++) {
             if (dag % vaccins[i]->getInterval() == 0) {
                 int plus = vaccins[i]->getLevering();
-                setVoorraad(getVoorraad() + plus);
                 vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() + plus);
             }
         }

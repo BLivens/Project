@@ -2,7 +2,7 @@
 
 Vaccin::Vaccin(){
     _initCheck = this;
-    type = "";
+    type = "a";
     levering = 0;
     voorraad = 0;
     hernieuwing = 0;

@@ -72,7 +72,7 @@ public:
     \n REQUIRE((aantal_vaccins>=0 && aantal_vaccins <= getCapaciteit()*2), "aantal_vaccins must be a positive integer lower or equal to capaciteit*2");
     \n ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
     */
-    void setVoorraad(int aantal_vaccins);
+    // void setVoorraad(int aantal_vaccins);
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getGevacineerden");
     \n ENSURE((result>=0),"getGevacineerden must return a positive integer");
@@ -87,25 +87,24 @@ public:
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling getVaccins");
     */
-    std::vector<Vaccin> getVaccins() const;
+    // std::vector<Vaccin*> getVaccins() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setVaccins");
     \n ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure");
     */
-    void setVaccins(std::vector<Vaccin*> vaccins);
+    // void setVaccins(std::vector<Vaccin*> vaccins);
 
     // int tweedePrik(int dag, std::string type); voor later misschien
 
 
     std::map<std::pair<int, std::string>, int> log;
-    std::vector<Vaccin> vaccins; //bij nader inzien, beter geen pointer
+    std::vector<Vaccin*> vaccins; //bij nader inzien, beter geen pointer
 private:
     Centrum* _initCheck;
     std::string naam;
     std::string adres;
     int inwoners;
     int capaciteit;
-    int voorraad;
     int gevacineerden;
 };
 

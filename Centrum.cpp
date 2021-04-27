@@ -6,7 +6,6 @@ Centrum::Centrum() {
     adres = "a";
     inwoners = 0;
     capaciteit = 0;
-    voorraad = 0;
     gevacineerden = 0;
     ENSURE(properlyInitialized(),
            "constructor must end in properlyInitialized state");
@@ -94,12 +93,12 @@ int Centrum::getVoorraad() const {
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling getVoorraad");
     for (unsigned int i =0; i < vaccins.size(); i++) {
-        result+= vaccins[i].getVoorraad();
+        result+= vaccins[i]->getVoorraad();
     }
     ENSURE((result>=0) && (result<= getCapaciteit()*2),"getVoorraad must return a positive integer lower or equal to capaciteit*2");
     return result;
 }
-
+/*
 void Centrum::setVoorraad(int aantal_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Centrum wasn't initialized when calling setVoorraad");
@@ -109,6 +108,7 @@ void Centrum::setVoorraad(int aantal_vaccins) {
     // ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure"); Werkt tijdelijk niet,
     //  TODO: getvoorraad gaat halen bij de vaccins zelf, moet bij voorraad zijn en deze functie (setvoorraad) moet veranderen naar een functie die vaccins weghaalt uit de specifieke voorraaden vna vaccins
 }
+*/
 
 int Centrum::getGevacineerden() const{
     int result;
@@ -128,24 +128,25 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
     ENSURE((getGevacineerden() == aantal_gevacineerden), "setGevacineerden postcondition failure");
 }
 
-
-std::vector<Vaccin> Centrum::getVaccins() const{
-    std::vector<Vaccin> result;
+/*
+std::vector<Vaccin*> Centrum::getVaccins() const{
+    std::vector<Vaccin*> result;
     REQUIRE(this->properlyInitialized(),
            "Hub wasn't initialized when calling getVaccins");
     result = vaccins;
     return result;
 }
-
+*/
+/*
 void Centrum::setVaccins(std::vector<Vaccin*> nieuwe_vaccins) {
     REQUIRE(this->properlyInitialized(),
             "Hub wasn't initialized when calling setVaccins");
     for (unsigned int i = 0; i < nieuwe_vaccins.size(); i++) {
-        vaccins.push_back(*nieuwe_vaccins[i]);
+        vaccins.push_back(nieuwe_vaccins[i]);
     }
     // ENSURE((getVaccins() == nieuwe_vaccins), "setVaccins postcondition failure"); TODO: Dit toch testen
 }
-
+*/
 /* Voor later misschien
 int Centrum::tweedePrik(int dag, std::string type) {
     REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling tweedePrik");
@@ -229,15 +230,15 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
     // mensen met prikje eerst
     for (unsigned int i = 0; i < vaccins.size(); i++){
         // indien er voorraad is voor dat vaccin aanwezig is en het is een vaccin met vernieuwing
-        if(vaccins[i].getVoorraad()!=0 and vaccins[i].getHernieuwing() != 0){
-            int dag_eerste_prik = dag-vaccins[i].getHernieuwing()-1;
-            std::string type_vacc = vaccins[i].getType();
+        if(vaccins[i]->getVoorraad()!=0 and vaccins[i]->getHernieuwing() != 0){
+            int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
+            std::string type_vacc = vaccins[i]->getType();
             // kijk in log of er mensen zijn met een prikje ouder of gelijk aan die datum
             for (int k= 0; k<=dag_eerste_prik; k++){
                 std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type_vacc);
                 if (log.count(p)!=0){
                     int aantal_vac_type = std::min(teVaccineren, log[p]);
-                    vaccins[i].setVoorraad(vaccins[i].getVoorraad()-aantal_vac_type);
+                    vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-aantal_vac_type);
                     log[p] = log[p]-aantal_vac_type;
                     setGevacineerden(getGevacineerden()+aantal_vac_type);
                     teVaccineren = teVaccineren - aantal_vac_type;
@@ -255,16 +256,16 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
             aantal_eerste_prikken = aantal_eerste_prikken + it->second;
         }
         // kijk of er nog vaccins van dat type in voorraad zijn en er nog mensen gevaccineerd dienen te worden
-        if(vaccins[j].getVoorraad()!=0 and teVaccineren>0 and aantal_eerste_prikken != getInwoners()){
+        if(vaccins[j]->getVoorraad()!=0 and teVaccineren>0 and aantal_eerste_prikken != getInwoners()){
             // het aantal eerste prikken dat gezet gaat worden
-            int aantal_vac_type2 = std::min(teVaccineren, vaccins[j].getVoorraad());
+            int aantal_vac_type2 = std::min(teVaccineren, vaccins[j]->getVoorraad());
             aantal_vac_type2 = std::min(aantal_vac_type2, getInwoners()-aantal_eerste_prikken);
-            vaccins[j].setVoorraad(vaccins[j].getVoorraad()-aantal_vac_type2);
-            if(vaccins[j].getHernieuwing()==0){
+            vaccins[j]->setVoorraad(vaccins[j]->getVoorraad()-aantal_vac_type2);
+            if(vaccins[j]->getHernieuwing()==0){
                 setGevacineerden(getGevacineerden()+aantal_vac_type2);
             }
             else{
-                log[std::make_pair(dag,vaccins[j].getType())] = aantal_vac_type2;
+                log[std::make_pair(dag,vaccins[j]->getType())] = aantal_vac_type2;
             }
             teVaccineren = teVaccineren - aantal_vac_type2;
             aantal_mensen_gevaccineerd = aantal_mensen_gevaccineerd + aantal_vac_type2;

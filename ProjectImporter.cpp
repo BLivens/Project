@@ -34,6 +34,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
     else {
         int hub_counter = 0;
         int centrum_counter = 0;
+        int vaccin_counter = 0;
         for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
             std::string elemName = elem->Value();
             // herken element
@@ -46,6 +47,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                     tag = elem_hub->Value();
 
                     if (tag == "VACCIN") {
+                        vaccin_counter = vaccin_counter + 1;
                         Vaccin* tempvac = new Vaccin;
                         std::string type;
                         std::string tag_vacc;
@@ -84,7 +86,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             } else if (tag_vacc == "interval") {
                                 interval_counter++;
                                 interval = std::atol(fetch_text(elem_vacc, errStream).c_str());
-                                if (interval < 0) {
+                                if (interval <= 0) {
                                     errStream << "XML PARTIAL IMPORT: Illegal interval " << interval << "."
                                               << std::endl;
                                     endResult = PartialImport;
@@ -94,7 +96,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                             } else if (tag_vacc == "transport") {
                                 transport_counter++;
                                 transport = std::atol(fetch_text(elem_vacc, errStream).c_str());
-                                if (transport < 0) {
+                                if (transport < 1) {
                                     errStream << "XML PARTIAL IMPORT: Illegal transport " << transport << "."
                                               << std::endl;
                                     endResult = PartialImport;
@@ -115,6 +117,10 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                                 temperatuur_counter++;
                                 temperatuur = std::atol(fetch_text(elem_vacc, errStream).c_str());
                                 tempvac->setTemperatuur(temperatuur);
+                            }
+                            else{
+                                errStream << "XML PARTIAL IMPORT: Unexpected tag in VACCIN." << std::endl;
+                                endResult = PartialImport;
                             }
 
                         }
@@ -225,11 +231,28 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
             errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 centrum." << std::endl;
             endResult = PartialImport;
         }
+        if (vaccin_counter <1){
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 vaccin." << std::endl;
+            endResult = PartialImport;
+        }
     }
+    for (unsigned int i = 0; i < simulatie.centra.size(); i++) {
+        for (unsigned int j = 0; j < simulatie.vaccins.size();j++){
+            Vaccin* tempvac = new Vaccin;
+            tempvac->setType(simulatie.vaccins[j]->getType());
+            tempvac->setLevering(simulatie.vaccins[j]->getLevering());
+            tempvac->setInterval(simulatie.vaccins[j]->getInterval());
+            tempvac->setTransport(simulatie.vaccins[j]->getTransport());
+            tempvac->setHernieuwing(simulatie.vaccins[j]->getHernieuwing());
+            tempvac->setTemperatuur(simulatie.vaccins[j]->getTemperatuur());
+            simulatie.centra[i]->vaccins.push_back(tempvac);
+        }
+    }
+    /*
     for (unsigned int i = 0; i < simulatie.centra.size(); i++) {
         simulatie.centra[i]->setVaccins(simulatie.vaccins);
     }
-
+    */
     doc.Clear();
     return endResult;
 }

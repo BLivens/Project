@@ -1,9 +1,14 @@
 <?xml version="1.0"?>
 <Simulatie>
 	<HUB>
-		<levering>99000</levering>
-		<interval>10</interval>
-		<transport>2000</transport>
+		<VACCIN>
+			<type>Moderna</type>
+			<levering>46000</levering>
+			<interval>13</interval>
+			<transport>1000</transport>
+			<hernieuwing>28</hernieuwing>
+			<temperatuur>-20</temperatuur>
+		</VACCIN>
 		<CENTRA>
 			<centrum>Park Spoor Oost</centrum>
 		</CENTRA>

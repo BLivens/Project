@@ -19,6 +19,7 @@ protected:
 
     Hub hub_;
     Centrum centrum_;
+    Vaccin vaccin_;
 };
 
 /**
@@ -26,10 +27,9 @@ Tests the default constructor for Hub.
 */
 TEST_F(ProjectDomainTest, DefaultConstructorHub) {
     EXPECT_TRUE(hub_.properlyInitialized());
-    EXPECT_EQ(0, hub_.getLevering());
-    EXPECT_EQ(0, hub_.getVaccins());
-    EXPECT_EQ(1, hub_.getInterval());
-    EXPECT_EQ(1, hub_.getTransport());
+    EXPECT_EQ(0, hub_.getVoorraad());
+    EXPECT_TRUE(hub_.centra.empty());
+    EXPECT_TRUE(hub_.vaccins.empty());
 }
 
 TEST_F(ProjectDomainTest, testcentrumVerbonden) {
@@ -53,7 +53,7 @@ TEST_F(ProjectDomainTest, testcentrumVerbonden) {
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_TRUE(hub_.centrumVerbonden(centrum2));
 }
-
+/*
 TEST_F(ProjectDomainTest, testberekenLadingen){
     EXPECT_TRUE(hub_.properlyInitialized());
     EXPECT_TRUE(hub_.centra.empty());
@@ -81,14 +81,35 @@ TEST_F(ProjectDomainTest, testberekenLadingen){
     hub_.centra[0]->setCapaciteit(500);
     EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
 }
+ */
 
 TEST_F(ProjectDomainTest, testsimuleerTransport){
     EXPECT_TRUE(hub_.properlyInitialized());
     EXPECT_TRUE(hub_.centra.empty());
-    hub_.setTransport(2000);
-    hub_.setInterval(6);
-    hub_.setVaccins(93000);
-    hub_.setLevering(93000);
+    EXPECT_TRUE(hub_.vaccins.empty());
+
+    Vaccin* vac;
+    Vaccin pvac;
+    vac = &pvac;
+    vac->setType("Pfizer");
+    vac->setLevering(93000);
+    vac->setInterval(6);
+    vac->setTransport(2000);
+    vac->setHernieuwing(21);
+    vac->setTemperatuur(-70);
+    vac->setVoorraad(93000);
+    hub_.vaccins.push_back(vac);
+
+    Vaccin* vac2;
+    Vaccin pvac2;
+    vac2 = &pvac2;
+    vac2->setType("Pfizer");
+    vac2->setLevering(93000);
+    vac2->setInterval(6);
+    vac2->setTransport(2000);
+    vac2->setHernieuwing(21);
+    vac2->setTemperatuur(-70);
+
     Centrum* a;
     Centrum pcentrum;
     a = &pcentrum;
@@ -98,14 +119,15 @@ TEST_F(ProjectDomainTest, testsimuleerTransport){
     hub_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
     hub_.centra[0]->setInwoners(540173);
     hub_.centra[0]->setCapaciteit(7500);
-    hub_.centra[0]->setVaccins(0);
+    hub_.centra[0]->vaccins.push_back(vac2);
     std::ostream bitBucket(NULL);
     hub_.simuleerTransport(bitBucket, hub_.centra[0]);
-    EXPECT_EQ(85000, hub_.getVaccins());
-    EXPECT_EQ(8000, hub_.centra[0]->getVaccins());
+
+    EXPECT_EQ(85000, hub_.getVoorraad());
+    EXPECT_EQ(8000, hub_.centra[0]->getVoorraad());
     hub_.simuleerTransport(bitBucket, hub_.centra[0]);
-    EXPECT_EQ(85000, hub_.getVaccins());
-    EXPECT_EQ(8000, hub_.centra[0]->getVaccins());
+    EXPECT_EQ(85000, hub_.getVoorraad());
+    EXPECT_EQ(8000, hub_.centra[0]->getVoorraad());
 }
 
 /**
@@ -114,13 +136,40 @@ Tests the "happy day" scenario for Hub
 TEST_F(ProjectDomainTest, HappyDayHub){
     EXPECT_TRUE(hub_.properlyInitialized());
     EXPECT_TRUE(hub_.centra.empty());
-    EXPECT_EQ(0, hub_.getLevering());
-    EXPECT_EQ(0, hub_.getVaccins());
-    EXPECT_EQ(1, hub_.getInterval());
-    EXPECT_EQ(1, hub_.getTransport());
-    hub_.setTransport(2000);
-    hub_.setInterval(6);
-    hub_.setLevering(93000);
+    EXPECT_TRUE(hub_.vaccins.empty());
+    EXPECT_EQ(0, hub_.getVoorraad());;
+
+    Vaccin* vac;
+    Vaccin pvac;
+    vac = &pvac;
+    vac->setType("Pfizer");
+    vac->setLevering(93000);
+    vac->setInterval(6);
+    vac->setTransport(2000);
+    vac->setHernieuwing(2);
+    vac->setTemperatuur(-70);
+    hub_.vaccins.push_back(vac);
+
+    Vaccin* vac2;
+    Vaccin pvac2;
+    vac2 = &pvac2;
+    vac2->setType("Pfizer");
+    vac2->setLevering(93000);
+    vac2->setInterval(6);
+    vac2->setTransport(2000);
+    vac2->setHernieuwing(2);
+    vac2->setTemperatuur(-70);
+
+    Vaccin* vac3;
+    Vaccin pvac3;
+    vac3 = &pvac3;
+    vac3->setType("Pfizer");
+    vac3->setLevering(93000);
+    vac3->setInterval(6);
+    vac3->setTransport(2000);
+    vac3->setHernieuwing(2);
+    vac3->setTemperatuur(-70);
+
     Centrum* a;
     Centrum pcentrum;
     a = &pcentrum;
@@ -130,7 +179,7 @@ TEST_F(ProjectDomainTest, HappyDayHub){
     hub_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
     hub_.centra[0]->setInwoners(540173);
     hub_.centra[0]->setCapaciteit(7500);
-    hub_.centra[0]->setVaccins(0);
+    hub_.centra[0]->vaccins.push_back(vac2);
     Centrum* b;
     Centrum qcentrum;
     b = &qcentrum;
@@ -140,15 +189,13 @@ TEST_F(ProjectDomainTest, HappyDayHub){
     hub_.centra[1]->setAdres("Fabriekstraat 38, Lint");
     hub_.centra[1]->setInwoners(76935);
     hub_.centra[1]->setCapaciteit(2000);
-    hub_.centra[1]->setVaccins(0);
+    hub_.centra[1]->vaccins.push_back(vac3);
     std::ostream bitBucket(NULL);
-    hub_.simuleren(3, bitBucket);
-    EXPECT_EQ(63000, hub_.getVaccins());
-    EXPECT_EQ(6, hub_.getInterval());
-    EXPECT_EQ(2000, hub_.getTransport());
-    EXPECT_EQ(1500, hub_.centra[0]->getVaccins());
+    hub_.simuleren(6, bitBucket);
+    EXPECT_EQ(35000, hub_.getVoorraad());
+    EXPECT_EQ(1000, hub_.centra[0]->getVoorraad());
     EXPECT_EQ(22500, hub_.centra[0]->getGevacineerden());
-    EXPECT_EQ(0, hub_.centra[1]->getVaccins());
+    EXPECT_EQ(0, hub_.centra[1]->getVoorraad());
     EXPECT_EQ(6000, hub_.centra[1]->getGevacineerden());
 }
 
@@ -157,12 +204,13 @@ Tests the default constructor for Centrum.
 */
 TEST_F(ProjectDomainTest, DefaultConstructorCentrum){
     EXPECT_TRUE(centrum_.properlyInitialized());
-    EXPECT_EQ(0, centrum_.getVaccins());
     EXPECT_EQ("a", centrum_.getNaam());
     EXPECT_EQ("a", centrum_.getAdres());
     EXPECT_EQ(0, centrum_.getInwoners());
     EXPECT_EQ(0, centrum_.getCapaciteit());
     EXPECT_EQ(0, centrum_.getGevacineerden());
+    EXPECT_EQ(0, centrum_.getVoorraad());
+    EXPECT_TRUE(centrum_.vaccins.empty());
 }
 
 /**
@@ -173,32 +221,34 @@ TEST_F(ProjectDomainTest, HappyDayCentrum){
     centrum_.setInwoners(1000);
     centrum_.setCapaciteit(500);
     std::ostream bitBucket(NULL);
-    centrum_.vaccineren(bitBucket);
+    centrum_.vaccineren(bitBucket,0);
     EXPECT_EQ(0, centrum_.getGevacineerden());
-    EXPECT_EQ(0, centrum_.getVaccins());
-    centrum_.setVaccins(700);
-    centrum_.vaccineren(bitBucket);
-    EXPECT_EQ(500, centrum_.getGevacineerden());
-    EXPECT_EQ(200, centrum_.getVaccins());
-    centrum_.vaccineren(bitBucket);
-    EXPECT_EQ(700, centrum_.getGevacineerden());
-    EXPECT_EQ(0, centrum_.getVaccins());
+    EXPECT_EQ(0, centrum_.getVoorraad());
+    Vaccin* vac;
+    Vaccin pvac;
+    vac = &pvac;
+    vac->setType("Pfizer");
+    vac->setLevering(93000);
+    vac->setInterval(6);
+    vac->setTransport(2000);
+    vac->setHernieuwing(21);
+    vac->setTemperatuur(-70);
+    centrum_.vaccins.push_back(vac);
+    centrum_.vaccins[0]->setVoorraad(700);
+    centrum_.vaccineren(bitBucket,0);
+    EXPECT_EQ(0, centrum_.getGevacineerden());
+    EXPECT_EQ(200, centrum_.getVoorraad());
+    centrum_.vaccineren(bitBucket,22);
+    EXPECT_EQ(200, centrum_.getGevacineerden());
+    EXPECT_EQ(0, centrum_.getVoorraad());
 }
 
 /**
 Verify whether unsatisfied pre-conditions indeed trigger failures
 */
 TEST_F(ProjectDomainTest, ContractViolations) {
-    EXPECT_DEATH(hub_.setVaccins(-1), "Assertion.*failed"); // setVaccins needs a positive int
-    EXPECT_DEATH(hub_.setTransport(0), "Assertion.*failed"); // setTransport needs a strictly positive int
-    EXPECT_DEATH(hub_.setLevering(-1), "Assertion.*failed"); // setLevering needs a positive int
-    EXPECT_DEATH(hub_.setInterval(0), "Assertion.*failed"); // setInterval needs a strictly positive int
-    EXPECT_DEATH(hub_.verlaagVaccins(1),"Assertion.*failed"); // verlaagVaccins needs a positive integer lower or equal to getVaccins()
-    EXPECT_DEATH(hub_.verhoogVaccins(-1),"Assertion.*failed"); // verhoogVaccins needs a positive int
     std::ostream bitBucket(NULL);
     EXPECT_DEATH(hub_.simuleren(-1, bitBucket), "Assertion.*failed"); // simuleren needs a positive integer
-    EXPECT_DEATH(centrum_.setVaccins(-1), "Assertion.*failed"); // centrum.setVaccins needs a positive integer
-    EXPECT_DEATH(centrum_.setVaccins(10), "Assertion.*failed"); // centrum.setVaccins needs a positive integer lower than capaciteit*2
     EXPECT_DEATH(centrum_.setCapaciteit(-1), "Assertion.*failed"); // setCapaciteit needs a positive integer
     EXPECT_DEATH(centrum_.setGevacineerden(-1), "Assertion.*failed"); // setGevaccineerden needs a positive integer
     EXPECT_DEATH(centrum_.setNaam(""), "Assertion.*failed"); // setNaam needs a non empty string

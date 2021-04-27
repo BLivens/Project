@@ -1,9 +1,14 @@
 <?xml version="1.0"?>
 <Simulatie>
 	<HUB>
-		<levering>9000</levering>
-		<interval>7</interval>
-		<transport>1000</transport>
+		<VACCIN>
+			<type>Pfizer</type>
+			<levering>93000</levering>
+			<interval>6</interval>
+			<transport>2000</transport>
+			<hernieuwing>21</hernieuwing>
+			<temperatuur>-70</temperatuur>
+		</VACCIN>
 		<CENTRA>
 			<centrum>Park Spoor Oost</centrum>
 			<centrum>AED Studios</centrum>

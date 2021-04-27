@@ -1,1 +1,1 @@
-XML PARTIAL IMPORT: HUB has missing or duplicate attributes.
+XML PARTIAL IMPORT: Unexpected tag in VACCIN.

@@ -39,10 +39,29 @@ TEST_F(ProjectInputTest, InputHappyDay) {
     myfile.close();
     EXPECT_TRUE(importResult == Success);
     // nakijken van hub
-    EXPECT_EQ(93000, hub_.getLevering());
-    EXPECT_EQ(6, hub_.getInterval());
-    EXPECT_EQ(2000, hub_.getTransport());
-    EXPECT_EQ(0, hub_.getVaccins());
+
+    EXPECT_EQ("Pfizer", hub_.vaccins[0]->getType());
+    EXPECT_EQ(93000, hub_.vaccins[0]->getLevering());
+    EXPECT_EQ(6, hub_.vaccins[0]->getInterval());
+    EXPECT_EQ(2000, hub_.vaccins[0]->getTransport());
+    EXPECT_EQ(21, hub_.vaccins[0]->getHernieuwing());
+    EXPECT_EQ(-70, hub_.vaccins[0]->getTemperatuur());
+
+    EXPECT_EQ("Moderna", hub_.vaccins[1]->getType());
+    EXPECT_EQ(46000, hub_.vaccins[1]->getLevering());
+    EXPECT_EQ(13, hub_.vaccins[1]->getInterval());
+    EXPECT_EQ(1000, hub_.vaccins[1]->getTransport());
+    EXPECT_EQ(28, hub_.vaccins[1]->getHernieuwing());
+    EXPECT_EQ(-20, hub_.vaccins[1]->getTemperatuur());
+
+    EXPECT_EQ("AstraZeneca", hub_.vaccins[2]->getType());
+    EXPECT_EQ(67000, hub_.vaccins[2]->getLevering());
+    EXPECT_EQ(4, hub_.vaccins[2]->getInterval());
+    EXPECT_EQ(1500, hub_.vaccins[2]->getTransport());
+    EXPECT_EQ(28, hub_.vaccins[2]->getHernieuwing());
+    EXPECT_EQ(5, hub_.vaccins[2]->getTemperatuur());
+
+
 
     //nakijken van centrums
     EXPECT_EQ("Park Spoor Oost", hub_.centra[0]->getNaam());
@@ -131,5 +150,5 @@ TEST_F(ProjectInputTest, InputIllegalSimulations) {
         fileCounter = fileCounter + 1;
         fileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".xml";
     };
-    EXPECT_TRUE(fileCounter == 13);
+    EXPECT_TRUE(fileCounter == 15);
 }

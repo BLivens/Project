@@ -1,3 +1,5 @@
+XML PARTIAL IMPORT: Illegal type .
 XML PARTIAL IMPORT: Illegal levering -1.
 XML PARTIAL IMPORT: Illegal interval -1.
 XML PARTIAL IMPORT: Illegal transport -1.
+XML PARTIAL IMPORT: Illegal hernieuwing -1.
