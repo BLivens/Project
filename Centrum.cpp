@@ -119,6 +119,7 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 
 void Centrum::vaccineren(std::ostream &onStream, int dag) {
     REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
+    REQUIRE((dag>=0), "dag must be a positive integer");
 
     int ongevaccineerden = getInwoners() - getGevacineerden();
     int teVaccineren = std::min(getVoorraad(), getCapaciteit());

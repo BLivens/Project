@@ -17,13 +17,13 @@ public:
     bool properlyInitialized() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getType");
-    \n ENSURE((result!=""),"getType must return a non-empty string");
+    \n ENSURE((!result.empty(),"getType must return a non-empty string");
     */
     std::string getType() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling setType");
-    \n REQUIRE((type!=""),"Type must be a non-empty string");
-    \n ENSURE((getType() == type), "setType postcondition failure");
+    \n REQUIRE((!nieuw_type.empty()),"Type must be a non-empty string");
+    \n ENSURE((getType() == nieuw_type), "setType postcondition failure");
     */
     void setType(std::string nieuw_type);
     /**
@@ -60,13 +60,12 @@ public:
     */
     void setLevering(int aantal_vaccins);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getLevering");
-    \n ENSURE((result>=0),"getLevering must return a positive integer");
+    \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getTemperatuur");
     */
     int getTemperatuur() const;
     /**
-    \n REQUIRE(this->properlyInitialized(),"Vaccin wasn't initialized when calling setLevering");
-    \n ENSURE((getLevering() == nieuwe_temperatuur), "setTemperatuur postcondition failure");
+    \n REQUIRE(this->properlyInitialized(),"Vaccin wasn't initialized when calling setTemperatuur");
+    \n ENSURE((getTemperatuur() == nieuwe_temperatuur), "setTemperatuur postcondition failure");
     */
     void setTemperatuur(int nieuwe_temperatuur);
     /**
@@ -76,7 +75,8 @@ public:
     int getHernieuwing() const;
     /**
     \n REQUIRE(this->properlyInitialized(),"Vaccin wasn't initialized when calling setHernieuwing");
-    \n ENSURE((getLevering() == nieuwe_hernieuwing), "setHernieuwing postcondition failure");
+    \n REQUIRE((nieuwe_hernieuwing>=0), "nieuwe_hernieuwing must be a positive integer");
+    \n ENSURE((getHernieuwing() == nieuwe_hernieuwing), "setHernieuwing postcondition failure");
     */
     void setHernieuwing(int nieuwe_hernieuwing);
     /**

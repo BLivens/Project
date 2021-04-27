@@ -239,6 +239,7 @@ TEST_F(ProjectDomainTest, ContractViolations) {
     EXPECT_DEATH(centrum_.setNaam(""), "Assertion.*failed"); // setNaam needs a non empty string
     EXPECT_DEATH(centrum_.setAdres(""), "Assertion.*failed"); // setAdres needs a non empty string
     EXPECT_DEATH(centrum_.setInwoners(-1), "Assertion.*failed"); //setInwoners needs a positive integer
+    EXPECT_DEATH(centrum_.vaccineren(bitBucket, -1), "Assertion.*failed"); //setInwoners needs a positive integer
     EXPECT_DEATH(vaccin_.setType(""), "Assertion.*failed"); //setType needs a non empty string
     EXPECT_DEATH(vaccin_.setLevering(-1), "Assertion.*failed"); //setLevering needs a positive integer
     EXPECT_DEATH(vaccin_.setVoorraad(-1), "Assertion.*failed"); //setVoorraad needs a positive integer

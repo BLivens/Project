@@ -17,6 +17,7 @@ public:
     bool properlyInitialized() const;
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
+    \n  REQUIRE((dag>=0), "dag must be a positive integer");
     */
     void vaccineren(std::ostream &onStream, int dag);
     /**
@@ -38,6 +39,7 @@ public:
     /**
     \n REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling setAdres");
     \n REQUIRE((!nieuw_adres.empty()),"adres can't be empty");
+    \n ENSURE((getAdres() == nieuw_adres),"setAdres postconditiion failure");
     */
     void setAdres(std::string nieuw_adres);
     /**

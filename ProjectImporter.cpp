@@ -248,11 +248,7 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
             simulatie.centra[i]->vaccins.push_back(tempvac);
         }
     }
-    /*
-    for (unsigned int i = 0; i < simulatie.centra.size(); i++) {
-        simulatie.centra[i]->setVaccins(simulatie.vaccins);
-    }
-    */
+
     doc.Clear();
     return endResult;
 }

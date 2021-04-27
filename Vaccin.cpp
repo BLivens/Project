@@ -140,6 +140,8 @@ void Vaccin::setHernieuwing(int nieuwe_hernieuwing) {
 
     REQUIRE(this->properlyInitialized(),
             "Vaccin wasn't initialized when calling setHernieuwing");
+    REQUIRE((nieuwe_hernieuwing>=0),
+            "nieuwe_hernieuwing must be a positive integer");
 
     hernieuwing = nieuwe_hernieuwing;
     ENSURE((getHernieuwing() == nieuwe_hernieuwing), "setHernieuwing postcondition failure");
@@ -158,6 +160,8 @@ void Vaccin::setVoorraad(int aantal_vaccins) {
 
     REQUIRE(this->properlyInitialized(),
             "Vaccin wasn't initialized when calling setVoorraad");
+    REQUIRE((aantal_vaccins>=0),
+            "aantal_vaccins must be a positive integer");
     voorraad = aantal_vaccins;
     ENSURE((getVoorraad() == aantal_vaccins), "setVoorraad postcondition failure");
 }

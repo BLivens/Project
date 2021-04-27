@@ -17,12 +17,13 @@ int Hub::getVoorraad() const {
     for (unsigned int i = 0; i < vaccins.size(); i++){
         result = result + vaccins[i]->getVoorraad();
     }
+    ENSURE((result>=0), "getVoorraad must return a positive integer");
     return result;
 }
 
 
 void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
-    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling berekenLadingen");
+    REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleerTransport");
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling simuleerTransport");
     REQUIRE(centrumVerbonden(centrum), "simuleerTransport requires centrum to be linked with Hub.");
 
