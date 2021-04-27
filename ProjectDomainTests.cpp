@@ -53,35 +53,6 @@ TEST_F(ProjectDomainTest, testcentrumVerbonden) {
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_TRUE(hub_.centrumVerbonden(centrum2));
 }
-/*
-TEST_F(ProjectDomainTest, testberekenLadingen){
-    EXPECT_TRUE(hub_.properlyInitialized());
-    EXPECT_TRUE(hub_.centra.empty());
-    hub_.setTransport(2000);
-    hub_.setInterval(6);
-    hub_.setVaccins(93000);
-    hub_.setLevering(93000);
-    Centrum *a;
-    Centrum pcentrum;
-    a = &pcentrum;
-    a->setNaam("Park Spoor Oost");
-    a->setAdres("Noordersingel 40, Antwerpen");
-    a->setInwoners(540173);
-    a->setCapaciteit(7500);
-    a->setVaccins(0);
-    hub_.centra.push_back(a);
-    EXPECT_EQ(4,hub_.berekenLadingen(hub_.centra[0]));
-    hub_.centra[0]->setVaccins(7500);
-    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
-    hub_.centra[0]->setVaccins(5500);
-    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
-    hub_.centra[0]->setVaccins(0);
-    hub_.centra[0]->setCapaciteit(1000);
-    EXPECT_EQ(1, hub_.berekenLadingen(hub_.centra[0]));
-    hub_.centra[0]->setCapaciteit(500);
-    EXPECT_EQ(0, hub_.berekenLadingen(hub_.centra[0]));
-}
- */
 
 TEST_F(ProjectDomainTest, testsimuleerTransport){
     EXPECT_TRUE(hub_.properlyInitialized());
@@ -244,6 +215,20 @@ TEST_F(ProjectDomainTest, HappyDayCentrum){
 }
 
 /**
+Tests the default constructor for Vaccin.
+*/
+TEST_F(ProjectDomainTest, DefaultConstructorVaccin) {
+    EXPECT_TRUE(vaccin_.properlyInitialized());
+    EXPECT_EQ("a", vaccin_.getType());
+    EXPECT_EQ(0, vaccin_.getLevering());
+    EXPECT_EQ(0, vaccin_.getVoorraad());
+    EXPECT_EQ(0, vaccin_.getHernieuwing());
+    EXPECT_EQ(0, vaccin_.getTemperatuur());
+    EXPECT_EQ(1, vaccin_.getInterval());
+    EXPECT_EQ(1, vaccin_.getTransport());
+}
+
+/**
 Verify whether unsatisfied pre-conditions indeed trigger failures
 */
 TEST_F(ProjectDomainTest, ContractViolations) {
@@ -254,4 +239,10 @@ TEST_F(ProjectDomainTest, ContractViolations) {
     EXPECT_DEATH(centrum_.setNaam(""), "Assertion.*failed"); // setNaam needs a non empty string
     EXPECT_DEATH(centrum_.setAdres(""), "Assertion.*failed"); // setAdres needs a non empty string
     EXPECT_DEATH(centrum_.setInwoners(-1), "Assertion.*failed"); //setInwoners needs a positive integer
+    EXPECT_DEATH(vaccin_.setType(""), "Assertion.*failed"); //setType needs a non empty string
+    EXPECT_DEATH(vaccin_.setLevering(-1), "Assertion.*failed"); //setLevering needs a positive integer
+    EXPECT_DEATH(vaccin_.setVoorraad(-1), "Assertion.*failed"); //setVoorraad needs a positive integer
+    EXPECT_DEATH(vaccin_.setHernieuwing(-1), "Assertion.*failed"); //setHernieuwing needs a positive integer
+    EXPECT_DEATH(vaccin_.setInterval(0), "Assertion.*failed"); //setInterval needs a strictly positive integer
+    EXPECT_DEATH(vaccin_.setTransport(0), "Assertion.*failed"); //setTransport needs a strictly positive integer
 }

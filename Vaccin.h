@@ -16,7 +16,7 @@ public:
     Vaccin();
     bool properlyInitialized() const;
     /**
-    \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getTypu");
+    \n REQUIRE(this->properlyInitialized(), "Vaccin wasn't initialized when calling getType");
     \n ENSURE((result!=""),"getType must return a non-empty string");
     */
     std::string getType() const;
@@ -94,13 +94,13 @@ public:
 
 private:
     Vaccin* _initCheck;
-    std::string type; // done
+    std::string type;
     int voorraad;
     int hernieuwing;
-    int temperatuur; // done
-    int levering; // done
-    int interval; // done
-    int transport; // done
+    int temperatuur;
+    int levering;
+    int interval;
+    int transport;
 };
 
 #endif //PROJECT_VACCIN_H
