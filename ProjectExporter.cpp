@@ -43,8 +43,8 @@ SuccessEnum2 ProjectExporter::graphic_impression(const char *outputfilename, std
     for(unsigned int i = 0; i < simulatie.centra.size(); i++) {
         outfile << simulatie.centra[i]->getNaam() << ":" <<  std::endl;
 
-        outfile << "\t" << "- vaccins" << "\t" << "[";
-        int percent_vacc = (double) simulatie.centra[i]->getVoorraad()/ (double) simulatie.centra[i]->getCapaciteit()*100;
+        outfile << "\t" << "- vaccins" << "\t\t" << "[";
+        int percent_vacc = (double) simulatie.centra[i]->getVoorraad()/ (double) simulatie.centra[i]->getCapaciteit()*100; // TODO: Ik stel voor dit te delen door twee. Dan krijgen we geen 100+ procenten meer
 
         int bars_vacc = percent_vacc/5;
         int space_vacc = 20-bars_vacc;
