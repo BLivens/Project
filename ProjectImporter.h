@@ -12,6 +12,7 @@
 #include <vector>
 #include "HUB.h"
 #include "Centrum.h"
+#include "Simulatie.h"
 #include <algorithm>
 #include <fstream>
 
@@ -31,7 +32,7 @@ public:
     //\n REQUIRE(simulatie->properlyInitialized(), "simulatie wasn't initialized when passed to ProjectImporter::importProject");
     //
     */
-    static SuccessEnum importProject(const char * inputfilename, std::ostream& errStream, Hub& simulatie);
+    static SuccessEnum importProject(const char * inputfilename, std::ostream& errStream, Simulatie& simulatie);
 };
 
 

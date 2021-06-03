@@ -28,16 +28,11 @@ public:
     */
     void simuleerTransport(std::ostream& onStream, Centrum* centrum);
     /**
-    \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleren");
-    \n REQUIRE(dagen>=0, "Dagen must be an integer greater or equal to 0.");
-    */
-    void simuleren(int dagen, std::ostream &onStream);
-    /**
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling centrumVerbonden);
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling centrumVerbonden");
     */
     bool centrumVerbonden(const Centrum* centrum) const;
-    std::vector<Centrum*> centra;
+    std::vector<Centrum**> centra;
     std::vector<Vaccin*> vaccins;
 private:
     Hub* _initCheck;

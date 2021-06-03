@@ -61,7 +61,11 @@ void Hub::simuleerTransport(std::ostream &onStream, Centrum* centrum) {
             }
         }
         vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-result*vaccins[i]->getTransport());
-        centrum->vaccins[i]->setVoorraad(centrum->vaccins[i]->getVoorraad()+result*vaccins[i]->getTransport());
+        for (unsigned j = 0; j < centrum->vaccins.size(); j++){
+            if (vaccins[i]->getType() == centrum->vaccins[j]->getType()){
+                centrum->vaccins[j]->setVoorraad(centrum->vaccins[j]->getVoorraad()+result*vaccins[i]->getTransport());
+            }
+        }
         aantal_ladingen = aantal_ladingen + result;
         aantal_vaccins = aantal_vaccins + result * vaccins[i]->getTransport();
     }
@@ -74,13 +78,13 @@ bool Hub::centrumVerbonden(const Centrum* centrum) const{
     REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling centrumVerbonden");
     bool isVerbonden = false;
     for (unsigned int i = 0; i<centra.size(); i++){
-        if(centrum->getNaam() == centra[i]->getNaam() and centrum->getAdres() == centra[i]->getAdres()){
+        if(centrum->getNaam() == (*centra[i])->getNaam() and centrum->getAdres() == (*centra[i])->getAdres()){
             isVerbonden = true;
         }
     }
     return isVerbonden;
 }
-
+/*
 void Hub::simuleren(int dagen, std::ostream &onStream) {
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleren");
     REQUIRE(dagen>=0, "Dagen must be an integer greater or equal to 0.");
@@ -93,12 +97,13 @@ void Hub::simuleren(int dagen, std::ostream &onStream) {
             }
         }
         for (unsigned int i = 0; i<centra.size(); i++){
-            simuleerTransport(onStream,centra[i]);
+            simuleerTransport(onStream,(*centra[i]));
         }
 
         for (unsigned int i = 0; i < centra.size(); i++) {
-            centra.at(i)->vaccineren(onStream, dag);
+            (*centra.at(i))->vaccineren(onStream, dag);
         }
         dag++;
     }
 }
+*/
