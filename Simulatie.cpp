@@ -12,6 +12,7 @@ Simulatie::Simulatie() {
 
 bool Simulatie::properlyInitialized() const{
     return _initCheck == this;
+
 }
 
 void Simulatie::simuleren(int dagen, std::ostream &onStream) {
@@ -34,9 +35,7 @@ void Simulatie::simuleren(int dagen, std::ostream &onStream) {
                     }
                 }
             }
-            for (unsigned int i = 0; i<hubs[j]->centra.size(); i++){
-                hubs[j]->simuleerTransport(onStream,(*hubs[j]->centra[i]));
-            }
+            hubs[j]->simuleerTransport(onStream, dag);
         }
 
         for (unsigned int i = 0; i < centra.size(); i++) {
