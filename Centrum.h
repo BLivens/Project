@@ -81,6 +81,13 @@ public:
     */
     void setGevacineerden(int aantal_gevacineerden);
 
+    /**
+    \n REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling setGevacineerden");
+    \n REQUIRE(!type.empty(), "type can't be empty");
+    \n REQUIRE(dag >= 0, "dag must be a positive integer");
+     */
+    int getTweedes(int dag, std::string vaccinnaam);
+
 
     std::map<std::pair<int, std::string>, int> log;
     std::vector<Vaccin*> vaccins;

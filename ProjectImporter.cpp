@@ -1,7 +1,3 @@
-//
-// Created by michel on 14.03.21.
-//
-
 #include "ProjectImporter.h"
 
 //Auxiliary function for internal use only

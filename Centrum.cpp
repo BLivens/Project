@@ -117,6 +117,23 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
     ENSURE((getGevacineerden() == aantal_gevacineerden), "setGevacineerden postcondition failure");
 }
 
+int Centrum::getTweedes(int dag, std::string type) {
+    REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling setGevacineerden");
+    REQUIRE(!type.empty(), "type can't be empty");
+    REQUIRE(dag >= 0, "dag must be a positive integer");
+
+    for (unsigned int i = 0; i < vaccins.size(); i++){
+        if (vaccins[i]->getType() == type) {
+            int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
+            std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
+            int nodig = log.count(p);
+            return nodig;
+        }
+    }
+    std::cerr << "Vaccin " << type << "not found in centrum " << naam << std::endl;
+    return 0;
+}
+
 void Centrum::vaccineren(std::ostream &onStream, int dag) {
     REQUIRE(this->properlyInitialized(), "Centrum wasn't initialized when calling vaccineren");
     REQUIRE((dag>=0), "dag must be a positive integer");
@@ -175,3 +192,4 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
         onStream << "Er werden " << aantal_mensen_gevaccineerd << " inwoners gevaccineerd in " << getNaam() << ".\n";
     }
 }
+
