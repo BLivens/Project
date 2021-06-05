@@ -24,6 +24,14 @@ void Simulatie::simuleren(int dagen, std::ostream &onStream) {
                 if (dag % hubs[j]->vaccins[i]->getInterval() == 0) {
                     int plus = hubs[j]->vaccins[i]->getLevering();
                     hubs[j]->vaccins[i]->setVoorraad(hubs[j]->vaccins[i]->getVoorraad() + plus);
+                    // bijhouden van aantal geleverde vacc per type
+                    std::string vacc_naam = hubs[j]->vaccins[i]->getType();
+                    if (geleverde_vacc.find(vacc_naam) == geleverde_vacc.end()){
+                        geleverde_vacc[vacc_naam] = plus;
+                    }
+                    else{
+                        geleverde_vacc[vacc_naam] = geleverde_vacc[vacc_naam] + plus;
+                    }
                 }
             }
             for (unsigned int i = 0; i<hubs[j]->centra.size(); i++){

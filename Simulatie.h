@@ -21,6 +21,7 @@ public:
     void simuleren(int dagen, std::ostream &onStream);
     std::vector<Hub*> hubs;
     std::vector<Centrum*> centra;
+    std::map<std::string, int> geleverde_vacc;
 private:
     Simulatie* _initCheck;
 };

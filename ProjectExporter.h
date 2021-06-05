@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "HUB.h"
+#include "Simulatie.h"
 #include "Centrum.h"
 #include <algorithm>
 #include <fstream>
@@ -23,6 +24,7 @@ class ProjectExporter {
 public:
     static SuccessEnum2 exportProject(const char * outputfilename, std::ostream& errStream, Hub& simulatie);
     static SuccessEnum2 graphic_impression(const char * outputfilename, std::ostream& errStream, Hub& simulatie);
+    static SuccessEnum2 statistics(const char * outputfilename, std::ostream& errStream, Simulatie& simulatie);
 };
 
 

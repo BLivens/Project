@@ -39,5 +39,6 @@ int main(int argc, char **argv) {
     ProjectExporter::exportProject("output.txt", std::cout, (*simulatie.hubs[0]));
     // grafische weergave
     ProjectExporter::graphic_impression("output_grafische_weergave.txt", std::cout, (*simulatie.hubs[0]));
+    ProjectExporter::statistics("output_statistics.txt", std::cout, simulatie);
     return 0;
 }

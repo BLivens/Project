@@ -73,3 +73,45 @@ SuccessEnum2 ProjectExporter::graphic_impression(const char *outputfilename, std
 
     return endResult;
 }
+
+SuccessEnum2 ProjectExporter::statistics(const char *outputfilename, std::ostream &errStream, Simulatie &simulatie) {
+
+    std::ofstream outfile(outputfilename);
+    SuccessEnum2 endResult = ExportSuccess;
+    if (!outfile.is_open()) {
+        errStream << "Can't open " << outputfilename << std::endl;
+        endResult = ExportAborted;
+        return endResult;
+    }
+
+    outfile << "Totaal aantal geleverde vaccins:" << std::endl;
+    std::map<std::string,int>::iterator it;
+    for (it = simulatie.geleverde_vacc.begin(); it != simulatie.geleverde_vacc.end(); it++){
+        outfile << it->first << ": " << "\t" << it->second << std::endl;
+    }
+    outfile << std::endl;
+    int totaal_aantal_inwoners = 0;
+    for (unsigned int i=0; i<simulatie.centra.size();i++){
+        totaal_aantal_inwoners = totaal_aantal_inwoners + simulatie.centra[i]->getInwoners();
+    }
+    outfile << "Totaal aantal inwoners:" << "\t"<< "\t" << "\t" << "\t"<< totaal_aantal_inwoners << std::endl;
+
+    int totaal_gevacc_inw = 0;
+    for (unsigned int i=0; i<simulatie.centra.size();i++){
+        totaal_gevacc_inw = totaal_gevacc_inw + simulatie.centra[i]->getGevacineerden();
+    }
+    outfile << "Totaal aantal gevaccineerde inwoners:" << "\t"<< "\t" << "\t" << totaal_gevacc_inw << std::endl;
+
+    int totaal_ged_gevacc_inw = 0;
+    for (unsigned int i =0; i<simulatie.centra.size(); i++){
+        std::map<std::pair<int, std::string>, int>::iterator itr;
+        for (itr = simulatie.centra[i]->log.begin(); itr != simulatie.centra[i]->log.end(); itr++){
+            totaal_ged_gevacc_inw = totaal_ged_gevacc_inw + itr->second;
+        }
+    }
+    outfile << "Totaal aantal inwoners wachtend op tweede prik:"<< "\t" << totaal_ged_gevacc_inw << std::endl;
+
+    outfile.close();
+
+    return endResult;
+}
