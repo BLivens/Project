@@ -37,7 +37,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
         std::string type = vaccins[i]->getType();
         int tweedeDosis;
 
-        for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans
+        for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans, voor tweed prikken
             tweedeDosis = std::max(0, (*centra[j])->getTweedes(dag, type) - (*centra[j])->vaccins[i]->getVoorraad()); // dit is hoeveel het centrum tekort komt, hopelijk kunnen we het sturen
 
             if (tweedeDosis <= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
@@ -52,21 +52,20 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
         }
 
         double wachttijd = dag % vaccins[i]->getInterval();
-
         double doel = (vaccins[i]->getVoorraad()/wachttijd)/centra.size();
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de tweede kans
             double zending;
-            if ((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad() <= doel + dringende[j]) {
-                zending = (*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad(); // het minumum van wat we willen sturen en wat we kunnen sturen
+            if ((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad() <= doel + dringende[j]) { // het minumum van wat we willen sturen en wat we kunnen sturen
+                zending = (*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad();
             } else {
                 zending = doel;
             }
             if (vaccins[i]->getTemperatuur() < 0) {
-                zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we misschien maar minder sturen
+                zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we er misschien maar minder sturen
                 dringende[j] += zending;
             }
-            levvac[j] += zending;
+            levvac[j] += zending; // dit (levvac[j]) is finaal hoeveel we van dit vaccin naar dit centrum sturen
 
             vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[j]);
             tot_vacs[i] += levvac[j];
