@@ -26,7 +26,6 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleerTransport");
     REQUIRE(dag >= 0, "Dag must be a non-negative number when calling simuleerTransport");
 
-
     std::vector<int> tot_lading(centra.size(), 0);
     std::vector<int> tot_vacs(centra.size(), 0);
     std::vector<int> dringende(centra.size(), 0);
@@ -72,7 +71,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
             if (levvac[j] > 0) {
                 tot_lading[i] ++;
             }
-            tot_lading[i] += levvac[j]/vaccins[i]->getLevering();
+            tot_lading[i] += floor(levvac[j]/vaccins[i]->getLevering());
             tot_vacs[i] += levvac[j];
 
             (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[j]); // dit is de echte levering van getallen (vaccins) aan het centrum

@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 #include "Centrum.h"
 #include "Vaccin.h"
 #include "DesignByContract.h"
