@@ -1,4 +1,4 @@
-Hub (47000 vaccins)
-  -> Park Spoor Oost (1000 vaccins)
+Hub (25500 vaccins)
+  -> Park Spoor Oost (0 vaccins)
 
 Park Spoor Oost: 22500 gevaccineerd, nog 517673 inwoners niet gevaccineerd

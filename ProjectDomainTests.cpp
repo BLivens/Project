@@ -52,7 +52,7 @@ TEST_F(ProjectDomainTest, testcentrumVerbonden) {
     hub_.centra.push_back(double_p1);
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_FALSE(hub_.centrumVerbonden(centrum2));
-    Centrum** double_p2 = &centrum1;
+    Centrum** double_p2 = &centrum2;
     hub_.centra.push_back(double_p2);
     EXPECT_TRUE(hub_.centrumVerbonden(centrum1));
     EXPECT_TRUE(hub_.centrumVerbonden(centrum2));
@@ -103,22 +103,24 @@ TEST_F(ProjectDomainTest, testsimuleerTransport){
     std::ostream bitBucket(NULL);
     hub_.simuleerTransport(bitBucket, 0);
 
-    EXPECT_EQ(85000, hub_.getVoorraad());
-    EXPECT_EQ(8000, simulatie_.centra[0]->getVoorraad());
+    EXPECT_EQ(85500, hub_.getVoorraad());
+    EXPECT_EQ(7500, simulatie_.centra[0]->getVoorraad());
     hub_.simuleerTransport(bitBucket, 0);
-    EXPECT_EQ(85000, hub_.getVoorraad());
-    EXPECT_EQ(8000, simulatie_.centra[0]->getVoorraad());
+    EXPECT_EQ(78000, hub_.getVoorraad());
+    EXPECT_EQ(15000, simulatie_.centra[0]->getVoorraad());
 }
 
 /**
 Tests the "happy day" scenario for Hub
 */
-/*
+
 TEST_F(ProjectDomainTest, HappyDayHub){
     EXPECT_TRUE(hub_.properlyInitialized());
     EXPECT_TRUE(hub_.centra.empty());
     EXPECT_TRUE(hub_.vaccins.empty());
-    EXPECT_EQ(0, hub_.getVoorraad());;
+    EXPECT_EQ(0, hub_.getVoorraad());
+
+
 
     Vaccin* vac;
     Vaccin pvac;
@@ -151,35 +153,46 @@ TEST_F(ProjectDomainTest, HappyDayHub){
     vac3->setHernieuwing(2);
     vac3->setTemperatuur(-70);
 
+    Hub* p = &hub_;
+    simulatie_.hubs.push_back(p);
+
     Centrum* a;
     Centrum pcentrum;
     a = &pcentrum;
-    hub_.centra.push_back(a);
-    EXPECT_TRUE(hub_.centra[0]->properlyInitialized());
-    hub_.centra[0]->setNaam("Park Spoor Oost");
-    hub_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
-    hub_.centra[0]->setInwoners(540173);
-    hub_.centra[0]->setCapaciteit(7500);
-    hub_.centra[0]->vaccins.push_back(vac2);
+    simulatie_.centra.push_back(a);
+    EXPECT_TRUE(simulatie_.centra[0]->properlyInitialized());
+    simulatie_.centra[0]->setNaam("Park Spoor Oost");
+    simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    simulatie_.centra[0]->setInwoners(540173);
+    simulatie_.centra[0]->setCapaciteit(7500);
+    simulatie_.centra[0]->vaccins.push_back(vac2);
+
+    Centrum** double_p1 = &a;
+    simulatie_.hubs[0]->centra.push_back(double_p1);
+
     Centrum* b;
     Centrum qcentrum;
     b = &qcentrum;
-    hub_.centra.push_back(b);
-    EXPECT_TRUE(hub_.centra[1]->properlyInitialized());
-    hub_.centra[1]->setNaam("AED Studios");
-    hub_.centra[1]->setAdres("Fabriekstraat 38, Lint");
-    hub_.centra[1]->setInwoners(76935);
-    hub_.centra[1]->setCapaciteit(2000);
-    hub_.centra[1]->vaccins.push_back(vac3);
+    simulatie_.centra.push_back(b);
+    EXPECT_TRUE(simulatie_.centra[1]->properlyInitialized());
+    simulatie_.centra[1]->setNaam("AED Studios");
+    simulatie_.centra[1]->setAdres("Fabriekstraat 38, Lint");
+    simulatie_.centra[1]->setInwoners(76935);
+    simulatie_.centra[1]->setCapaciteit(2000);
+    simulatie_.centra[1]->vaccins.push_back(vac3);
+    Centrum** double_p2 = &b;
+    simulatie_.hubs[0]->centra.push_back(double_p2);
+
     std::ostream bitBucket(NULL);
-    hub_.simuleren(6, bitBucket);
-    EXPECT_EQ(35000, hub_.getVoorraad());
-    EXPECT_EQ(1000, hub_.centra[0]->getVoorraad());
-    EXPECT_EQ(22500, hub_.centra[0]->getGevacineerden());
-    EXPECT_EQ(0, hub_.centra[1]->getVoorraad());
-    EXPECT_EQ(6000, hub_.centra[1]->getGevacineerden());
+
+    simulatie_.simuleren(6, bitBucket);
+    EXPECT_EQ(7500, hub_.getVoorraad());
+    EXPECT_EQ(0, simulatie_.centra[0]->getVoorraad());
+    EXPECT_EQ(22500, simulatie_.centra[0]->getGevacineerden());
+    EXPECT_EQ(0, simulatie_.centra[1]->getVoorraad());
+    EXPECT_EQ(6000, simulatie_.centra[1]->getGevacineerden());
 }
-*/
+
 /**
 Tests the default constructor for Centrum.
 */

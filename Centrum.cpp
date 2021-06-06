@@ -118,7 +118,7 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 }
 
 int Centrum::getTweedes(int dag, std::string type) {
-    REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling setGevacineerden");
+    REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling tweedes");
     REQUIRE(!type.empty(), "type can't be empty");
     REQUIRE(dag >= 0, "dag must be a positive integer");
 
