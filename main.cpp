@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     */
     // simuleren
 
-    simulatie.simuleren(28, std::cout);
+    simulatie.simuleren(40, std::cout);
     // simpele uitvoer
     ProjectExporter::exportProject("output.txt", std::cout, (*simulatie.hubs[0]));
     // grafische weergave

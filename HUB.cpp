@@ -73,6 +73,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
                 tot_lading[i] ++;
             }
             tot_lading[i] += levvac[j]/vaccins[i]->getLevering();
+            tot_vacs[i] += levvac[j];
 
             (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[j]); // dit is de echte levering van getallen (vaccins) aan het centrum
         }
@@ -82,50 +83,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
     for (unsigned int j = 0; j < centra.size(); j++) {
         onStream << "Er werden " << tot_lading[j] << " ladingen ("<< tot_vacs[j] <<" vaccins) getransporteerd naar " << (*centra[j])->getNaam()<< "." <<std::endl;
     }
-/*
-    for (unsigned int i = 0; i  < vaccins.size(); i++){
-        int result = 0;
-        if (centrum->getCapaciteit() < centrum->getVoorraad()){
-            result = 0;
-        }
-            // indien er wel result nodig zijn
-        else{
-            // bereken benodigde result
-            int nodige_ladingen = (centrum->getCapaciteit() - centrum->getVoorraad())/vaccins[i]->getTransport();
-            if ((centrum->getCapaciteit() - centrum->getVoorraad())%vaccins[i]->getTransport() != 0){
-                nodige_ladingen = nodige_ladingen + 1;
-            }
-            // bereken het maximaal aantal result dat het centrum kan ontvangen
-            int max_ladingen = (centrum->getCapaciteit()*2 - centrum->getVoorraad())/vaccins[i]->getTransport();
-            // bereken het aantal beschikbare result in de Hub
-            int beschikbare_ladingen = vaccins[i]->getVoorraad()/vaccins[i]->getTransport();
-            // Indien er minder result beschikbaar zijn dan geleverd moeten worden
-            if (beschikbare_ladingen<nodige_ladingen){
-                // lever alle result die in de Hub aanwezig zijn
-                result = beschikbare_ladingen;
-            }
-                // anders als de result zo groot zijn dat het max aantal result overschreden worden
-            else if (nodige_ladingen>max_ladingen){
-                // er wordt niets geleverd
-                result = 0;
-            }
-                // anders is het aantal result gelijk aan de benodigde result
-            else {
-                result = nodige_ladingen;
-            }
-        }
-        vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-result*vaccins[i]->getTransport());
-        for (unsigned j = 0; j < centrum->vaccins.size(); j++){
-            if (vaccins[i]->getType() == centrum->vaccins[j]->getType()){
-                centrum->vaccins[j]->setVoorraad(centrum->vaccins[j]->getVoorraad()+result*vaccins[i]->getTransport());
-            }
-        }
-        aantal_ladingen = aantal_ladingen + result;
-        aantal_vaccins = aantal_vaccins + result * vaccins[i]->getTransport();
-    }
-    onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum->getNaam()<< "." <<std::endl;
 
-*/
 }
 
 

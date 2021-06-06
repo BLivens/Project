@@ -197,4 +197,3 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
         onStream << "Er werden " << aantal_mensen_gevaccineerd << " inwoners gevaccineerd in " << getNaam() << ".\n";
     }
 }
-
