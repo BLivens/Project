@@ -1,0 +1,6 @@
+Totaal aantal geleverde vaccins:
+Pfizer: 	93000
+
+Totaal aantal inwoners:				540173
+Totaal aantal gevaccineerde inwoners:			22500
+Totaal aantal inwoners wachtend op tweede prik:	0

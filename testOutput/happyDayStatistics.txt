@@ -1,0 +1,8 @@
+Totaal aantal geleverde vaccins:
+AstraZeneca: 	469000
+Moderna: 	92000
+Pfizer: 	465000
+
+Totaal aantal inwoners:				923588
+Totaal aantal gevaccineerde inwoners:			38500
+Totaal aantal inwoners wachtend op tweede prik:	260500

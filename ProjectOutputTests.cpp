@@ -267,11 +267,17 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     myfile.open("../testOutput/happyDayGraphicImpressionError.txt");
     ProjectExporter::graphic_impression(fileName2.c_str(),myfile, H);
     myfile.close();
+    string fileName3 = "../testOutput/happyDayStatistics.txt";
+    myfile.open("../testOutput/happyDayStatisticsError.txt");
+    ProjectExporter::statistics(fileName3.c_str(), myfile,simulatie_);
+    myfile.close();
 
     EXPECT_TRUE(
             FileCompare("../testOutput/happyDayExpectedOut.txt", "../testOutput/happyDayOut.txt"));
     EXPECT_TRUE(
             FileCompare("../testOutput/happyDayGraphicImpressionExpected.txt", "../testOutput/happyDayGraphicImpression.txt"));
+    EXPECT_TRUE(
+            FileCompare("../testOutput/happyDayStatisticsExpected.txt", "../testOutput/happyDayStatistics.txt"));
 }
 
 TEST_F(ProjectOutputTest, OutputOneCentrum) {
@@ -378,5 +384,60 @@ TEST_F(ProjectOutputTest, GraphicImpression){
     myfile.close();
     EXPECT_TRUE(
             FileCompare("../testOutput/OutputGraphicImpressionExpected.txt", "../testOutput/OutputGraphicImpression.txt"));
+
+}
+
+TEST_F(ProjectOutputTest, Statistics){
+    ASSERT_TRUE(DirectoryExists("../testOutput"));
+    //if directory doesn't exist then no need in proceeding with the test
+    Simulatie simulatie_;
+
+    Hub H;
+    Centrum* a;
+    Centrum aa;
+    a = &aa;
+
+    Vaccin* vac;
+    Vaccin pvac;
+    vac = &pvac;
+    vac->setType("Pfizer");
+    vac->setLevering(93000);
+    vac->setInterval(6);
+    vac->setTransport(2000);
+    vac->setHernieuwing(2);
+    vac->setTemperatuur(-70);
+    H.vaccins.push_back(vac);
+
+    simulatie_.centra.push_back(a);
+    simulatie_.centra[0]->setNaam("Park Spoor Oost");
+    simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    simulatie_.centra[0]->setInwoners(540173);
+    simulatie_.centra[0]->setCapaciteit(7500);
+
+    Vaccin* vac2;
+    Vaccin pvac2;
+    vac2 = &pvac2;
+    vac2->setType("Pfizer");
+    vac2->setLevering(93000);
+    vac2->setInterval(6);
+    vac2->setTransport(2000);
+    vac2->setHernieuwing(2);
+    vac2->setTemperatuur(-70);
+    simulatie_.centra[0]->vaccins.push_back(vac2);
+
+    Centrum** double_p1 = &simulatie_.centra[0];
+    Hub* p = &H;
+    simulatie_.hubs.push_back(p);
+    simulatie_.hubs[0]->centra.push_back(double_p1);
+
+    string fileName = "../testOutput/OutputStatistics.txt";
+    ofstream myfile;
+    myfile.open("../testOutput/OutputStatisticsError.txt");
+    std::ostream bitBucket(NULL);
+    simulatie_.simuleren(6, bitBucket);
+    ProjectExporter::statistics(fileName.c_str(),myfile, simulatie_);
+    myfile.close();
+    EXPECT_TRUE(
+            FileCompare("../testOutput/OutputStatisticsExpected.txt", "../testOutput/OutputStatistics.txt"));
 
 }
