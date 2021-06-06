@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     // std::ofstream myfile;
     // myfile.open("../testInput/zzzError2.txt");
-    ProjectImporter::importProject("../testInput/input.xml", std::cout, simulatie);
+    ProjectImporter::importProject("../testInput/illegalSimulation5.xml", std::cout, simulatie);
     //myfile.close();
 
     //handmatige testcode voor input_2hubs_eenvoudig.xml
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     */
     // simuleren
 
-    simulatie.simuleren(40, std::cout);
+    simulatie.simuleren(34, std::cout);
     // simpele uitvoer
     ProjectExporter::exportProject("output.txt", std::cout, (*simulatie.hubs[0]));
     // grafische weergave

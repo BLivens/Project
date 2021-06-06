@@ -65,7 +65,6 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
                 dringende[j] += zending;
             }
             levvac[j] += zending; // dit (levvac[j]) is finaal hoeveel we van dit vaccin naar dit centrum sturen
-
             vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[j]);
             tot_vacs[i] += levvac[j];
             if (levvac[j] > 0) {

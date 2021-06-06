@@ -39,7 +39,6 @@ TEST_F(ProjectInputTest, InputHappyDay) {
     myfile.close();
     EXPECT_TRUE(importResult == Success);
     // nakijken van hubs
-
     EXPECT_EQ("Pfizer", simulatie_.hubs[0]->vaccins[0]->getType());
     EXPECT_EQ(93000, simulatie_.hubs[0]->vaccins[0]->getLevering());
     EXPECT_EQ(6, simulatie_.hubs[0]->vaccins[0]->getInterval());
@@ -69,7 +68,6 @@ TEST_F(ProjectInputTest, InputHappyDay) {
     EXPECT_EQ(5, simulatie_.hubs[1]->vaccins[1]->getTemperatuur());
 
 
-
     //nakijken van centrums
     EXPECT_EQ("Park Spoor Oost", (*simulatie_.hubs[0]->centra[0])->getNaam());
     EXPECT_EQ("Noordersingel 40, Antwerpen", (*simulatie_.hubs[0]->centra[0])->getAdres());
@@ -91,8 +89,8 @@ TEST_F(ProjectInputTest, InputHappyDay) {
     EXPECT_EQ(49451, (*simulatie_.hubs[1]->centra[2])->getInwoners());
     EXPECT_EQ(1000, (*simulatie_.hubs[1]->centra[2])->getCapaciteit());
 
-    EXPECT_EQ("Flanders Expo", (*simulatie_.hubs[3]->centra[1])->getNaam());
-    EXPECT_EQ("Maaltekouter 1, Sint-Denijs-Westrem", (*simulatie_.hubs[3]->centra[1])->getAdres());
+    EXPECT_EQ("Flanders Expo", (*simulatie_.hubs[1]->centra[3])->getNaam());
+    EXPECT_EQ("Maaltekouter 1, Sint-Denijs-Westrem", (*simulatie_.hubs[1]->centra[3])->getAdres());
     EXPECT_EQ(257029, (*simulatie_.hubs[1]->centra[3])->getInwoners());
     EXPECT_EQ(3000, (*simulatie_.hubs[1]->centra[3])->getCapaciteit());
 }
@@ -105,9 +103,11 @@ TEST_F(ProjectInputTest, InputLegalSimulations) {
     int fileCounter = 1;
     string fileName = "../testInput/legalSimulations" + ToString(fileCounter) + ".xml";
 
+
     while (FileExists (fileName)) {
         myfile.open("../testInput/zzzError.txt");
-        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie_);
+        Simulatie simulatie;
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie);
         myfile.close();
         EXPECT_TRUE(importResult == Success);
         EXPECT_TRUE(FileIsEmpty("../testInput/zzzError.txt"));
@@ -153,7 +153,8 @@ TEST_F(ProjectInputTest, InputIllegalSimulations) {
 
     while (FileExists (fileName)) {
         myfile.open("../testInput/zzzError.txt");
-        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie_);
+        Simulatie simulatie;
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie);
         myfile.close();
         EXPECT_TRUE(importResult == PartialImport);
         errorfileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".txt";

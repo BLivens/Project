@@ -127,7 +127,10 @@ int Centrum::getTweedes(int dag, std::string type) {
             if (vaccins[i]->getHernieuwing() != 0) {
                 int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
                 std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
-                int nodig = log[p];
+                int nodig = 0;
+                if (log.find(p)!=log.end()){
+                    nodig = log[p];
+                }
                 ENSURE(nodig >= 0, "nodig must a positive integer");
                 return nodig;
             } else {
@@ -159,7 +162,12 @@ void Centrum::vaccineren(std::ostream &onStream, int dag) {
             for (int k= 0; k<=dag_eerste_prik; k++){
                 std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type_vacc);
                 if (log.count(p)!=0){
-                    int aantal_vac_type = std::min(teVaccineren, log[p]);
+                    int aantal_vac_type2 = std::min(teVaccineren, log[p]);
+                    int aantal_vac_type = std::min(vaccins[i]->getVoorraad(), aantal_vac_type2);
+                    /*
+                    std::cout << vaccins[i]->getVoorraad() << std::endl;
+                    std::cout << aantal_vac_type << std:: endl;
+                     */
                     vaccins[i]->setVoorraad(vaccins[i]->getVoorraad()-aantal_vac_type);
                     log[p] = log[p]-aantal_vac_type;
                     setGevacineerden(getGevacineerden()+aantal_vac_type);

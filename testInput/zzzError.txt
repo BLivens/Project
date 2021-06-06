@@ -1,1 +1,2 @@
-XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 vaccin.
+XML PARTIAL IMPORT: Hub has missing or duplicate attributes.
+XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra.

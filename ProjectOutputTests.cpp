@@ -86,6 +86,8 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     simulatie_.centra.push_back(b);
     simulatie_.centra.push_back(c);
     simulatie_.centra.push_back(d);
+    Hub* p = &H;
+    simulatie_.hubs.push_back(p);
 
     simulatie_.centra[0]->setNaam("Park Spoor Oost");
     simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
@@ -150,6 +152,7 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     vac8->setTransport(1000);
     vac8->setHernieuwing(28);
     vac8->setTemperatuur(-20);
+
 
     Vaccin* vac9;
     Vaccin pvac9;
@@ -257,7 +260,7 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     ofstream myfile;
     myfile.open("../testOutput/happyDayOutError.txt");
     std::ostream bitBucket(NULL);
-    simulatie_.simuleren(52, bitBucket);
+    simulatie_.simuleren(25, bitBucket);
     ProjectExporter::exportProject(fileName.c_str(),myfile, H);
     myfile.close();
     string fileName2 = "../testOutput/happyDayGraphicImpression.txt";
@@ -307,9 +310,9 @@ TEST_F(ProjectOutputTest, OutputOneCentrum) {
     vac2->setHernieuwing(2);
     vac2->setTemperatuur(-70);
     simulatie_.centra[0]->vaccins.push_back(vac2);
-
     Centrum** double_p1 = &simulatie_.centra[0];
-
+    Hub* p = &H;
+    simulatie_.hubs.push_back(p);
     simulatie_.hubs[0]->centra.push_back(double_p1);
 
     string fileName = "../testOutput/OutputOneCentrum.txt";
@@ -362,7 +365,8 @@ TEST_F(ProjectOutputTest, GraphicImpression){
     simulatie_.centra[0]->vaccins.push_back(vac2);
 
     Centrum** double_p1 = &simulatie_.centra[0];
-
+    Hub* p = &H;
+    simulatie_.hubs.push_back(p);
     simulatie_.hubs[0]->centra.push_back(double_p1);
 
     string fileName = "../testOutput/OutputGraphicImpression.txt";
