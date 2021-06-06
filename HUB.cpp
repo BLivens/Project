@@ -46,29 +46,47 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
             tweedeDosis = (*centra[j])->getTweedes(dag, type) - (*centra[j])->vaccins[i]->getVoorraad(); // dit is hoeveel het centrum tekort komt, hopelijk kunnen we het sturen
 
             if (tweedeDosis >= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
-                (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + tweedeDosis);
                 vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - tweedeDosis);
                 dringende[j] += tweedeDosis;
                 levvac[j] += tweedeDosis;
             } else { // oei, tekort :( we sturen alles dat we kunnen
-                (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + vaccins[i]->getVoorraad());
                 dringende[j] += vaccins[i]->getVoorraad();
                 levvac[j] += vaccins[i]->getVoorraad();
                 vaccins[i]->setVoorraad(0);
             }
         }
-        double wachttijd = vaccins[i]->getLevering() % dag;
+        double wachttijd;
+
+        if (dag == 0) {
+            wachttijd = vaccins[i]->getInterval();
+        } else {
+            wachttijd = vaccins[i]->getInterval() % dag;
+        }
+
         double doel = (vaccins[i]->getVoorraad()/wachttijd)/centra.size();
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de tweede kans
             double zending = std::min((double)((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad()), doel); // het minumum van wat we willen sturen en wat we kunnen sturen
-            // TODO: afronden op lading voor toe te voegen aan de vectoren.
             if (vaccins[i]->getTemperatuur() < 0) {
                 zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we misschien maar minder sturen
                 dringende[i] += zending;
             }
             levvac[i] += zending;
+            // afronden op ladingen
+            int overschot = levvac[i] % vaccins[i]->getLevering();
+            levvac[i] -= overschot;  // FINAAL: dit is echt hoeveel we van dit vaccin naar dit centrum leveren
+            vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[i]);
+            tot_vacs[i] += levvac[i];
+            tot_lading[i] += levvac[i]/vaccins[i]->getLevering();
+            // dringende ook aanpassen? is nergens voor nodig, dat wordt toch niet meer gebruikt.
+            (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[i]); // dit is de echte levering van getallen (vaccins) aan het centrum
         }
+        //alles van en voor leveringen is gedaan
+        // we gaan het nog efkes uitprinten
+        for (unsigned int j = 0; j < centra.size(); j++) {
+            onStream << "Er werden " << tot_lading[j] << " ladingen ("<< tot_vacs[j] <<" vaccins) getransporteerd naar " << (*centra[j])->getNaam()<< "." <<std::endl;
+        }
+
     }
 
 /*
