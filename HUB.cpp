@@ -51,7 +51,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
             }
         }
 
-        double wachttijd = dag % vaccins[i]->getInterval();
+        double wachttijd = dag % vaccins[i]->getInterval() + 1;
         double doel = (vaccins[i]->getVoorraad()/wachttijd)/centra.size();
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de tweede kans
@@ -69,8 +69,11 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
 
             vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[j]);
             tot_vacs[i] += levvac[j];
+            if (levvac[j] > 0) {
+                tot_lading[i] ++;
+            }
             tot_lading[i] += levvac[j]/vaccins[i]->getLevering();
-            // dringende ook aanpassen
+
             (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[j]); // dit is de echte levering van getallen (vaccins) aan het centrum
         }
     }
