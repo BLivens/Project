@@ -12,7 +12,7 @@ using namespace std;
 
 class ProjectInputTest: public ::testing::Test {
 protected:
-    friend class Hub;
+    friend class Simulatie;
 
     virtual void SetUp() {
     }
@@ -20,7 +20,7 @@ protected:
     virtual void TearDown() {
     }
 
-    Hub hub_;
+    Simulatie simulatie_;
 };
 
 
@@ -32,57 +32,69 @@ TEST_F(ProjectInputTest, InputHappyDay) {
 
     ofstream myfile;
     SuccessEnum importResult;
-    string fileName = "../testInput/input.xml";
+    string fileName = "../testInput/input_2hubs_voorbeeld.xml";
 
     myfile.open("../testInput/zzzError.txt");
-    importResult = ProjectImporter::importProject("../testInput/input.xml", myfile, hub_);
+    importResult = ProjectImporter::importProject("../testInput/input_2hubs_voorbeeld.xml", myfile, simulatie_);
     myfile.close();
     EXPECT_TRUE(importResult == Success);
-    // nakijken van hub
+    // nakijken van hubs
 
-    EXPECT_EQ("Pfizer", hub_.vaccins[0]->getType());
-    EXPECT_EQ(93000, hub_.vaccins[0]->getLevering());
-    EXPECT_EQ(6, hub_.vaccins[0]->getInterval());
-    EXPECT_EQ(2000, hub_.vaccins[0]->getTransport());
-    EXPECT_EQ(21, hub_.vaccins[0]->getHernieuwing());
-    EXPECT_EQ(-70, hub_.vaccins[0]->getTemperatuur());
+    EXPECT_EQ("Pfizer", simulatie_.hubs[0]->vaccins[0]->getType());
+    EXPECT_EQ(93000, simulatie_.hubs[0]->vaccins[0]->getLevering());
+    EXPECT_EQ(6, simulatie_.hubs[0]->vaccins[0]->getInterval());
+    EXPECT_EQ(2000, simulatie_.hubs[0]->vaccins[0]->getTransport());
+    EXPECT_EQ(21, simulatie_.hubs[0]->vaccins[0]->getHernieuwing());
+    EXPECT_EQ(-70, simulatie_.hubs[0]->vaccins[0]->getTemperatuur());
 
-    EXPECT_EQ("Moderna", hub_.vaccins[1]->getType());
-    EXPECT_EQ(46000, hub_.vaccins[1]->getLevering());
-    EXPECT_EQ(13, hub_.vaccins[1]->getInterval());
-    EXPECT_EQ(1000, hub_.vaccins[1]->getTransport());
-    EXPECT_EQ(28, hub_.vaccins[1]->getHernieuwing());
-    EXPECT_EQ(-20, hub_.vaccins[1]->getTemperatuur());
+    EXPECT_EQ("Moderna", simulatie_.hubs[0]->vaccins[1]->getType());
+    EXPECT_EQ(46000, simulatie_.hubs[0]->vaccins[1]->getLevering());
+    EXPECT_EQ(13, simulatie_.hubs[0]->vaccins[1]->getInterval());
+    EXPECT_EQ(1000, simulatie_.hubs[0]->vaccins[1]->getTransport());
+    EXPECT_EQ(28, simulatie_.hubs[0]->vaccins[1]->getHernieuwing());
+    EXPECT_EQ(-20, simulatie_.hubs[0]->vaccins[1]->getTemperatuur());
 
-    EXPECT_EQ("AstraZeneca", hub_.vaccins[2]->getType());
-    EXPECT_EQ(67000, hub_.vaccins[2]->getLevering());
-    EXPECT_EQ(4, hub_.vaccins[2]->getInterval());
-    EXPECT_EQ(1500, hub_.vaccins[2]->getTransport());
-    EXPECT_EQ(28, hub_.vaccins[2]->getHernieuwing());
-    EXPECT_EQ(5, hub_.vaccins[2]->getTemperatuur());
+    EXPECT_EQ("Moderna", simulatie_.hubs[1]->vaccins[0]->getType());
+    EXPECT_EQ(46000, simulatie_.hubs[1]->vaccins[0]->getLevering());
+    EXPECT_EQ(13, simulatie_.hubs[1]->vaccins[0]->getInterval());
+    EXPECT_EQ(1000, simulatie_.hubs[1]->vaccins[0]->getTransport());
+    EXPECT_EQ(28, simulatie_.hubs[1]->vaccins[0]->getHernieuwing());
+    EXPECT_EQ(-20, simulatie_.hubs[1]->vaccins[0]->getTemperatuur());
+
+    EXPECT_EQ("AstraZeneca", simulatie_.hubs[1]->vaccins[1]->getType());
+    EXPECT_EQ(67000, simulatie_.hubs[1]->vaccins[1]->getLevering());
+    EXPECT_EQ(4, simulatie_.hubs[1]->vaccins[1]->getInterval());
+    EXPECT_EQ(1500, simulatie_.hubs[1]->vaccins[1]->getTransport());
+    EXPECT_EQ(28, simulatie_.hubs[1]->vaccins[1]->getHernieuwing());
+    EXPECT_EQ(5, simulatie_.hubs[1]->vaccins[1]->getTemperatuur());
 
 
 
     //nakijken van centrums
-    EXPECT_EQ("Park Spoor Oost", hub_.centra[0]->getNaam());
-    EXPECT_EQ("Noordersingel 40, Antwerpen", hub_.centra[0]->getAdres());
-    EXPECT_EQ(540173, hub_.centra[0]->getInwoners());
-    EXPECT_EQ(7500, hub_.centra[0]->getCapaciteit());
+    EXPECT_EQ("Park Spoor Oost", (*simulatie_.hubs[0]->centra[0])->getNaam());
+    EXPECT_EQ("Noordersingel 40, Antwerpen", (*simulatie_.hubs[0]->centra[0])->getAdres());
+    EXPECT_EQ(540173, (*simulatie_.hubs[0]->centra[0])->getInwoners());
+    EXPECT_EQ(7500, (*simulatie_.hubs[0]->centra[0])->getCapaciteit());
 
-    EXPECT_EQ("AED Studios", hub_.centra[1]->getNaam());
-    EXPECT_EQ("Fabriekstraat 38, Lint", hub_.centra[1]->getAdres());
-    EXPECT_EQ(76935, hub_.centra[1]->getInwoners());
-    EXPECT_EQ(2000, hub_.centra[1]->getCapaciteit());
+    EXPECT_EQ("Park Spoor Oost", (*simulatie_.hubs[1]->centra[0])->getNaam());
+    EXPECT_EQ("Noordersingel 40, Antwerpen", (*simulatie_.hubs[1]->centra[0])->getAdres());
+    EXPECT_EQ(540173, (*simulatie_.hubs[1]->centra[0])->getInwoners());
+    EXPECT_EQ(7500, (*simulatie_.hubs[1]->centra[0])->getCapaciteit());
 
-    EXPECT_EQ("De Zoerla", hub_.centra[2]->getNaam());
-    EXPECT_EQ("Gevaertlaan 1, Westerlo", hub_.centra[2]->getAdres());
-    EXPECT_EQ(49451, hub_.centra[2]->getInwoners());
-    EXPECT_EQ(1000, hub_.centra[2]->getCapaciteit());
+    EXPECT_EQ("AED Studios", (*simulatie_.hubs[1]->centra[1])->getNaam());
+    EXPECT_EQ("Fabriekstraat 38, Lint", (*simulatie_.hubs[1]->centra[1])->getAdres());
+    EXPECT_EQ(76935, (*simulatie_.hubs[1]->centra[1])->getInwoners());
+    EXPECT_EQ(2000, (*simulatie_.hubs[1]->centra[1])->getCapaciteit());
 
-    EXPECT_EQ("Flanders Expo", hub_.centra[3]->getNaam());
-    EXPECT_EQ("Maaltekouter 1, Sint-Denijs-Westrem", hub_.centra[3]->getAdres());
-    EXPECT_EQ(257029, hub_.centra[3]->getInwoners());
-    EXPECT_EQ(3000, hub_.centra[3]->getCapaciteit());
+    EXPECT_EQ("De Zoerla", (*simulatie_.hubs[1]->centra[2])->getNaam());
+    EXPECT_EQ("Gevaertlaan 1, Westerlo", (*simulatie_.hubs[1]->centra[2])->getAdres());
+    EXPECT_EQ(49451, (*simulatie_.hubs[1]->centra[2])->getInwoners());
+    EXPECT_EQ(1000, (*simulatie_.hubs[1]->centra[2])->getCapaciteit());
+
+    EXPECT_EQ("Flanders Expo", (*simulatie_.hubs[3]->centra[1])->getNaam());
+    EXPECT_EQ("Maaltekouter 1, Sint-Denijs-Westrem", (*simulatie_.hubs[3]->centra[1])->getAdres());
+    EXPECT_EQ(257029, (*simulatie_.hubs[1]->centra[3])->getInwoners());
+    EXPECT_EQ(3000, (*simulatie_.hubs[1]->centra[3])->getCapaciteit());
 }
 
 TEST_F(ProjectInputTest, InputLegalSimulations) {
@@ -95,7 +107,7 @@ TEST_F(ProjectInputTest, InputLegalSimulations) {
 
     while (FileExists (fileName)) {
         myfile.open("../testInput/zzzError.txt");
-        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, hub_);
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie_);
         myfile.close();
         EXPECT_TRUE(importResult == Success);
         EXPECT_TRUE(FileIsEmpty("../testInput/zzzError.txt"));
@@ -104,7 +116,7 @@ TEST_F(ProjectInputTest, InputLegalSimulations) {
         fileName = "../testInput/legalSimulations" + ToString(fileCounter) + ".xml";
     };
 
-    EXPECT_TRUE(fileCounter == 6);
+    EXPECT_TRUE(fileCounter == 9);
 }
 
 TEST_F(ProjectInputTest, InputXMLSyntaxErrors) {
@@ -118,7 +130,7 @@ TEST_F(ProjectInputTest, InputXMLSyntaxErrors) {
 
     while (FileExists (fileName)) {
         myfile.open("../testInput/zzzError.txt");
-        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, hub_);
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie_);
         myfile.close();
         EXPECT_TRUE(importResult == ImportAborted);
         errorfileName = "../testInput/xmlsyntaxerror" + ToString(fileCounter) + ".txt";
@@ -141,7 +153,7 @@ TEST_F(ProjectInputTest, InputIllegalSimulations) {
 
     while (FileExists (fileName)) {
         myfile.open("../testInput/zzzError.txt");
-        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, hub_);
+        importResult = ProjectImporter::importProject(fileName.c_str(), myfile, simulatie_);
         myfile.close();
         EXPECT_TRUE(importResult == PartialImport);
         errorfileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".txt";
@@ -150,5 +162,5 @@ TEST_F(ProjectInputTest, InputIllegalSimulations) {
         fileCounter = fileCounter + 1;
         fileName = "../testInput/illegalSimulation" + ToString(fileCounter) + ".xml";
     };
-    EXPECT_TRUE(fileCounter == 15);
+    EXPECT_TRUE(fileCounter == 16);
 }

@@ -1,2 +1,2 @@
-XML PARTIAL IMPORT: Centrum Flanders Expo already exists.
+XML PARTIAL IMPORT: Hub has missing or duplicate attributes.
 XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra.

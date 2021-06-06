@@ -1,6 +1,32 @@
 <?xml version="1.0"?>
-<!-- The simulation contains less than one HUB-->
+<!--Hub must have attribute Centra -->
 <Simulatie>
+	<HUB>
+		<VACCIN>
+			<type>Pfizer</type>
+			<levering>93000</levering>
+			<interval>6</interval>
+			<transport>2000</transport>
+			<hernieuwing>21</hernieuwing>
+			<temperatuur>-70</temperatuur>
+		</VACCIN>
+		<VACCIN>
+			<type>Moderna</type>
+			<levering>46000</levering>
+			<interval>13</interval>
+			<transport>1000</transport>
+			<hernieuwing>28</hernieuwing>
+			<temperatuur>-20</temperatuur>
+		</VACCIN>
+		<VACCIN>
+			<type>AstraZeneca</type>
+			<levering>67000</levering>
+			<interval>4</interval>
+			<transport>1500</transport>
+			<hernieuwing>28</hernieuwing>
+			<temperatuur>5</temperatuur>
+		</VACCIN>
+	</HUB>
 	<VACCINATIECENTRUM>
 		<naam>Park Spoor Oost</naam>
 		<adres>Noordersingel 40, Antwerpen</adres>

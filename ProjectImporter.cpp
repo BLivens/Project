@@ -31,10 +31,10 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
     else {
         int hub_counter = 0;
         int centrum_counter = 0;
-        int vaccin_counter = 0;
         for (TiXmlElement* elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
             std::string elemName = elem->Value();
             // herken element
+            int vaccin_counter = 0;
             int centra_counter = 0;
             int centrumhub_counter = 0;
             if (elemName == "HUB") {
@@ -155,6 +155,10 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
                         endResult = PartialImport;
                     }
                 }
+                if (vaccin_counter < 1 or centra_counter != 1 or centrumhub_counter < 1){
+                    errStream << "XML PARTIAL IMPORT: Hub has missing or duplicate attributes." << std::endl;
+                    endResult = PartialImport;
+                }
                 centra3.push_back(tempVec);
                 simulatie.hubs.push_back(tempHub);
 
@@ -225,20 +229,16 @@ SuccessEnum ProjectImporter::importProject(const char *inputfilename, std::ostre
         std::sort(centra1.begin(), centra1.end());
 
 
+        if (hub_counter < 1){
+            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file needs to contain atleast one hub." <<std::endl;
+            endResult = PartialImport;
+        }
         if (centra1 != centra2) {
             errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra." << std::endl;
             endResult = PartialImport;
         }
-        if (hub_counter < 1){
-            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file doesn't contain exactly 1 HUB." <<std::endl;
-            endResult = PartialImport;
-        }
         if (centrum_counter <1){
             errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 centrum." << std::endl;
-            endResult = PartialImport;
-        }
-        if (vaccin_counter <1){
-            errStream << "XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 vaccin." << std::endl;
             endResult = PartialImport;
         }
     }

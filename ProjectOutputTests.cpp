@@ -31,6 +31,9 @@ Tests the output of the "happy day" scenario (simulation example given in assign
 TEST_F(ProjectOutputTest, OutputHappyDay) {
     ASSERT_TRUE(DirectoryExists("../testOutput"));
     //if directory doesn't exist then no need in proceeding with the test
+
+    Simulatie simulatie_;
+
     Hub H;
     Centrum* a;
     Centrum aa;
@@ -79,15 +82,15 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     H.vaccins.push_back(vac3);
 
 
-    H.centra.push_back(a);
-    H.centra.push_back(b);
-    H.centra.push_back(c);
-    H.centra.push_back(d);
+    simulatie_.centra.push_back(a);
+    simulatie_.centra.push_back(b);
+    simulatie_.centra.push_back(c);
+    simulatie_.centra.push_back(d);
 
-    H.centra[0]->setNaam("Park Spoor Oost");
-    H.centra[0]->setAdres("Noordersingel 40, Antwerpen");
-    H.centra[0]->setInwoners(540173);
-    H.centra[0]->setCapaciteit(7500);
+    simulatie_.centra[0]->setNaam("Park Spoor Oost");
+    simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    simulatie_.centra[0]->setInwoners(540173);
+    simulatie_.centra[0]->setCapaciteit(7500);
 
     Vaccin* vac4;
     Vaccin pvac4;
@@ -119,14 +122,14 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     vac6->setHernieuwing(28);
     vac6->setTemperatuur(5);
 
-    H.centra[0]->vaccins.push_back(vac4);
-    H.centra[0]->vaccins.push_back(vac5);
-    H.centra[0]->vaccins.push_back(vac6);
+    simulatie_.centra[0]->vaccins.push_back(vac4);
+    simulatie_.centra[0]->vaccins.push_back(vac5);
+    simulatie_.centra[0]->vaccins.push_back(vac6);
 
-    H.centra[1]->setNaam("AED Studios");
-    H.centra[1]->setAdres("Fabriekstraat 38, Lint");
-    H.centra[1]->setInwoners(76935);
-    H.centra[1]->setCapaciteit(2000);
+    simulatie_.centra[1]->setNaam("AED Studios");
+    simulatie_.centra[1]->setAdres("Fabriekstraat 38, Lint");
+    simulatie_.centra[1]->setInwoners(76935);
+    simulatie_.centra[1]->setCapaciteit(2000);
 
     Vaccin* vac7;
     Vaccin pvac7;
@@ -158,14 +161,14 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     vac9->setHernieuwing(28);
     vac9->setTemperatuur(5);
 
-    H.centra[1]->vaccins.push_back(vac7);
-    H.centra[1]->vaccins.push_back(vac8);
-    H.centra[1]->vaccins.push_back(vac9);
+    simulatie_.centra[1]->vaccins.push_back(vac7);
+    simulatie_.centra[1]->vaccins.push_back(vac8);
+    simulatie_.centra[1]->vaccins.push_back(vac9);
 
-    H.centra[2]->setNaam("De Zoerla");
-    H.centra[2]->setAdres("Gevaertlaan 1, Westerlo");
-    H.centra[2]->setInwoners(49451);
-    H.centra[2]->setCapaciteit(1000);
+    simulatie_.centra[2]->setNaam("De Zoerla");
+    simulatie_.centra[2]->setAdres("Gevaertlaan 1, Westerlo");
+    simulatie_.centra[2]->setInwoners(49451);
+    simulatie_.centra[2]->setCapaciteit(1000);
 
     Vaccin* vac10;
     Vaccin pvac10;
@@ -197,14 +200,14 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     vac12->setHernieuwing(28);
     vac12->setTemperatuur(5);
 
-    H.centra[2]->vaccins.push_back(vac10);
-    H.centra[2]->vaccins.push_back(vac11);
-    H.centra[2]->vaccins.push_back(vac12);
+    simulatie_.centra[2]->vaccins.push_back(vac10);
+    simulatie_.centra[2]->vaccins.push_back(vac11);
+    simulatie_.centra[2]->vaccins.push_back(vac12);
 
-    H.centra[3]->setNaam("Flanders Expo");
-    H.centra[3]->setAdres("Maaltekouter 1, Sint-Denijs-Westrem");
-    H.centra[3]->setInwoners(257029);
-    H.centra[3]->setCapaciteit(3000);
+    simulatie_.centra[3]->setNaam("Flanders Expo");
+    simulatie_.centra[3]->setAdres("Maaltekouter 1, Sint-Denijs-Westrem");
+    simulatie_.centra[3]->setInwoners(257029);
+    simulatie_.centra[3]->setCapaciteit(3000);
 
     Vaccin* vac13;
     Vaccin pvac13;
@@ -236,15 +239,25 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
     vac15->setHernieuwing(28);
     vac15->setTemperatuur(5);
 
-    H.centra[3]->vaccins.push_back(vac13);
-    H.centra[3]->vaccins.push_back(vac14);
-    H.centra[3]->vaccins.push_back(vac15);
+    simulatie_.centra[3]->vaccins.push_back(vac13);
+    simulatie_.centra[3]->vaccins.push_back(vac14);
+    simulatie_.centra[3]->vaccins.push_back(vac15);
+
+    Centrum** double_p1 = &simulatie_.centra[0];
+    Centrum** double_p2 = &simulatie_.centra[1];
+    Centrum** double_p3 = &simulatie_.centra[2];
+    Centrum** double_p4 = &simulatie_.centra[3];
+
+    simulatie_.hubs[0]->centra.push_back(double_p1);
+    simulatie_.hubs[0]->centra.push_back(double_p2);
+    simulatie_.hubs[0]->centra.push_back(double_p3);
+    simulatie_.hubs[0]->centra.push_back(double_p4);
 
     string fileName = "../testOutput/happyDayOut.txt";
     ofstream myfile;
     myfile.open("../testOutput/happyDayOutError.txt");
     std::ostream bitBucket(NULL);
-    H.simuleren(52, bitBucket);
+    simulatie_.simuleren(52, bitBucket);
     ProjectExporter::exportProject(fileName.c_str(),myfile, H);
     myfile.close();
     string fileName2 = "../testOutput/happyDayGraphicImpression.txt";
@@ -261,6 +274,7 @@ TEST_F(ProjectOutputTest, OutputHappyDay) {
 TEST_F(ProjectOutputTest, OutputOneCentrum) {
     ASSERT_TRUE(DirectoryExists("../testOutput"));
     //if directory doesn't exist then no need in proceeding with the test
+    Simulatie simulatie_;
     Hub H;
     Centrum* a;
     Centrum aa;
@@ -277,11 +291,11 @@ TEST_F(ProjectOutputTest, OutputOneCentrum) {
     vac->setTemperatuur(-70);
     H.vaccins.push_back(vac);
 
-    H.centra.push_back(a);
-    H.centra[0]->setNaam("Park Spoor Oost");
-    H.centra[0]->setAdres("Noordersingel 40, Antwerpen");
-    H.centra[0]->setInwoners(540173);
-    H.centra[0]->setCapaciteit(7500);
+    simulatie_.centra.push_back(a);
+    simulatie_.centra[0]->setNaam("Park Spoor Oost");
+    simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    simulatie_.centra[0]->setInwoners(540173);
+    simulatie_.centra[0]->setCapaciteit(7500);
 
     Vaccin* vac2;
     Vaccin pvac2;
@@ -292,13 +306,17 @@ TEST_F(ProjectOutputTest, OutputOneCentrum) {
     vac2->setTransport(2000);
     vac2->setHernieuwing(2);
     vac2->setTemperatuur(-70);
-    H.centra[0]->vaccins.push_back(vac2);
+    simulatie_.centra[0]->vaccins.push_back(vac2);
+
+    Centrum** double_p1 = &simulatie_.centra[0];
+
+    simulatie_.hubs[0]->centra.push_back(double_p1);
 
     string fileName = "../testOutput/OutputOneCentrum.txt";
     ofstream myfile;
     myfile.open("../testOutput/OutputOneCentrumError.txt");
     std::ostream bitBucket(NULL);
-    H.simuleren(6, bitBucket);
+    simulatie_.simuleren(6, bitBucket);
     ProjectExporter::exportProject(fileName.c_str(),myfile, H);
     myfile.close();
     EXPECT_TRUE(
@@ -308,6 +326,8 @@ TEST_F(ProjectOutputTest, OutputOneCentrum) {
 TEST_F(ProjectOutputTest, GraphicImpression){
     ASSERT_TRUE(DirectoryExists("../testOutput"));
     //if directory doesn't exist then no need in proceeding with the test
+    Simulatie simulatie_;
+
     Hub H;
     Centrum* a;
     Centrum aa;
@@ -324,11 +344,11 @@ TEST_F(ProjectOutputTest, GraphicImpression){
     vac->setTemperatuur(-70);
     H.vaccins.push_back(vac);
 
-    H.centra.push_back(a);
-    H.centra[0]->setNaam("Park Spoor Oost");
-    H.centra[0]->setAdres("Noordersingel 40, Antwerpen");
-    H.centra[0]->setInwoners(540173);
-    H.centra[0]->setCapaciteit(7500);
+    simulatie_.centra.push_back(a);
+    simulatie_.centra[0]->setNaam("Park Spoor Oost");
+    simulatie_.centra[0]->setAdres("Noordersingel 40, Antwerpen");
+    simulatie_.centra[0]->setInwoners(540173);
+    simulatie_.centra[0]->setCapaciteit(7500);
 
     Vaccin* vac2;
     Vaccin pvac2;
@@ -339,13 +359,17 @@ TEST_F(ProjectOutputTest, GraphicImpression){
     vac2->setTransport(2000);
     vac2->setHernieuwing(2);
     vac2->setTemperatuur(-70);
-    H.centra[0]->vaccins.push_back(vac2);
+    simulatie_.centra[0]->vaccins.push_back(vac2);
+
+    Centrum** double_p1 = &simulatie_.centra[0];
+
+    simulatie_.hubs[0]->centra.push_back(double_p1);
 
     string fileName = "../testOutput/OutputGraphicImpression.txt";
     ofstream myfile;
     myfile.open("../testOutput/OutputGraphicImpressionError.txt");
     std::ostream bitBucket(NULL);
-    H.simuleren(6, bitBucket);
+    simulatie_.simuleren(6, bitBucket);
     ProjectExporter::graphic_impression(fileName.c_str(),myfile, H);
     myfile.close();
     EXPECT_TRUE(

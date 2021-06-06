@@ -1,0 +1,3 @@
+XML PARTIAL IMPORT: Input file not consistent, problem: input file needs to contain atleast one hub.
+XML PARTIAL IMPORT: Input file not consistent, problem: Vaccinatiecentra.
+XML PARTIAL IMPORT: Input file not consistent, problem: input file must at least contain 1 vaccin.
