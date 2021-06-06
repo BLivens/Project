@@ -24,28 +24,23 @@ int Hub::getVoorraad() const {
 
 void Hub::simuleerTransport(std::ostream &onStream, int dag){
     REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleerTransport");
-    //REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling simuleerTransport");
-    //REQUIRE(centrumVerbonden(centrum), "simuleerTransport requires centrum to be linked with Hub.");
+    REQUIRE(dag >= 0, "Dag must be a non-negative number when calling simuleerTransport");
 
-    //int aantal_ladingen = 0;
-    //int aantal_vaccins = 0;
 
-    std::string type;
     std::vector<int> tot_lading(centra.size(), 0);
     std::vector<int> tot_vacs(centra.size(), 0);
     std::vector<int> dringende(centra.size(), 0);
 
-
     for (unsigned int i = 0; i < vaccins.size(); i++) {
         std::vector<int>levvac(centra.size(), 0);
 
-        type = vaccins[i]->getType();
+        std::string type = vaccins[i]->getType();
         int tweedeDosis;
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans
             tweedeDosis = (*centra[j])->getTweedes(dag, type) - (*centra[j])->vaccins[i]->getVoorraad(); // dit is hoeveel het centrum tekort komt, hopelijk kunnen we het sturen
 
-            if (tweedeDosis >= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
+            if (tweedeDosis <= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
                 vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - tweedeDosis);
                 dringende[j] += tweedeDosis;
                 levvac[j] += tweedeDosis;
@@ -69,26 +64,26 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
             double zending = std::min((double)((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad()), doel); // het minumum van wat we willen sturen en wat we kunnen sturen
             if (vaccins[i]->getTemperatuur() < 0) {
                 zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we misschien maar minder sturen
-                dringende[i] += zending;
+                dringende[j] += zending;
             }
-            levvac[i] += zending;
+            levvac[j] += zending;
             // afronden op ladingen
-            int overschot = levvac[i] % vaccins[i]->getLevering();
-            levvac[i] -= overschot;  // FINAAL: dit is echt hoeveel we van dit vaccin naar dit centrum leveren
-            vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[i]);
-            tot_vacs[i] += levvac[i];
-            tot_lading[i] += levvac[i]/vaccins[i]->getLevering();
-            // dringende ook aanpassen? is nergens voor nodig, dat wordt toch niet meer gebruikt.
-            (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[i]); // dit is de echte levering van getallen (vaccins) aan het centrum
+            /*
+            int overschot = levvac[j] % vaccins[i]->getLevering();
+            levvac[j] -= overschot;  // FINAAL: dit is echt hoeveel we van dit vaccin naar dit centrum leveren
+             */
+            vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[j]);
+            tot_vacs[i] += levvac[j];
+            tot_lading[i] += 1+ levvac[j]/vaccins[i]->getLevering();
+            // dringende ook aanpassen
+            (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[j]); // dit is de echte levering van getallen (vaccins) aan het centrum
         }
-        //alles van en voor leveringen is gedaan
-        // we gaan het nog efkes uitprinten
-        for (unsigned int j = 0; j < centra.size(); j++) {
-            onStream << "Er werden " << tot_lading[j] << " ladingen ("<< tot_vacs[j] <<" vaccins) getransporteerd naar " << (*centra[j])->getNaam()<< "." <<std::endl;
-        }
-
     }
-
+    //alles van/voor leveringen is gedaan
+    // we gaan het nog efkes uitprinten
+    for (unsigned int j = 0; j < centra.size(); j++) {
+        onStream << "Er werden " << tot_lading[j] << " ladingen ("<< tot_vacs[j] <<" vaccins) getransporteerd naar " << (*centra[j])->getNaam()<< "." <<std::endl;
+    }
 /*
     for (unsigned int i = 0; i  < vaccins.size(); i++){
         int result = 0;

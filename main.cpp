@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     std::cout << (*simulatie.hubs[1]->centra[1])->vaccins[1]->getType() << std::endl;
     */
     // simuleren
-    simulatie.simuleren(52, std::cout);
+    simulatie.simuleren(28, std::cout);
     // simpele uitvoer
     ProjectExporter::exportProject("output.txt", std::cout, (*simulatie.hubs[0]));
     // grafische weergave

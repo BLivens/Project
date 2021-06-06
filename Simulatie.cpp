@@ -41,6 +41,8 @@ void Simulatie::simuleren(int dagen, std::ostream &onStream) {
         for (unsigned int i = 0; i < centra.size(); i++) {
             centra.at(i)->vaccineren(onStream, dag);
         }
+        onStream << "Het werd avond en het werd ochtend, dat was de " << dag << "e dag." << std::endl << std::endl;
         dag++;
     }
+    REQUIRE(dag == dagen, "Didn't reach the amount of days.");
 }
