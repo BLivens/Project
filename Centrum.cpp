@@ -126,7 +126,7 @@ int Centrum::getTweedes(int dag, std::string type) {
         if (vaccins[i]->getType() == type) {
             int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
             std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
-            int nodig = log.count(p);
+            int nodig = log[p];
             return nodig;
         }
     }

@@ -50,16 +50,13 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
                 vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - tweedeDosis);
                 dringende[j] += tweedeDosis;
                 levvac[j] += tweedeDosis;
-                tot_vacs[j] += tweedeDosis;
             } else { // oei, tekort :( we sturen alles dat we kunnen
                 (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + vaccins[i]->getVoorraad());
-                tot_vacs[j] += vaccins[i]->getVoorraad();
                 dringende[j] += vaccins[i]->getVoorraad();
                 levvac[j] += vaccins[i]->getVoorraad();
                 vaccins[i]->setVoorraad(0);
             }
         }
-
         double wachttijd = vaccins[i]->getLevering() % dag;
         double doel = (vaccins[i]->getVoorraad()/wachttijd)/centra.size();
 
@@ -70,12 +67,8 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
                 zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we misschien maar minder sturen
                 dringende[i] += zending;
             }
-            tot_vacs[i] += zending;
             levvac[i] += zending;
         }
-
-
-
     }
 
 /*
