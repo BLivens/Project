@@ -31,43 +31,54 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
     //int aantal_vaccins = 0;
 
     std::string type;
-    std::vector<int> leveringen(centra.size(), 0);
+    std::vector<int> tot_lading(centra.size(), 0);
+    std::vector<int> tot_vacs(centra.size(), 0);
+    std::vector<int> dringende(centra.size(), 0);
+
 
     for (unsigned int i = 0; i < vaccins.size(); i++) {
+        std::vector<int>levvac(centra.size(), 0);
+
         type = vaccins[i]->getType();
         int tweedeDosis;
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans
             tweedeDosis = (*centra[j])->getTweedes(dag, type) - (*centra[j])->vaccins[i]->getVoorraad(); // dit is hoeveel het centrum tekort komt, hopelijk kunnen we het sturen
 
-            if (tweedeDosis >= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweed eprikken, gelukkig!
+            if (tweedeDosis >= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
                 (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + tweedeDosis);
                 vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - tweedeDosis);
-                leveringen[j] += tweedeDosis;
+                dringende[j] += tweedeDosis;
+                levvac[j] += tweedeDosis;
+                tot_vacs[j] += tweedeDosis;
             } else { // oei, tekort :( we sturen alles dat we kunnen
                 (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + vaccins[i]->getVoorraad());
-                leveringen[j] += vaccins[i]->getVoorraad();
+                tot_vacs[j] += vaccins[i]->getVoorraad();
+                dringende[j] += vaccins[i]->getVoorraad();
+                levvac[j] += vaccins[i]->getVoorraad();
                 vaccins[i]->setVoorraad(0);
             }
         }
 
         double wachttijd = vaccins[i]->getLevering() % dag;
-
+        double doel = (vaccins[i]->getVoorraad()/wachttijd)/centra.size();
 
         for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de tweede kans
-            if (vaccins[i]->getTemperatuur() >= 0) { // geen problemen met bewaren
-                double max_levering = ((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad());
-
-                if ((vaccins[i]->getVoorraad()/wachttijd)/centra.size() >= max_levering) {
-                    //
-                }
+            double zending = std::min((double)((*centra[j])->getCapaciteit()*2 - (*centra[j])->getVoorraad()), doel); // het minumum van wat we willen sturen en wat we kunnen sturen
+            // TODO: afronden op lading voor toe te voegen aan de vectoren.
+            if (vaccins[i]->getTemperatuur() < 0) {
+                zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we misschien maar minder sturen
+                dringende[i] += zending;
             }
+            tot_vacs[i] += zending;
+            levvac[i] += zending;
         }
+
 
 
     }
 
-
+/*
     for (unsigned int i = 0; i  < vaccins.size(); i++){
         int result = 0;
         if (centrum->getCapaciteit() < centrum->getVoorraad()){
@@ -110,7 +121,7 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
     }
     onStream << "Er werden " << aantal_ladingen << " ladingen ("<< aantal_vaccins <<" vaccins) getransporteerd naar " << centrum->getNaam()<< "." <<std::endl;
 
-
+*/
 }
 
 
