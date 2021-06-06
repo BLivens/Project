@@ -124,10 +124,15 @@ int Centrum::getTweedes(int dag, std::string type) {
 
     for (unsigned int i = 0; i < vaccins.size(); i++){
         if (vaccins[i]->getType() == type) {
-            int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
-            std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
-            int nodig = log[p];
-            return nodig;
+            if (vaccins[i]->getHernieuwing() != 0) {
+                int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
+                std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
+                int nodig = log[p];
+                ENSURE(nodig >= 0, "nodig must a positive integer");
+                return nodig;
+            } else {
+                return 0; // zonder hernieuwing...
+            }
         }
     }
     std::cerr << "Vaccin " << type << "not found in centrum " << naam << std::endl;
