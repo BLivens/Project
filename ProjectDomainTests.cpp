@@ -279,4 +279,6 @@ TEST_F(ProjectDomainTest, ContractViolations) {
     EXPECT_DEATH(vaccin_.setHernieuwing(-1), "Assertion.*failed"); //setHernieuwing needs a positive integer
     EXPECT_DEATH(vaccin_.setInterval(0), "Assertion.*failed"); //setInterval needs a strictly positive integer
     EXPECT_DEATH(vaccin_.setTransport(0), "Assertion.*failed"); //setTransport needs a strictly positive integer
+    EXPECT_DEATH(centrum_.getTweedes(0,""), "Assertion.*failed"); //getTweedes needs a non empty string
+    EXPECT_DEATH(centrum_.getTweedes(-1,"Pfizer"), "Assertion.*failed"); //getTweedes needs a positive integer
 }
