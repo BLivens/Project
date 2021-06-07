@@ -118,7 +118,7 @@ void Centrum::setGevacineerden(int aantal_gevacineerden) {
 }
 
 int Centrum::getTweedes(int dag, std::string type) {
-    REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling tweedes");
+    REQUIRE(this->properlyInitialized(),"Centrum wasn't initialized when calling getTweedes");
     REQUIRE(!type.empty(), "type can't be empty");
     REQUIRE(dag >= 0, "dag must be a positive integer");
 
@@ -127,12 +127,12 @@ int Centrum::getTweedes(int dag, std::string type) {
             if (vaccins[i]->getHernieuwing() != 0) {
                 int dag_eerste_prik = dag-vaccins[i]->getHernieuwing()-1;
                 std::pair<int,std::string> p = std::make_pair(dag_eerste_prik,type);
-                int nodig = 0;
+                int result = 0;
                 if (log.find(p)!=log.end()){
-                    nodig = log[p];
+                    result = log[p];
                 }
-                ENSURE(nodig >= 0, "nodig must a positive integer");
-                return nodig;
+                ENSURE(result >= 0, "nodig must a positive integer");
+                return result;
             } else {
                 return 0; // zonder hernieuwing...
             }

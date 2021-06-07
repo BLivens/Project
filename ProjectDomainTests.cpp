@@ -252,6 +252,16 @@ TEST_F(ProjectDomainTest, DefaultConstructorVaccin) {
 }
 
 /**
+Tests the default constructor for Simulatie.
+*/
+TEST_F(ProjectDomainTest, DefaultConstructorSimulatie) {
+    EXPECT_TRUE(simulatie_.properlyInitialized());
+    EXPECT_TRUE(simulatie_.centra.empty());
+    EXPECT_TRUE(simulatie_.hubs.empty());
+    EXPECT_TRUE(simulatie_.geleverde_vacc.empty());
+}
+
+/**
 Verify whether unsatisfied pre-conditions indeed trigger failures
 */
 TEST_F(ProjectDomainTest, ContractViolations) {

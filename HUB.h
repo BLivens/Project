@@ -25,7 +25,6 @@ public:
     /**;
     \n REQUIRE(this->properlyInitialized(), "Hub wasn't initialized when calling simuleerTransport");
     \n REQUIRE(centrum->properlyInitialized(), "Centrum wasn't initialized when calling simuleerTransport");
-    \n REQUIRE(centrumVerbonden(centrum), "simuleerTransport requires centrum to be linked with Hub.");
     */
     void simuleerTransport(std::ostream& onStream, int dag);
     /**
