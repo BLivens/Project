@@ -36,18 +36,16 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
         std::string type = vaccins[i]->getType();
         int tweedeDosis;
 
-        for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans, voor tweed prikken
+        for (unsigned int j = 0; j < centra.size(); j++) { // de loop van de eerste kans, voor tweede prikken
             tweedeDosis = std::max(0, (*centra[j])->getTweedes(dag, type) - (*centra[j])->vaccins[i]->getVoorraad()); // dit is hoeveel het centrum tekort komt, hopelijk kunnen we het sturen
 
-            if (tweedeDosis <= vaccins[i]->getVoorraad()) { // we hebben genoeg op voorhand voor de tweede prikken, gelukkig!
-                vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - tweedeDosis);
-                dringende[j] += tweedeDosis;
-                levvac[j] += tweedeDosis;
-            } else { // oei, tekort :( we sturen alles dat we kunnen
-                dringende[j] += vaccins[i]->getVoorraad();
-                levvac[j] += vaccins[i]->getVoorraad();
-                vaccins[i]->setVoorraad(0);
-            }
+            int zending;
+            zending = std::min(tweedeDosis, vaccins[i]->getVoorraad()); // we kunnen niet meer sturen dan we hebben
+            zending = std::min(zending, (*centra[j])->getCapaciteit()*2-(*centra[j])->getVoorraad()); // we kunnen niet meer sturen dan het centrum kan ontvangen
+
+            vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - zending);
+            dringende[j] += zending;
+            levvac[j] += zending;
         }
 
         double wachttijd = dag % vaccins[i]->getInterval() + 1;
@@ -64,14 +62,18 @@ void Hub::simuleerTransport(std::ostream &onStream, int dag){
                 zending = std::min(zending, (double)((*centra[j])->getCapaciteit() - dringende[j])); // als het dezelfde dag nog geprikt moet worden kunnen we er misschien maar minder sturen
                 dringende[j] += zending;
             }
+            if (levvac[j] + zending > vaccins[i]->getVoorraad()) { // we hebben niet genoeg op voorraad
+                zending = vaccins[i]->getVoorraad() - levvac[j];
+            }
+
             levvac[j] += zending; // dit (levvac[j]) is finaal hoeveel we van dit vaccin naar dit centrum sturen
             vaccins[i]->setVoorraad(vaccins[i]->getVoorraad() - levvac[j]);
-            tot_vacs[i] += levvac[j];
+            tot_vacs[j] += levvac[j];
             if (levvac[j] > 0) {
-                tot_lading[i] ++;
+                tot_lading[j] ++;
             }
-            tot_lading[i] += floor(levvac[j]/vaccins[i]->getLevering());
-            tot_vacs[i] += levvac[j];
+            tot_lading[j] += floor(levvac[i]/vaccins[i]->getLevering());
+            tot_vacs[j] += levvac[j];
 
             (*centra[j])->vaccins[i]->setVoorraad((*centra[j])->vaccins[i]->getVoorraad() + levvac[j]); // dit is de echte levering van getallen (vaccins) aan het centrum
         }

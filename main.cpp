@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     ProjectImporter::importProject("../testInput/input.xml", std::cout, simulatie);
 
     // simuleren
-    simulatie.simuleren(34, std::cout);
+    simulatie.simuleren(52, std::cout);
     // simpele uitvoer
     ProjectExporter::exportProject("output.txt", std::cout, (*simulatie.hubs[0]));
     // grafische weergave
